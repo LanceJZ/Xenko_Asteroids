@@ -1,0 +1,28 @@
+﻿// Copyright (c) 2014 Silicon Studio Corp. (http://siliconstudio.co.jp)
+// This file is distributed under GPL v3. See LICENSE.md for details.
+
+shader SpritePicking : SpriteBase
+{
+    // -------------------------------------
+    // streams
+    // -------------------------------------
+    stage stream float4 Color : COLOR;
+
+    // method computing color
+    stage override float4 Shading()
+    {
+        base.Shading(); // discard pixel if needed.
+
+        int a = (int)(streams.Color.a * 255.0f) & 255;
+        int r = (int)(streams.Color.r * 255.0f) & 255;
+        int g = (int)(streams.Color.g * 255.0f) & 255;
+        int b = (int)(streams.Color.b * 255.0f) & 255;
+
+        int value = r;
+        value |= g << 8;
+        value |= b << 16;
+        value |= a << 24;
+
+        return float4(value, 0, 0, 1);
+    }
+};

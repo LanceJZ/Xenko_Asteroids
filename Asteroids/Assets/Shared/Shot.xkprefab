@@ -1,0 +1,21 @@
+!PrefabAsset
+Id: 37415258-a860-4d10-b78a-fed4d279e7f1
+SerializedVersion: {Xenko: 1.7.0-beta04}
+Tags: []
+Hierarchy:
+    ~Id: 9962f007-fa64-468a-9051-638e7cb5f719
+    RootPartIds:
+        - 6439f390-371a-42d3-a8bb-0693ee9ca994
+    Parts:
+        -   Entity:
+                Id: 6439f390-371a-42d3-a8bb-0693ee9ca994
+                Name: Shot
+                Components:
+                    - !TransformComponent
+                        ~Id: 1f4daa07-e9b5-41a3-b9fc-944d20884433
+                        Children: []
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                    - !Asteroids.Shot,Asteroids.Game
+                        ~Id: dbdd65df-c6ff-4881-89a1-4453b42eda8e

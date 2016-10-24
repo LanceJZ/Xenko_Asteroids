@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Paths>
+  <Jars></Jars>
+  <ResolvedResourceDirectories>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.IO\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.Mathematics\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.MicroThreading\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.Serialization\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Audio\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Engine\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Games\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Graphics\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Input\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Native\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Particles\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Physics\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Shaders\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.SpriteStudio.Runtime\library_project_imports\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.UI\library_project_imports\res</ResolvedResourceDirectory>
+  </ResolvedResourceDirectories>
+  <ResolvedAssetDirectories>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.IO\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.Mathematics\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.MicroThreading\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.Serialization\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Audio\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Engine\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Games\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Graphics\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Input\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Native\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Particles\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Physics\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Shaders\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.SpriteStudio.Runtime\library_project_imports\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.UI\library_project_imports\assets</ResolvedAssetDirectory>
+  </ResolvedAssetDirectories>
+  <ResolvedEnvironmentFiles />
+  <ResolvedResourceDirectoryStamps>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.IO.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.Mathematics.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.MicroThreading.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Core.Serialization.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Audio.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Engine.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Games.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Graphics.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Input.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Native.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Particles.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Physics.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.Shaders.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.SpriteStudio.Runtime.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Android\obj\Android\Debug\__library_projects__\SiliconStudio.Xenko.UI.stamp</ResolvedResourceDirectoryStamp>
+  </ResolvedResourceDirectoryStamps>
+</Paths>

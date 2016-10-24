@@ -1,0 +1,7 @@
+F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Bin\Windows\Debug\Asteroids.Game.dll
+F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Bin\Windows\Debug\Asteroids.Game.pdb
+F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Game\obj\Windows\Debug\Asteroids.Game.csprojResolveAssemblyReference.cache
+F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Game\obj\Windows\Debug\Asteroids.Game.dll
+F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Game\obj\Windows\Debug\Asteroids.Game.pdb
+F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Game\obj\Windows\Debug\Asteroids.Properties.Resources.resources
+F:\Documents\Xenko Projects\Asteroids\Asteroids\Asteroids\Asteroids.Game\obj\Windows\Debug\Asteroids.Game.csproj.GenerateResource.Cache

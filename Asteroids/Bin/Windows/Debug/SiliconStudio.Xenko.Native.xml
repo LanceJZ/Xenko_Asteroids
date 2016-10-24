@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SiliconStudio.Xenko.Native</name>
+    </assembly>
+    <members>
+        <member name="T:SiliconStudio.XenkoVersion">
+            <summary>
+            Internal version used to identify Xenko version.
+            </summary>
+            <remarks>
+            Note: When modifying the version here, it must be modified also in the Xenko.xkpkg 
+            </remarks>
+        </member>
+        <member name="F:SiliconStudio.XenkoVersion.CurrentAssemblyAsText">
+            <summary>
+            The .NET current assembly version as text, not including pre-release (alpha, beta...) information.
+            </summary>
+        </member>
+        <member name="F:SiliconStudio.XenkoVersion.CurrentAsText">
+            <summary>
+            The Store current version as text, including pre-release (alpha, beta...) information
+            </summary>
+            <remarks>
+            Version number as described in http://docs.nuget.org/docs/reference/versioning
+            When using pre-release (alpha, beta, rc...etc.) and because the order of the release is in alphabetical order,
+            please use a double digit like alpha00 alpha01...etc. in order to make sure that we will follow the correct
+            order for the versions.
+            </remarks>
+        </member>
+        <member name="T:SiliconStudio.Xenko.Native.Celt">
+            <summary>
+            Wrapper around Celt
+            </summary>
+        </member>
+        <member name="M:SiliconStudio.Xenko.Native.Celt.#ctor(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Initialize the Celt encoder/decoder
+            </summary>
+            <param name="sampleRate">Required sample rate</param>
+            <param name="bufferSize">Required buffer size</param>
+            <param name="channels">Required channels</param>
+            <param name="decoderOnly">If we desire only to decode set this to true</param>
+        </member>
+        <member name="M:SiliconStudio.Xenko.Native.Celt.Dispose">
+            <summary>
+            Dispose the Celt encoder/decoder
+            Do not call Encode or Decode after disposal!
+            </summary>
+        </member>
+        <member name="M:SiliconStudio.Xenko.Native.Celt.Decode(System.Byte[],System.Int32,System.Int16[])">
+            <summary>
+            Decodes compressed celt data into PCM 16 bit shorts
+            </summary>
+            <param name="inputBuffer">The input buffer</param>
+            <param name="inputBufferSize">The size of the valid bytes in the input buffer</param>
+            <param name="outputSamples">The output buffer, the size of frames should be the same amount that is contained in the input buffer</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiliconStudio.Xenko.Native.Celt.Decode(System.Byte[],System.Int32,System.Int16*)">
+            <summary>
+            Decodes compressed celt data into PCM 16 bit shorts
+            </summary>
+            <param name="inputBuffer">The input buffer</param>
+            <param name="inputBufferSize">The size of the valid bytes in the input buffer</param>
+            <param name="outputSamples">The output buffer, the size of frames should be the same amount that is contained in the input buffer</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiliconStudio.Xenko.Native.Celt.Encode(System.Int16[],System.Byte[])">
+            <summary>
+            Encode PCM audio into celt compressed format
+            </summary>
+            <param name="audioSamples">A buffer containing interleaved channels (as from constructor channels) and samples (can be any number of samples)</param>
+            <param name="outputBuffer">An array of bytes, the size of the array will be the max possible size of the compressed packet</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiliconStudio.Xenko.Native.Celt.Decode(System.Byte[],System.Int32,System.Single[])">
+            <summary>
+            Decodes compressed celt data into PCM 32 bit floats
+            </summary>
+            <param name="inputBuffer">The input buffer</param>
+            <param name="inputBufferSize">The size of the valid bytes in the input buffer</param>
+            <param name="outputSamples">The output buffer, the size of frames should be the same amount that is contained in the input buffer</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiliconStudio.Xenko.Native.Celt.Encode(System.Single[],System.Byte[])">
+            <summary>
+            Encode PCM audio into celt compressed format
+            </summary>
+            <param name="audioSamples">A buffer containing interleaved channels (as from constructor channels) and samples (can be any number of samples)</param>
+            <param name="outputBuffer">An array of bytes, the size of the array will be the max possible size of the compressed packet</param>
+            <returns></returns>
+        </member>
+        <member name="T:SiliconStudio.Xenko.Native.DirectInput.XInputChecker">
+            <summary>
+            Finds out if a device is an XInputDevice
+            </summary>
+        </member>
+        <member name="M:SiliconStudio.Xenko.Native.DirectInput.XInputChecker.IsXInputDevice(System.Guid@)">
+            <summary>
+            Check if device represented by <paramref name="guid"/> is indeed an XInput device.
+            </summary>
+            <param name="guid">Guid of device to check.</param>
+            <returns>True if XInput device.</returns>
+        </member>
+        <member name="T:SiliconStudio.Xenko.Native.AudioLayer">
+            <summary>
+            Wrapper around OpenAL
+            </summary>
+        </member>
+        <member name="F:SiliconStudio.Xenko.Native.OculusOvr.SessionStatus.IsVisible">
+            <summary>
+            True if the process has VR focus and thus is visible in the HMD.
+            </summary>
+        </member>
+        <member name="F:SiliconStudio.Xenko.Native.OculusOvr.SessionStatus.HmdPresent">
+            <summary>
+            True if an HMD is present.
+            </summary>
+        </member>
+        <member name="F:SiliconStudio.Xenko.Native.OculusOvr.SessionStatus.HmdMounted">
+            <summary>
+            True if the HMD is on the user's head.
+            </summary>
+        </member>
+        <member name="F:SiliconStudio.Xenko.Native.OculusOvr.SessionStatus.DisplayLost">
+            <summary>
+            True if the session is in a display-lost state. See ovr_SubmitFrame.
+            </summary>
+        </member>
+        <member name="F:SiliconStudio.Xenko.Native.OculusOvr.SessionStatus.ShouldQuit">
+            <summary>
+            True if the application should initiate shutdown.    
+            </summary>
+        </member>
+        <member name="F:SiliconStudio.Xenko.Native.OculusOvr.SessionStatus.ShouldRecenter">
+            <summary>
+            True if UX has requested re-centering. 
+            </summary>
+        </member>
+    </members>
+</doc>

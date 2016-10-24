@@ -1,0 +1,26 @@
+﻿// Copyright (c) 2014 Silicon Studio Corp. (http://siliconstudio.co.jp)
+// This file is distributed under GPL v3. See LICENSE.md for details.
+
+shader SharedTextureCoordinate : ShaderBase, Texturing
+{
+    override stage void PSMain()
+    {
+        // Remap all texture coords to TEXCOORD0
+        streams.TexCoord1 = streams.TexCoord;
+        streams.TexCoord2 = streams.TexCoord;
+        streams.TexCoord3 = streams.TexCoord;
+        streams.TexCoord4 = streams.TexCoord;
+        streams.TexCoord5 = streams.TexCoord;
+        streams.TexCoord6 = streams.TexCoord;
+        streams.TexCoord7 = streams.TexCoord;
+        streams.TexCoord8 = streams.TexCoord;
+        streams.TexCoord9 = streams.TexCoord;
+
+        base.PSMain();
+    }
+
+    override stage void VSMain()
+    {
+        base.VSMain();
+    }
+};

@@ -1,0 +1,42 @@
+!PrefabAsset
+Id: 55e49867-b0c3-49da-9c18-315f65a8d77c
+SerializedVersion: {Xenko: 1.7.0-beta04}
+Tags: []
+Hierarchy:
+    ~Id: cac06188-dfdc-4b73-8eaf-93903962c32b
+    RootPartIds:
+        - 4d06b9cc-23fe-4bdc-9592-337215fab124
+    Parts:
+        -   Entity:
+                Id: 4d06b9cc-23fe-4bdc-9592-337215fab124
+                Name: Center
+                Components:
+                    - !TransformComponent
+                        ~Id: c05056dc-9f40-490a-8006-592ffb81adf1
+                        Children:
+                            - 9bf7d3d2-db30-4484-b44d-73c714cebfd2/51f2a59c-3f33-40f0-95f4-c0317f717762
+                        Position: {X: 0.5, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                    - !Asteroids.Player,Asteroids.Game
+                        ~Id: ba3c909e-f161-4b81-9ffa-03d813825fa2
+                        random: null
+        -   Entity:
+                Id: 9bf7d3d2-db30-4484-b44d-73c714cebfd2
+                Name: Ship
+                Group: Group1
+                Components:
+                    - !TransformComponent
+                        ~Id: 51f2a59c-3f33-40f0-95f4-c0317f717762
+                        Children: []
+                        Position: {X: -0.5, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: -0.707106769, W: 0.7071068}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                    - !ModelComponent
+                        ~Id: fcd78466-4cf2-49e2-a43f-2a3df1b40788
+                        Enabled: false
+                        Model: b7a2da98-8163-42c3-86a4-cc529fcc58dd/dbb5835c-c1cb-4cb7-abdc-8f8ef3d94efa:Cone
+                        Materials:
+                            - null
+                        IsShadowCaster: false
+                        IsShadowReceiver: false

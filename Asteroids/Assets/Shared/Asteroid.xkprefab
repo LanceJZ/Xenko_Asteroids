@@ -1,0 +1,32 @@
+!PrefabAsset
+Id: 48cda710-fa31-471d-953b-c350cf555818
+SerializedVersion: {Xenko: 1.7.0-beta04}
+Tags: []
+Hierarchy:
+    ~Id: 66cf6ff8-7958-47a9-be34-18edb7b80e83
+    RootPartIds:
+        - 152315f1-877b-4e8a-b709-329c6d195efa
+    Parts:
+        -   Entity:
+                Id: 152315f1-877b-4e8a-b709-329c6d195efa
+                Name: Rock
+                Group: Group1
+                Components:
+                    - !TransformComponent
+                        ~Id: 0436b4e9-2a63-4588-8127-2db85004b435
+                        Children: []
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                    - !ModelComponent
+                        ~Id: ca19b9a5-1999-42cc-a0c6-982c152fde68
+                        Enabled: false
+                        Model: 5a828b09-1ebe-4c2a-a639-8aead3900f00/61a2bd6f-af6c-4024-bef8-be241cb15064:Sphere
+                        Materials:
+                            - null
+                        IsShadowCaster: false
+                        IsShadowReceiver: false
+                    - !Asteroids.Rock,Asteroids.Game
+                        ~Id: ef9d1b64-7555-44e7-b9ff-3713907d2aed
+                        random: null
+                        speed: 1.0

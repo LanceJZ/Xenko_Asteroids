@@ -1,0 +1,21 @@
+!PrefabAsset
+Id: e60f550d-72b8-4262-8836-ddd10d052abf
+SerializedVersion: {Xenko: 1.7.0-beta04}
+Tags: []
+Hierarchy:
+    ~Id: bbaefb70-53a1-404e-b935-7c892306d9bd
+    RootPartIds:
+        - 900652ab-ed5c-487e-a889-d9fc2833450e
+    Parts:
+        -   Entity:
+                Id: 900652ab-ed5c-487e-a889-d9fc2833450e
+                Name: Dot
+                Components:
+                    - !TransformComponent
+                        ~Id: 9ccfa735-78b5-4896-a926-28aa3ecf750a
+                        Children: []
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                    - !Asteroids.Dot,Asteroids.Game
+                        ~Id: c0a21c5a-8b00-4038-9c24-43ecd70e6caf

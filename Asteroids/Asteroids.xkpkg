@@ -1,0 +1,81 @@
+!Package
+Id: ca233602-1c70-4908-bdda-31ce61227666
+SerializedVersion: {Assets: 0.0.2}
+Tags: []
+Meta:
+    Name: Asteroids
+    Version: 1.0.0.0
+    Authors: []
+    Owners: []
+    RootNamespace: Asteroids
+    Dependencies:
+        -   Name: Xenko
+            Version: 1.8.2-beta
+            RootAssets: []
+LocalDependencies: []
+Profiles:
+    -   Name: Shared
+        Platform: Shared
+        InheritProfiles: []
+        AssetFolders:
+            -   Path: Assets/Shared
+            -   Path: Asteroids.Game/Effects
+        OutputGroupDirectories: {}
+        Properties: {}
+        ProjectReferences:
+            -   Id: dcb48a83-b04a-48c9-ba2b-51f6d845cef0
+                Location: Asteroids.Game/Asteroids.Game.csproj
+                Type: Library
+    -   Name: Windows
+        Platform: Windows
+        InheritProfiles: []
+        AssetFolders:
+            -   Path: Assets/Windows
+        OutputGroupDirectories: {}
+        Properties: {}
+        ProjectReferences:
+            -   Id: 8e00aca0-b122-4112-b09c-0ef71cb0e1f0
+                Location: Asteroids.Windows/Asteroids.Windows.csproj
+                Type: Executable
+    -   Name: Windows10
+        Platform: Windows10
+        InheritProfiles: []
+        AssetFolders:
+            -   Path: Assets/Windows10
+        OutputGroupDirectories: {}
+        Properties: {}
+        ProjectReferences:
+            -   Id: 55a6937e-1d16-4465-ad9d-6050cc4b2c40
+                Location: Asteroids.Windows10/Asteroids.Windows10.csproj
+                Type: Executable
+    -   Name: Linux
+        Platform: Linux
+        InheritProfiles: []
+        AssetFolders:
+            -   Path: Assets/Linux
+        OutputGroupDirectories: {}
+        Properties: {}
+        ProjectReferences:
+            -   Id: 3d60a3d4-c1dc-4f2d-8ec1-8388fe41d525
+                Location: Asteroids.Linux/Asteroids.Linux.csproj
+                Type: Executable
+    -   Name: Android
+        Platform: Android
+        InheritProfiles: []
+        AssetFolders:
+            -   Path: Assets/Android
+        OutputGroupDirectories: {}
+        Properties: {}
+        ProjectReferences:
+            -   Id: 8bcd3c57-8ddf-4547-9da9-019cf02cc834
+                Location: Asteroids.Android/Asteroids.Android.csproj
+                Type: Executable
+ExplicitFolders: []
+Bundles: []
+TemplateFolders: []
+RootAssets:
+    - 37415258-a860-4d10-b78a-fed4d279e7f1:Shot
+    - 48cda710-fa31-471d-953b-c350cf555818:Asteroid
+    - 55e49867-b0c3-49da-9c18-315f65a8d77c:Player
+    - 97639ad7-7b1e-4ca7-ae47-26c1cace76f5:UFO
+    - e60f550d-72b8-4262-8836-ddd10d052abf:Dot
