@@ -28,5 +28,12 @@ Hierarchy:
                         IsShadowReceiver: false
                     - !Asteroids.Rock,Asteroids.Game
                         ~Id: ef9d1b64-7555-44e7-b9ff-3713907d2aed
-                        random: null
-                        speed: 1.0
+                        m_Hit: false
+                        m_Rotation: 0.0
+                        m_RotationAmount: 0.0
+                        m_Radius: 0.0
+                        m_Random: null
+                        m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Velocity: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Acceleration: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Edge: {X: 44.0, Y: 33.0}

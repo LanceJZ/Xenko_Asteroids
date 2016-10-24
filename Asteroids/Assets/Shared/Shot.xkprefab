@@ -19,3 +19,13 @@ Hierarchy:
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                     - !Asteroids.Shot,Asteroids.Game
                         ~Id: dbdd65df-c6ff-4881-89a1-4453b42eda8e
+                        m_Hit: false
+                        m_Rotation: 0.0
+                        m_RotationAmount: 0.0
+                        m_Radius: 0.0
+                        m_Random: null
+                        m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Velocity: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Acceleration: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Edge: {X: 44.0, Y: 33.0}
+                        m_TimerAmount: 0.0

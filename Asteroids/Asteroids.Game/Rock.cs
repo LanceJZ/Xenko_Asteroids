@@ -17,7 +17,9 @@ namespace Asteroids
         Entity m_Player;
         Entity m_UFO;
         Entity m_Rock;
+        Entity m_Score;
         ModelComponent m_RockMesh;
+        int m_Points;
         float m_Speed;
 
         public override void Start()
@@ -32,11 +34,15 @@ namespace Asteroids
             {
                 base.Update();
                 CheckForEdge();
-                CheckCollision();
+
+                if (CheckCollision())
+                {
+                    m_Hit = true;
+                }
             }
         }
 
-        void CheckCollision()
+        bool CheckCollision()
         {
             if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
             {
@@ -50,8 +56,11 @@ namespace Asteroids
                     if (CirclesIntersect(m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Position,
                         m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Radius))
                     {
-                        m_Hit = true;
                         m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Destroy();
+                        m_Score.Components.Get<Score>().m_TotalScore += m_Points;
+                        m_Score.Components.Get<Score>().ProcessNumber(m_Score.Components.Get<Score>().m_TotalScore,
+                            new Vector3(m_Edge.X * 0.5f, m_Edge.Y - 1, 0), 1);
+                        return true;
                     }
                 }
             }
@@ -61,28 +70,36 @@ namespace Asteroids
                 if (CirclesIntersect(m_UFO.Components.Get<UFO>().m_Shot.Components.Get<Shot>().m_Position,
                     m_UFO.Components.Get<UFO>().m_Shot.Components.Get<Shot>().m_Radius))
                 {
-                    m_Hit = true;
                     m_UFO.Components.Get<UFO>().m_Shot.Components.Get<Shot>().Destroy();
+                    return true;
                 }
             }
 
             if (m_UFO.Components.Get<UFO>().Active())
             {
                 if (CirclesIntersect(m_UFO.Components.Get<UFO>().m_Position, m_UFO.Components.Get<UFO>().m_Radius))
-                {
-                    m_Hit = true;
+                {                    
                     m_UFO.Components.Get<UFO>().m_Hit = true;
+                    return true;
                 }
             }
+
+            if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        public void Spawn(Vector3 position, float scale, float speed, Random random, Entity player, Entity UFO)
+        public void Spawn(Vector3 position, float scale, float speed, int points, Random random, Entity player, Entity UFO, Entity score)
         {
-            Initialize(random, player, UFO);
+            Initialize(random, player, UFO, score);
             m_Speed = speed;
             Spawn(position);
             m_Rock.Transform.Scale = new Vector3(scale);
             m_Radius = m_Radius * scale;
+            m_Points = points;
         }
 
         public void Spawn(Vector3 position)
@@ -93,12 +110,14 @@ namespace Asteroids
             Setup(m_Speed);
         }
 
-        public void Initialize(Random random, Entity player, Entity UFO)
+        public void Initialize(Random random, Entity player, Entity UFO, Entity score)
         {
             m_Radius = 2.9f;
             m_Random = random;
             m_Player = player;
             m_UFO = UFO;
+            m_Score = score;
+            m_Points = 20;
 
             int m_RockType = m_Random.Next(0, 4);
 
@@ -119,7 +138,7 @@ namespace Asteroids
         public void Setup(float speed)
         {
             float rad = RandomRadian();
-            float amt = (float)m_Random.NextDouble() * speed + 0.75f;
+            float amt = (float)m_Random.NextDouble() * speed + (speed * 0.15f);
             m_Velocity = new Vector3((float)Math.Cos(rad) * amt, (float)Math.Sin(rad) * amt, 0);
         }
 

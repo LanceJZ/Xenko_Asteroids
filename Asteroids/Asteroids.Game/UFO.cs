@@ -29,6 +29,8 @@ namespace Asteroids
         TimerTick m_VectorTimer = new TimerTick();
         public Entity m_Shot;
         public Entity m_Player;
+        public Entity m_Score;
+        int m_Points;
 
         public override void Start()
         {
@@ -133,7 +135,11 @@ namespace Asteroids
                 if (!m_Done)
                 {
                     CheckForEdge();
-                    CheckCollisions();
+
+                    if (CheckCollisions())
+                    {
+                        m_Hit = true;
+                    }
 
                     if (m_ShotTimer.TotalTime.Seconds > m_ShotTimerAmount)
                     {
@@ -169,7 +175,26 @@ namespace Asteroids
 
         bool CheckCollisions()
         {
+            for (int shot = 0; shot < 4; shot++)
+            {
+                if (m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Active())
+                {
+                    if (CirclesIntersect(m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Position,
+                        m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Radius))
+                    {
+                        m_Score.Components.Get<Score>().m_TotalScore += m_Points;
+                        m_Score.Components.Get<Score>().ProcessNumber(m_Score.Components.Get<Score>().m_TotalScore,
+                            new Vector3(m_Edge.X * 0.5f, m_Edge.Y - 1, 0), 1);
+                        m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Destroy();
+                        return true;
+                    }
+                }
+            }
 
+            if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
+            {
+                return true;
+            }
 
             return false;
         }
@@ -180,10 +205,14 @@ namespace Asteroids
 
             // Size 0 is the large one.
             if (m_Random.Next(0, 99) < spawnPercent * 100)
+            {
                 m_Large = true;
+                m_Points = 200;
+            }
             else
             {
                 m_Large = false;
+                m_Points = 1000;
                 m_UFO.Transform.Scale = new Vector3(0.5f);
             }
 

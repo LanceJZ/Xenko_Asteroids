@@ -19,3 +19,19 @@ Hierarchy:
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                     - !Asteroids.UFO,Asteroids.Game
                         ~Id: 222f6c53-96de-4fb8-98c6-10fe3b1d63e5
+                        m_Hit: false
+                        m_Rotation: 0.0
+                        m_RotationAmount: 0.0
+                        m_Radius: 0.0
+                        m_Random: null
+                        m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Velocity: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Acceleration: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Edge: {X: 44.0, Y: 33.0}
+                        m_ShotTimerAmount: 2.0
+                        m_VectorTimerAmount: 3.0
+                        m_Speed: 5.0
+                        m_Done: false
+                        m_Large: true
+                        m_Shot: null
+                        m_Player: null

@@ -20,7 +20,16 @@ Hierarchy:
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                     - !Asteroids.Player,Asteroids.Game
                         ~Id: ba3c909e-f161-4b81-9ffa-03d813825fa2
-                        random: null
+                        m_Hit: false
+                        m_Rotation: 0.0
+                        m_RotationAmount: 0.0
+                        m_Radius: 0.0
+                        m_Random: null
+                        m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Velocity: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Acceleration: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Edge: {X: 44.0, Y: 33.0}
+                        m_Shots: null
         -   Entity:
                 Id: 9bf7d3d2-db30-4484-b44d-73c714cebfd2
                 Name: Ship
