@@ -71,14 +71,22 @@ namespace Asteroids
             }
         }
 
+        public bool CheckPlayerClear()
+        {
+            if (CirclesIntersect(Vector3.Zero, 20))
+                return false;
+
+            return true;
+        }
+
         public void Spawn(Vector3 position, Vector3 velocity, float timer)
         {
-            this.Entity.Transform.Position = position;
             m_Position = position;
             m_Velocity = velocity;
             m_Timer.Reset();
             m_TimerAmount = timer;
             m_ShotMesh.Enabled = true;
+            UpdatePR();
         }
 
         public void Destroy()

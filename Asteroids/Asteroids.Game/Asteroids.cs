@@ -60,6 +60,7 @@ namespace Asteroids
         public override void Update()
         {
             int rockCount = 0;
+            bool playerClear = true;
             // Do stuff every new frame
             foreach (Entity rock in m_LargeRocks)
             {
@@ -70,7 +71,9 @@ namespace Asteroids
                 }
 
                 if (rock.Components.Get<Rock>().Active())
+                {
                     rockCount++;
+                }
             }
 
             foreach (Entity rock in m_MedRocks)
@@ -82,7 +85,9 @@ namespace Asteroids
                 }
 
                 if (rock.Components.Get<Rock>().Active())
+                {
                     rockCount++;
+                }
             }
 
             foreach (Entity rock in m_SmallRocks)
@@ -93,7 +98,9 @@ namespace Asteroids
                 }
 
                 if (rock.Components.Get<Rock>().Active())
+                {
                     rockCount++;
+                }
             }
 
             if (rockCount == 0)
@@ -115,7 +122,81 @@ namespace Asteroids
                 m_UFO.Components.Get<UFO>().Destroy();
             }
 
+            if (m_Player.Components.Get<Player>().m_Hit)
+            {
+                foreach (Entity rock in m_LargeRocks)
+                {
+                    if (rock.Components.Get<Rock>().Active())
+                    {
+                        if (m_Player.Components.Get<Player>().m_Hit)
+                        {
+                            if (!rock.Components.Get<Rock>().CheckPlayerCLear())
+                            {
+                                playerClear = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                foreach (Entity rock in m_MedRocks)
+                {
+                    if (rock.Components.Get<Rock>().Active())
+                    {
+                        if (m_Player.Components.Get<Player>().m_Hit)
+                        {
+                            if (!playerClear)
+                                break;
+
+                            if (!rock.Components.Get<Rock>().CheckPlayerCLear())
+                            {
+                                playerClear = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                foreach (Entity rock in m_SmallRocks)
+                {
+                    if (rock.Components.Get<Rock>().Active())
+                    {
+                        if (m_Player.Components.Get<Player>().m_Hit)
+                        {
+                            if (!playerClear)
+                                break;
+
+                            if (!rock.Components.Get<Rock>().CheckPlayerCLear())
+                            {
+                                playerClear = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (playerClear)
+                    m_Player.Components.Get<Player>().m_Spawn = true;
+
+                if (m_UFO.Components.Get<UFO>().Active())
+                {
+                    if (!m_UFO.Components.Get<UFO>().CheckPlayerClear())
+                        m_Player.Components.Get<Player>().m_Spawn = false;
+                }
+
+                if (m_UFO.Components.Get<UFO>().m_Shot.Components.Get<Shot>().Active())
+                {
+                    if (!m_UFO.Components.Get<UFO>().m_Shot.Components.Get<Shot>().CheckPlayerClear())
+                        m_Player.Components.Get<Player>().m_Spawn = false;
+                }
+            }
+
             m_UFOTimer.Tick();
+        }
+
+        void NewGame()
+        {
+
         }
 
         void SpawnLargeRocks(int count)

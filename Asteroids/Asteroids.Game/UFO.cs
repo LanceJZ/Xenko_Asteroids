@@ -179,6 +179,14 @@ namespace Asteroids
             m_Score.Components.Get<Score>().PlayerScore(m_Points);
         }
 
+        public bool CheckPlayerClear()
+        {
+            if (CirclesIntersect(Vector3.Zero, 20))
+                return false;
+
+            return true;
+        }
+
         bool CheckCollisions()
         {
             for (int shot = 0; shot < 4; shot++)
@@ -195,11 +203,27 @@ namespace Asteroids
                 }
             }
 
-            if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
+            if (m_Player.Components.Get<Player>().Active())
             {
-                SetScore();
-                m_Player.Components.Get<Player>().Hit();
-                return true;
+                if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
+                {
+                    SetScore();
+                    m_Player.Components.Get<Player>().Hit();
+                    return true;
+                }
+            }
+
+            if (m_Shot.Components.Get<Shot>().Active())
+            {
+                if (m_Player.Components.Get<Player>().Active())
+                {
+                    if (m_Shot.Components.Get<Shot>().CirclesIntersect(m_Player.Components.Get<Player>().m_Position,
+                        m_Player.Components.Get<Player>().m_Radius))
+                    {
+                        m_Player.Components.Get<Player>().Hit();
+                        m_Shot.Components.Get<Shot>().Destroy();
+                    }
+                }
             }
 
             return false;
@@ -236,7 +260,7 @@ namespace Asteroids
 
             m_Position.Y = RandomHieght();
 
-            this.Entity.Transform.Position = m_Position;
+            UpdatePR();
             m_ShotTimer.Reset();
             m_VectorTimer.Reset();
             m_UFOMesh.Enabled = true;

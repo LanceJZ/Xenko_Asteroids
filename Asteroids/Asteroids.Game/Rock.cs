@@ -24,7 +24,7 @@ namespace Asteroids
 
         public override void Start()
         {
-            m_Score.Components.Get<Score>().PlayerScore(0);
+            
         }
 
         public override void Update()
@@ -42,13 +42,24 @@ namespace Asteroids
             m_Score.Components.Get<Score>().PlayerScore(m_Points);
         }
 
+        public bool CheckPlayerCLear()
+        {
+            if (CirclesIntersect(Vector3.Zero, 10))
+                return false;
+
+            return true;
+        }
+
         bool CheckCollisions()
         {
-            if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
+            if (m_Player.Components.Get<Player>().Active())
             {
-                SetScore();
-                m_Player.Components.Get<Player>().Hit();
-                return true;
+                if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
+                {
+                    SetScore();
+                    m_Player.Components.Get<Player>().Hit();
+                    return true;
+                }
             }
 
             for (int shot = 0; shot < 4; shot++)
@@ -100,8 +111,8 @@ namespace Asteroids
 
         public void Spawn(Vector3 position)
         {
-            this.Entity.Transform.Position = position;
             m_Position = position;
+            UpdatePR();
             m_RockMesh.Enabled = true;
             Setup(m_Speed);
         }
@@ -154,7 +165,7 @@ namespace Asteroids
 
             m_Position.Y = RandomHieght();
 
-            this.Entity.Transform.Position = m_Position;
+            UpdatePR();
         }
 
         public void Destroy()

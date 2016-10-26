@@ -38,11 +38,19 @@ namespace Asteroids
 
             InitializeNumberLines();
             m_Numbers = new List<Entity>();
+            NewGame();
         }
 
         public override void Update()
         {
             // Do stuff every new frame
+        }
+
+        public void NewGame()
+        {
+            m_TotalScore = 0;
+            m_PointsToNextFreeLife = m_PointsForFreeLife;
+            PlayerScore(0);
         }
 
         public void PlayerScore(int points)

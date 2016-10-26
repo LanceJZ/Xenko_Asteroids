@@ -15,6 +15,7 @@ namespace Asteroids
     {
         // Declared public member fields and properties will show in the game studio        
         public List<Entity> m_Shots;
+        public bool m_Spawn = false;
 
         Entity m_Ship;
         Entity m_ShipFlame;
@@ -37,8 +38,6 @@ namespace Asteroids
                 m_Shots.Add(myShotPrefab.Instantiate().First());
                 SceneSystem.SceneInstance.Scene.Entities.Add(m_Shots[i]);
             }
-
-            m_Rotation = m_Random.Next(0, 7);
 
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
             var vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
@@ -94,6 +93,8 @@ namespace Asteroids
             m_ShipFlame = new Entity();
             m_ShipFlame.Add(m_FlameMesh);
             this.Entity.AddChild(m_ShipFlame);
+
+            Reset();
         }
 
         public override void Update()
@@ -173,6 +174,20 @@ namespace Asteroids
                         }
                     }
                 }
+
+                if (Input.IsKeyPressed(Keys.Down))
+                {
+                    m_Velocity = Vector3.Zero;
+                    m_Acceleration = Vector3.Zero;
+                    m_Position = new Vector3(m_Random.Next((int)-m_Edge.X, (int)m_Edge.X), m_Random.Next((int)-m_Edge.Y, (int)m_Edge.Y), 0);
+                }
+            }
+            else if (m_Hit && !m_GameOver)
+            {
+                if (m_Spawn)
+                {
+                    Reset();
+                }
             }
         }
 
@@ -211,17 +226,32 @@ namespace Asteroids
             ShipLives();
         }
 
+        public void NewGame()
+        {
+            Reset();
+            m_Lives = 4;
+        }
+
+        void Reset()
+        {
+            m_Hit = false;
+            m_ShipMesh.Enabled = true;
+            m_FlameMesh.Enabled = true;
+            m_Position = Vector3.Zero;
+            m_Velocity = Vector3.Zero;
+            m_Acceleration = Vector3.Zero;
+            m_Rotation = m_Random.Next(0, 7);
+            UpdatePR();
+        }
+
         public void Hit()
         {
             if (!m_Hit)
             {
                 m_Hit = true;
+                m_Spawn = false;
                 m_ShipMesh.Enabled = false;
                 m_FlameMesh.Enabled = false;
-
-                m_Position = Vector3.Zero;
-                m_Velocity = Vector3.Zero;
-                m_Acceleration = Vector3.Zero;
 
                 if (m_Lives > 0)
                     m_Lives--;
@@ -231,12 +261,7 @@ namespace Asteroids
                 if (m_Lives < 1)
                 {
                     m_GameOver = true;
-                }
-                else //This is until I do spawn player.
-                {
                     m_Hit = false;
-                    m_ShipMesh.Enabled = true;
-                    m_FlameMesh.Enabled = true;
                 }
             }
         }

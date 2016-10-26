@@ -61,6 +61,11 @@ namespace Asteroids
             if (m_Rotation > MathUtil.TwoPi)
                 m_Rotation = 0;
 
+            UpdatePR();
+        }
+
+        public void UpdatePR()
+        {
             this.Entity.Transform.Position = m_Position;
             this.Entity.Transform.RotationEulerXYZ = new Vector3(0, 0, m_Rotation);
         }
