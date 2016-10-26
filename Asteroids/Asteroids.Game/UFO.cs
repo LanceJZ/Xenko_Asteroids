@@ -124,53 +124,59 @@ namespace Asteroids
 
         public override void Update()
         {
-            // Do stuff every new frame
-            if (m_UFOMesh.Enabled)
+            if (m_UFOMesh.Enabled && !m_Hit && !m_Done)
             {
                 base.Update();
 
                 if (m_Position.X > m_Edge.X || m_Position.X < -m_Edge.X)
                     m_Done = true;
 
-                if (!m_Done)
+                CheckForEdge();
+                m_Hit = CheckCollisions();
+
+                if (m_ShotTimer.TotalTime.Seconds > m_ShotTimerAmount)
                 {
-                    CheckForEdge();
+                    m_ShotTimer.Reset();
+                    float speed = 30;
+                    float rad = 0;
 
-                    if (CheckCollisions())
+                    if (m_Large)
+                        rad = RandomRadian();
+                    else
                     {
-                        m_Hit = true;
+                        rad = (float)Math.Atan2(m_Player.Components.Get<Player>().m_Position.Y - m_Position.Y,
+                            m_Player.Components.Get<Player>().m_Position.X - m_Position.X);
                     }
+                    
+                    Vector3 dir = new Vector3((float)Math.Cos(rad) * speed, (float)Math.Sin(rad) * speed, 0);
+                    Vector3 offset = new Vector3((float)Math.Cos(rad) * m_Radius, (float)Math.Sin(rad) * m_Radius, 0);
+                    m_Shot.Components.Get<Shot>().Spawn(m_Position + offset, dir + m_Velocity * 0.25f, 0.95f);
+                }
 
-                    if (m_ShotTimer.TotalTime.Seconds > m_ShotTimerAmount)
+                if (m_VectorTimer.TotalTime.Seconds > m_VectorTimerAmount)
+                {
+                    m_VectorTimer.Reset();
+                    float vChange = (float)m_Random.NextDouble() * 10;
+
+                    if (vChange < 5)
                     {
-                        m_ShotTimer.Reset();
-                        float speed = 30;
-                        float rad = RandomRadian();
-                        Vector3 dir = new Vector3((float)Math.Cos(rad) * speed, (float)Math.Sin(rad) * speed, 0);
-                        Vector3 offset = new Vector3((float)Math.Cos(rad) * m_Radius, (float)Math.Sin(rad) * m_Radius, 0);
-                        m_Shot.Components.Get<Shot>().Spawn(m_Position + offset, dir + m_Velocity * 0.25f, 0.95f);
-                    }
-
-                    if (m_VectorTimer.TotalTime.Seconds > m_VectorTimerAmount)
-                    {
-                        m_VectorTimer.Reset();
-                        float vChange = (float)m_Random.NextDouble() * 10;
-
-                        if (vChange < 5)
-                        {
-                            if ((int)m_Velocity.Y == 0 && vChange < 2.5)
-                                m_Velocity.Y = m_Speed;
-                            else if ((int)m_Velocity.Y == 0)
-                                m_Velocity.Y = -m_Speed;
-                            else
-                                m_Velocity.Y = 0;
-                        }
+                        if ((int)m_Velocity.Y == 0 && vChange < 2.5)
+                            m_Velocity.Y = m_Speed;
+                        else if ((int)m_Velocity.Y == 0)
+                            m_Velocity.Y = -m_Speed;
+                        else
+                            m_Velocity.Y = 0;
                     }
                 }
 
                 m_ShotTimer.Tick();
                 m_VectorTimer.Tick();
             }
+        }
+
+        void SetScore()
+        {
+            m_Score.Components.Get<Score>().PlayerScore(m_Points);
         }
 
         bool CheckCollisions()
@@ -182,9 +188,7 @@ namespace Asteroids
                     if (CirclesIntersect(m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Position,
                         m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Radius))
                     {
-                        m_Score.Components.Get<Score>().m_TotalScore += m_Points;
-                        m_Score.Components.Get<Score>().ProcessNumber(m_Score.Components.Get<Score>().m_TotalScore,
-                            new Vector3(m_Edge.X * 0.5f, m_Edge.Y - 1, 0), 1);
+                        SetScore();
                         m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Destroy();
                         return true;
                     }
@@ -193,6 +197,8 @@ namespace Asteroids
 
             if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
             {
+                SetScore();
+                m_Player.Components.Get<Player>().Hit();
                 return true;
             }
 
@@ -201,13 +207,14 @@ namespace Asteroids
 
         public void Spawn(int SpawnCount, int Wave)
         {
-            float spawnPercent = (float)(Math.Pow(0.915, (SpawnCount * 1.5) / ((Wave * 2) + 1)));
+            float spawnPercent = (float)(Math.Pow(0.915, (SpawnCount * 2) / ((Wave * 2) + 1)));
 
             // Size 0 is the large one.
             if (m_Random.Next(0, 99) < spawnPercent * 100)
             {
                 m_Large = true;
                 m_Points = 200;
+                m_UFO.Transform.Scale = new Vector3(1);
             }
             else
             {

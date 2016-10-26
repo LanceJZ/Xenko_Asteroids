@@ -43,10 +43,11 @@ namespace Asteroids
             m_UFOPrefab = Content.Load<Prefab>("UFO");
             m_ScorePrefab = Content.Load<Prefab>("Score");
 
-            m_Score = m_ScorePrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_Score);
             m_Player = m_PlayerPrefab.Instantiate().First();
             m_Player.Components.Get<Player>().m_Random = m_Random;
+            m_Score = m_ScorePrefab.Instantiate().First();
+            m_Score.Components.Get<Score>().m_Player = m_Player;
+            SceneSystem.SceneInstance.Scene.Entities.Add(m_Score);
             SceneSystem.SceneInstance.Scene.Entities.Add(m_Player);
             m_UFO = m_UFOPrefab.Instantiate().First();
             m_UFO.Components.Get<UFO>().m_Random = m_Random;

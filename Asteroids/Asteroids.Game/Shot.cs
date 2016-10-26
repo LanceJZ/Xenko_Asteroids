@@ -17,8 +17,8 @@ namespace Asteroids
         // Declared public member fields and properties will show in the game studio
         public float m_TimerAmount = 0;
 
-        Entity shot;
-        ModelComponent shotMesh;
+        Entity m_Shot;
+        ModelComponent m_ShotMesh;
         TimerTick m_Timer = new TimerTick();
 
         public override void Start()
@@ -46,18 +46,18 @@ namespace Asteroids
 
             Model model = new Model();
             model.Add(mesh);
-            shotMesh = new ModelComponent(model);
+            m_ShotMesh = new ModelComponent(model);
 
-            shot = new Entity();
-            shot.Add(shotMesh);
-            this.Entity.AddChild(shot);
+            m_Shot = new Entity();
+            m_Shot.Add(m_ShotMesh);
+            this.Entity.AddChild(m_Shot);
             Destroy();
         }
 
         public override void Update()
         {
             // Do stuff every new frame
-            if (shotMesh.Enabled)
+            if (m_ShotMesh.Enabled)
             {
                 base.Update();
                 CheckForEdge();
@@ -78,18 +78,18 @@ namespace Asteroids
             m_Velocity = velocity;
             m_Timer.Reset();
             m_TimerAmount = timer;
-            shotMesh.Enabled = true;
+            m_ShotMesh.Enabled = true;
         }
 
         public void Destroy()
         {
-            shotMesh.Enabled = false;
+            m_ShotMesh.Enabled = false;
         }
 
         public bool Active()
         {
-            if (shotMesh != null)
-                return shotMesh.Enabled;
+            if (m_ShotMesh != null)
+                return m_ShotMesh.Enabled;
             else
                 return false;
         }

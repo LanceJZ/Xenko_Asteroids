@@ -24,29 +24,31 @@ namespace Asteroids
 
         public override void Start()
         {
-            // Initialization of the script.
-
+            m_Score.Components.Get<Score>().PlayerScore(0);
         }
 
         public override void Update()
         {
-            if (m_RockMesh.Enabled)
+            if (m_RockMesh.Enabled && !m_Hit)
             {
                 base.Update();
                 CheckForEdge();
-
-                if (CheckCollision())
-                {
-                    m_Hit = true;
-                }
+                m_Hit = CheckCollisions();
             }
         }
 
-        bool CheckCollision()
+        void SetScore()
+        {
+            m_Score.Components.Get<Score>().PlayerScore(m_Points);
+        }
+
+        bool CheckCollisions()
         {
             if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
             {
-
+                SetScore();
+                m_Player.Components.Get<Player>().Hit();
+                return true;
             }
 
             for (int shot = 0; shot < 4; shot++)
@@ -58,8 +60,7 @@ namespace Asteroids
                     {
                         m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Destroy();
                         m_Score.Components.Get<Score>().m_TotalScore += m_Points;
-                        m_Score.Components.Get<Score>().ProcessNumber(m_Score.Components.Get<Score>().m_TotalScore,
-                            new Vector3(m_Edge.X * 0.5f, m_Edge.Y - 1, 0), 1);
+                        SetScore();
                         return true;
                     }
                 }
@@ -82,11 +83,6 @@ namespace Asteroids
                     m_UFO.Components.Get<UFO>().m_Hit = true;
                     return true;
                 }
-            }
-
-            if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
-            {
-                return true;
             }
 
             return false;
