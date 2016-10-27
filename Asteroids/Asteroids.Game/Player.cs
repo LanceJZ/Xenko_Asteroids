@@ -16,18 +16,25 @@ namespace Asteroids
         // Declared public member fields and properties will show in the game studio        
         public List<Entity> m_Shots;
         public bool m_Spawn = false;
-
+        int m_TotalScore = 0;
+        int m_TotalHighScore = 0;
+        int m_PointsToNextFreeLife = 0;
+        int m_PointsForFreeLife = 5000;
+        public Entity m_Score;
+        public Entity m_HighScore;
         Entity m_Ship;
         Entity m_ShipFlame;
         Model m_ShipModel;
         List<Entity> m_DisplayShips;
         ModelComponent m_FlameMesh;
         ModelComponent m_ShipMesh;
-        bool m_GameOver = false;
-        int m_Lives = 4;
+        public bool m_GameOver = true;
+        int m_Lives = 0;
 
         public override void Start()
         {
+            m_PointsToNextFreeLife = m_PointsForFreeLife;
+
             m_Radius = 1.15f;
             m_Shots = new List<Entity>();
             m_DisplayShips = new List<Entity>();
@@ -94,7 +101,9 @@ namespace Asteroids
             m_ShipFlame.Add(m_FlameMesh);
             this.Entity.AddChild(m_ShipFlame);
 
-            Reset();
+            m_ShipMesh.Enabled = false;
+            m_FlameMesh.Enabled = false;
+            SetScore(0);
         }
 
         public override void Update()
@@ -191,6 +200,25 @@ namespace Asteroids
             }
         }
 
+        public void SetScore(int points)
+        {
+            m_TotalScore += points;
+
+            if (m_TotalScore > m_PointsToNextFreeLife)
+            {
+                BunusLife();
+                m_PointsToNextFreeLife += m_PointsForFreeLife;
+            }
+
+            if (m_TotalScore > m_TotalHighScore || m_TotalHighScore == 0)
+            {
+                m_TotalHighScore = m_TotalScore;
+                m_HighScore.Components.Get<Score>().ProcessNumber(m_TotalHighScore, new Vector3(0, m_Edge.Y - 1, 0), 0.66f);
+            }
+
+            m_Score.Components.Get<Score>().ProcessNumber(m_TotalScore, new Vector3(m_Edge.X * 0.5f, m_Edge.Y - 1, 0), 1);
+        }
+
         void ShipLives()
         {
             foreach (Entity ship in m_DisplayShips)
@@ -230,6 +258,11 @@ namespace Asteroids
         {
             Reset();
             m_Lives = 4;
+            ShipLives();
+            m_TotalScore = 0;
+            m_PointsToNextFreeLife = m_PointsForFreeLife;
+            SetScore(0);
+            m_GameOver = false;
         }
 
         void Reset()

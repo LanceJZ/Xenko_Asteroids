@@ -21,7 +21,7 @@ namespace Asteroids
         public Vector3 m_Position = Vector3.Zero;
         public Vector3 m_Velocity = Vector3.Zero;
         public Vector3 m_Acceleration = Vector3.Zero;
-        public Vector2 m_Edge = new Vector2(44, 33);
+        public Vector2 m_Edge = new Vector2(44, 32);
 
         public void CheckForEdge()
         {

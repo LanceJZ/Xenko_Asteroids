@@ -39,7 +39,7 @@ namespace Asteroids
 
         void SetScore()
         {
-            m_Score.Components.Get<Score>().PlayerScore(m_Points);
+            m_Player.Components.Get<Player>().SetScore(m_Points);
         }
 
         public bool CheckPlayerCLear()
@@ -70,7 +70,6 @@ namespace Asteroids
                         m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Radius))
                     {
                         m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Destroy();
-                        m_Score.Components.Get<Score>().m_TotalScore += m_Points;
                         SetScore();
                         return true;
                     }

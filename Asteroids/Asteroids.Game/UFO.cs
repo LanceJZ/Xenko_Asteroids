@@ -29,7 +29,6 @@ namespace Asteroids
         TimerTick m_VectorTimer = new TimerTick();
         public Entity m_Shot;
         public Entity m_Player;
-        public Entity m_Score;
         int m_Points;
 
         public override void Start()
@@ -124,15 +123,14 @@ namespace Asteroids
 
         public override void Update()
         {
-            if (m_UFOMesh.Enabled && !m_Hit && !m_Done)
+            m_Hit = CheckCollisions();
+
+            if (Active() && !m_Hit && !m_Done)
             {
                 base.Update();
 
                 if (m_Position.X > m_Edge.X || m_Position.X < -m_Edge.X)
                     m_Done = true;
-
-                CheckForEdge();
-                m_Hit = CheckCollisions();
 
                 if (m_ShotTimer.TotalTime.Seconds > m_ShotTimerAmount)
                 {
@@ -176,7 +174,7 @@ namespace Asteroids
 
         void SetScore()
         {
-            m_Score.Components.Get<Score>().PlayerScore(m_Points);
+            m_Player.Components.Get<Player>().SetScore(m_Points);
         }
 
         public bool CheckPlayerClear()
@@ -189,27 +187,30 @@ namespace Asteroids
 
         bool CheckCollisions()
         {
-            for (int shot = 0; shot < 4; shot++)
+            if (Active())
             {
-                if (m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Active())
+                for (int shot = 0; shot < 4; shot++)
                 {
-                    if (CirclesIntersect(m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Position,
-                        m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Radius))
+                    if (m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Active())
                     {
-                        SetScore();
-                        m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Destroy();
-                        return true;
+                        if (CirclesIntersect(m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Position,
+                            m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Radius))
+                        {
+                            SetScore();
+                            m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Destroy();
+                            return true;
+                        }
                     }
                 }
-            }
 
-            if (m_Player.Components.Get<Player>().Active())
-            {
-                if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
+                if (m_Player.Components.Get<Player>().Active())
                 {
-                    SetScore();
-                    m_Player.Components.Get<Player>().Hit();
-                    return true;
+                    if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
+                    {
+                        SetScore();
+                        m_Player.Components.Get<Player>().Hit();
+                        return true;
+                    }
                 }
             }
 

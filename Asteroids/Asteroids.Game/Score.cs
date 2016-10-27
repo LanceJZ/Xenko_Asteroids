@@ -21,15 +21,10 @@ namespace Asteroids
         NumberData[] Numbers = new NumberData[10];
         Vector3[] m_NumberLineStart = new Vector3[7];
         Vector3[] m_NumberLineEnd = new Vector3[7];
-        public int m_TotalScore = 0;
-        int m_PointsToNextFreeLife = 0;
-        int m_PointsForFreeLife = 5000;
         List<Entity> m_Numbers;
-        public Entity m_Player;
 
         public override void Start()
         {
-            m_PointsToNextFreeLife = m_PointsForFreeLife;
 
             for (int i = 0; i < 10; i++)
             {
@@ -38,32 +33,11 @@ namespace Asteroids
 
             InitializeNumberLines();
             m_Numbers = new List<Entity>();
-            NewGame();
         }
 
         public override void Update()
         {
             // Do stuff every new frame
-        }
-
-        public void NewGame()
-        {
-            m_TotalScore = 0;
-            m_PointsToNextFreeLife = m_PointsForFreeLife;
-            PlayerScore(0);
-        }
-
-        public void PlayerScore(int points)
-        {
-            m_TotalScore += points;
-
-            if (m_TotalScore > m_PointsToNextFreeLife)
-            {
-                m_Player.Components.Get<Player>().BunusLife();
-                m_PointsToNextFreeLife += m_PointsForFreeLife;
-            }
-
-            ProcessNumber(m_TotalScore, new Vector3(m_Edge.X * 0.5f, m_Edge.Y - 1, 0), 1);
         }
 
         public void ProcessNumber(int number, Vector3 locationStart, float size)

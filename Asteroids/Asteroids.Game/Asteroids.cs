@@ -24,10 +24,11 @@ namespace Asteroids
         Entity m_Player;
         Entity m_UFO;
         Entity m_Score;
+        Entity m_HighScore;
         TimerTick m_UFOTimer = new TimerTick();
         int m_LargeRockCount = 4;
         int m_Wave = 0;
-        int m_UFOCount;
+        int m_UFOCount = 0;
         float m_UFOTimerAmount = 10.15f;
 
         public override void Start()
@@ -36,23 +37,23 @@ namespace Asteroids
             m_MedRocks = new List<Entity>();
             m_SmallRocks = new List<Entity>();
 
-            // Initialization of the script.
-
             m_RockPrefab = Content.Load<Prefab>("Asteroid");
             m_PlayerPrefab = Content.Load<Prefab>("Player");
             m_UFOPrefab = Content.Load<Prefab>("UFO");
             m_ScorePrefab = Content.Load<Prefab>("Score");
 
+            m_Score = m_ScorePrefab.Instantiate().First();
+            SceneSystem.SceneInstance.Scene.Entities.Add(m_Score);
+            m_HighScore = m_ScorePrefab.Instantiate().First();
+            SceneSystem.SceneInstance.Scene.Entities.Add(m_HighScore);
             m_Player = m_PlayerPrefab.Instantiate().First();
             m_Player.Components.Get<Player>().m_Random = m_Random;
-            m_Score = m_ScorePrefab.Instantiate().First();
-            m_Score.Components.Get<Score>().m_Player = m_Player;
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_Score);
+            m_Player.Components.Get<Player>().m_Score = m_Score;
+            m_Player.Components.Get<Player>().m_HighScore = m_HighScore;
             SceneSystem.SceneInstance.Scene.Entities.Add(m_Player);
             m_UFO = m_UFOPrefab.Instantiate().First();
             m_UFO.Components.Get<UFO>().m_Random = m_Random;
             m_UFO.Components.Get<UFO>().m_Player = m_Player;
-            m_UFO.Components.Get<UFO>().m_Score = m_Score;
             SceneSystem.SceneInstance.Scene.Entities.Add(m_UFO);
             SpawnLargeRocks(m_LargeRockCount);
         }
@@ -192,11 +193,60 @@ namespace Asteroids
             }
 
             m_UFOTimer.Tick();
+
+            if (m_Player.Components.Get<Player>().m_GameOver)
+            {
+                if (Input.IsKeyPressed(Keys.N))
+                {
+                    NewGame();
+                }
+            }
         }
 
         void NewGame()
         {
+            m_LargeRockCount = 4;
+            m_Wave = 0;
+            m_UFOCount = 0;
 
+            foreach (Entity rock in m_LargeRocks)
+            {
+                if (rock.Components.Get<Rock>().Active())
+                {
+                    rock.Components.Get<Rock>().Destroy();
+                }
+            }
+
+            foreach (Entity rock in m_MedRocks)
+            {
+                if (rock.Components.Get<Rock>().Active())
+                {
+                    rock.Components.Get<Rock>().Destroy();
+                }
+            }
+
+            foreach (Entity rock in m_SmallRocks)
+            {
+                if (rock.Components.Get<Rock>().Active())
+                {
+                    rock.Components.Get<Rock>().Destroy();
+                }
+            }
+
+            if (m_UFO.Components.Get<UFO>().Active())
+                m_UFO.Components.Get<UFO>().Destroy();
+
+            if (m_UFO.Components.Get<UFO>().m_Shot != null)
+            {
+                if (m_UFO.Components.Get<UFO>().m_Shot.Components.Get<Shot>().Active())
+                    m_UFO.Components.Get<UFO>().m_Shot.Components.Get<Shot>().Destroy();
+            }
+
+            m_UFOTimer.Reset();
+
+            m_Player.Components.Get<Player>().NewGame();
+
+            SpawnLargeRocks(m_LargeRockCount);
         }
 
         void SpawnLargeRocks(int count)
