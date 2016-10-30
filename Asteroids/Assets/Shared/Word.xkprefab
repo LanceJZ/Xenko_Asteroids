@@ -1,0 +1,30 @@
+!PrefabAsset
+Id: bf7c2a75-317c-4c7e-88ee-3c942bd040f8
+SerializedVersion: {Xenko: 1.7.0-beta04}
+Tags: []
+Hierarchy:
+    ~Id: 857cd08f-2e35-4563-8d4d-3ee4d587f55b
+    RootPartIds:
+        - 01d31969-78e1-48c8-92bd-3a4455addb35
+    Parts:
+        -   Entity:
+                Id: 01d31969-78e1-48c8-92bd-3a4455addb35
+                Name: Word
+                Components:
+                    - !TransformComponent
+                        ~Id: 2b9414e3-9fe9-43b5-a5f8-d47c90802827
+                        Children: []
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                    - !Asteroids.Word,Asteroids.Game
+                        ~Id: db45b9d9-8209-4d2f-b579-d90c23dfc08a
+                        m_Hit: false
+                        m_Rotation: 0.0
+                        m_RotationAmount: 0.0
+                        m_Radius: 0.0
+                        m_Random: null
+                        m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Velocity: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Acceleration: {X: 0.0, Y: 0.0, Z: 0.0}
+                        m_Edge: {X: 44.0, Y: 32.0}

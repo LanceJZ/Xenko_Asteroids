@@ -77,6 +77,7 @@ RootAssets:
     - 37415258-a860-4d10-b78a-fed4d279e7f1:Shot
     - 48cda710-fa31-471d-953b-c350cf555818:Asteroid
     - 55e49867-b0c3-49da-9c18-315f65a8d77c:Player
-    - 76f44d1d-3485-4014-b1b6-43f9d089a2ea:Score
     - 97639ad7-7b1e-4ca7-ae47-26c1cace76f5:UFO
+    - ba53d7b9-6971-4cb5-97ca-9c4895a8c304:Number
+    - bf7c2a75-317c-4c7e-88ee-3c942bd040f8:Word
     - e60f550d-72b8-4262-8836-ddd10d052abf:Dot

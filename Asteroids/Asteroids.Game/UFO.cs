@@ -12,7 +12,7 @@ using SiliconStudio.Xenko.Games.Time;
 
 namespace Asteroids
 {
-    public class UFO : Actor
+    public class UFO : Explode
     {
         // Declared public member fields and properties will show in the game studio
         public float m_ShotTimerAmount = 2;
@@ -33,6 +33,7 @@ namespace Asteroids
 
         public override void Start()
         {
+            base.Start();
             // Initialization of the script.
             m_Radius = 1.9f;
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
@@ -123,7 +124,10 @@ namespace Asteroids
 
         public override void Update()
         {
-            m_Hit = CheckCollisions();
+            if (m_Hit = CheckCollisions())
+            {
+                SpawnExplosion();
+            }
 
             if (Active() && !m_Hit && !m_Done)
             {
@@ -131,6 +135,8 @@ namespace Asteroids
 
                 if (m_Position.X > m_Edge.X || m_Position.X < -m_Edge.X)
                     m_Done = true;
+
+                CheckForEdge();
 
                 if (m_ShotTimer.TotalTime.Seconds > m_ShotTimerAmount)
                 {

@@ -16,20 +16,27 @@ namespace Asteroids
         // Declared public member fields and properties will show in the game studio        
         public List<Entity> m_Shots;
         public bool m_Spawn = false;
-        int m_TotalScore = 0;
-        int m_TotalHighScore = 0;
-        int m_PointsToNextFreeLife = 0;
-        int m_PointsForFreeLife = 5000;
+        public bool m_GameOver = true;
         public Entity m_Score;
         public Entity m_HighScore;
+        public Entity m_AtariDateEntity;
+        public Entity m_AtariEntity;
+        public Entity m_GameOverEntity;
         Entity m_Ship;
         Entity m_ShipFlame;
         Model m_ShipModel;
         List<Entity> m_DisplayShips;
         ModelComponent m_FlameMesh;
         ModelComponent m_ShipMesh;
-        public bool m_GameOver = true;
         int m_Lives = 0;
+        int m_TotalScore = 0;
+        int m_TotalHighScore = 0;
+        int m_PointsToNextFreeLife = 0;
+        int m_PointsForFreeLife = 5000;
+
+        string m_GameOverText = "GAME OVER";
+        string m_Ataritext = "ATARI INC";
+        int m_AtariDate = 1979;
 
         public override void Start()
         {
@@ -104,6 +111,9 @@ namespace Asteroids
             m_ShipMesh.Enabled = false;
             m_FlameMesh.Enabled = false;
             SetScore(0);
+
+            m_AtariDateEntity.Components.Get<Number>().ProcessNumber(m_AtariDate, new Vector3(4.5f, -m_Edge.Y + 1, 0), 0.5f);
+            m_AtariEntity.Components.Get<Word>().ProcessWords(m_Ataritext, new Vector3(5.5f, -m_Edge.Y + 1, 0), 0.25f);
         }
 
         public override void Update()
@@ -198,6 +208,10 @@ namespace Asteroids
                     Reset();
                 }
             }
+            else if (m_GameOver)
+            {
+                
+            }
         }
 
         public void SetScore(int points)
@@ -213,10 +227,10 @@ namespace Asteroids
             if (m_TotalScore > m_TotalHighScore || m_TotalHighScore == 0)
             {
                 m_TotalHighScore = m_TotalScore;
-                m_HighScore.Components.Get<Score>().ProcessNumber(m_TotalHighScore, new Vector3(0, m_Edge.Y - 1, 0), 0.66f);
+                m_HighScore.Components.Get<Number>().ProcessNumber(m_TotalHighScore, new Vector3(0, m_Edge.Y - 0.5f, 0), 0.666f);
             }
 
-            m_Score.Components.Get<Score>().ProcessNumber(m_TotalScore, new Vector3(m_Edge.X * 0.5f, m_Edge.Y - 1, 0), 1);
+            m_Score.Components.Get<Number>().ProcessNumber(m_TotalScore, new Vector3(m_Edge.X * 0.5f, m_Edge.Y + 0.15f, 0), 1);
         }
 
         void ShipLives()
@@ -263,13 +277,14 @@ namespace Asteroids
             m_PointsToNextFreeLife = m_PointsForFreeLife;
             SetScore(0);
             m_GameOver = false;
+            m_GameOverEntity.Components.Get<Word>().DeleteWords();
         }
 
         void Reset()
         {
             m_Hit = false;
             m_ShipMesh.Enabled = true;
-            m_FlameMesh.Enabled = true;
+            m_FlameMesh.Enabled = false;
             m_Position = Vector3.Zero;
             m_Velocity = Vector3.Zero;
             m_Acceleration = Vector3.Zero;
@@ -294,6 +309,7 @@ namespace Asteroids
                 if (m_Lives < 1)
                 {
                     m_GameOver = true;
+                    m_GameOverEntity.Components.Get<Word>().ProcessWords(m_GameOverText, new Vector3(25, 10, 0), 1);
                     m_Hit = false;
                 }
             }

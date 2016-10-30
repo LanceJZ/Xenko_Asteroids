@@ -23,29 +23,6 @@ namespace Asteroids
         public Vector3 m_Acceleration = Vector3.Zero;
         public Vector2 m_Edge = new Vector2(44, 32);
 
-        public void CheckForEdge()
-        {
-            if (m_Position.X > m_Edge.X)
-            {
-                m_Position.X = -m_Edge.X;
-            }
-
-            if (m_Position.X < -m_Edge.X)
-            {
-                m_Position.X = m_Edge.X;
-            }
-
-            if (m_Position.Y > m_Edge.Y)
-            {
-                m_Position.Y = -m_Edge.Y;
-            }
-
-            if (m_Position.Y < -m_Edge.Y)
-            {
-                m_Position.Y = m_Edge.Y;
-            }
-        }
-
         public override void Update()
         {
             //Calculate movement this frame according to velocity and acceleration.
@@ -82,6 +59,29 @@ namespace Asteroids
             return false;
         }
 
+        public void CheckForEdge()
+        {
+            if (m_Position.X > m_Edge.X)
+            {
+                m_Position.X = -m_Edge.X;
+            }
+
+            if (m_Position.X < -m_Edge.X)
+            {
+                m_Position.X = m_Edge.X;
+            }
+
+            if (m_Position.Y > m_Edge.Y)
+            {
+                m_Position.Y = -m_Edge.Y;
+            }
+
+            if (m_Position.Y < -m_Edge.Y)
+            {
+                m_Position.Y = m_Edge.Y;
+            }
+        }
+
         public float RandomRadian()
         {
             return (float)m_Random.NextDouble() * (float)(MathUtil.TwoPi);
@@ -90,6 +90,13 @@ namespace Asteroids
         public float RandomHieght()
         {
             return m_Random.Next((int)-m_Edge.Y, (int)m_Edge.Y);
+        }
+
+        public void SetVelocity(float speed)
+        {
+            float rad = RandomRadian();
+            float amt = (float)m_Random.NextDouble() * speed + (speed * 0.15f);
+            m_Velocity = new Vector3((float)Math.Cos(rad) * amt, (float)Math.Sin(rad) * amt, 0);
         }
     }
 }

@@ -282,6 +282,8 @@
     <Compile Include="Actor.cs" />
     <Compile Include="Asteroids.cs" />
     <Compile Include="Dot.cs" />
+    <Compile Include="Explode.cs" />
+    <Compile Include="Number.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -290,9 +292,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Rock.cs" />
-    <Compile Include="Score.cs" />
     <Compile Include="Shot.cs" />
     <Compile Include="UFO.cs" />
+    <Compile Include="Word.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SiliconStudioPackageProps)" Condition="Exists('$(SiliconStudioPackageProps)')" />

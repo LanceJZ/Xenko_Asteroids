@@ -24,14 +24,14 @@ namespace Asteroids
         public override void Start()
         {
             // Initialization of the script.
-            m_Radius = 0.1f;
+            m_Radius = 0.05f;
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
             var vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
-                 new VertexPositionNormalTexture(new Vector3(0.0f, 0.05f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Top.
-                 new VertexPositionNormalTexture(new Vector3(-0.05f, -0.05f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Bottom right.
-                 new VertexPositionNormalTexture(new Vector3(0.05f, -0.05f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Bottom left.
-                 new VertexPositionNormalTexture(new Vector3(0.0f, 0.05f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)) //Top.
+                 new VertexPositionNormalTexture(new Vector3(-0.05f, 0.05f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Top Left.
+                 new VertexPositionNormalTexture(new Vector3(0.05f, -0.05f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Bottom right.
+                 new VertexPositionNormalTexture(new Vector3(0.05f, 0.05f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Bottom right.
+                 new VertexPositionNormalTexture(new Vector3(-0.05f, -0.05f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)) //Top Left.
             });
 
             MeshDraw meshDraw = new MeshDraw
@@ -56,7 +56,6 @@ namespace Asteroids
 
         public override void Update()
         {
-            // Do stuff every new frame
             if (m_ShotMesh.Enabled)
             {
                 base.Update();

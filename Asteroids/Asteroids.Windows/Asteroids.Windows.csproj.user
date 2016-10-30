@@ -2,5 +2,6 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SiliconStudioPackageXenkoVersionLast>1.8.3-beta</SiliconStudioPackageXenkoVersionLast>
+    <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
 </Project>

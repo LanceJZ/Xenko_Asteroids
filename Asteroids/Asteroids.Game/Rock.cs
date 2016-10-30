@@ -11,7 +11,7 @@ using SiliconStudio.Xenko.Rendering;
 
 namespace Asteroids
 {
-    public class Rock : Actor
+    public class Rock : Explode
     {
         // Declared public member fields and properties will show in the game studio
         Entity m_Player;
@@ -19,12 +19,13 @@ namespace Asteroids
         Entity m_Rock;
         Entity m_Score;
         ModelComponent m_RockMesh;
+
         int m_Points;
         float m_Speed;
 
         public override void Start()
         {
-            
+            base.Start();
         }
 
         public override void Update()
@@ -33,7 +34,10 @@ namespace Asteroids
             {
                 base.Update();
                 CheckForEdge();
-                m_Hit = CheckCollisions();
+                if (m_Hit = CheckCollisions())
+                {
+                    SpawnExplosion();
+                }
             }
         }
 
@@ -113,7 +117,7 @@ namespace Asteroids
             m_Position = position;
             UpdatePR();
             m_RockMesh.Enabled = true;
-            Setup(m_Speed);
+            SetVelocity(m_Speed);
         }
 
         public void Initialize(Random random, Entity player, Entity UFO, Entity score)
@@ -141,16 +145,9 @@ namespace Asteroids
             this.Entity.AddChild(m_Rock);
         }
 
-        public void Setup(float speed)
-        {
-            float rad = RandomRadian();
-            float amt = (float)m_Random.NextDouble() * speed + (speed * 0.15f);
-            m_Velocity = new Vector3((float)Math.Cos(rad) * amt, (float)Math.Sin(rad) * amt, 0);
-        }
-
         public void Large()
         {
-            Setup(5);
+            SetVelocity(5);
             m_RockMesh.Enabled = true;
 
             if (m_Velocity.X < 0)
@@ -179,6 +176,17 @@ namespace Asteroids
                 return false;
 
             return m_RockMesh.Enabled;
+        }
+
+        public bool ExplosionActive()
+        {
+            foreach (Entity dot in m_Explosion)
+            {
+                if (dot.Components.Get<Dot>().Active())
+                    return true;
+            }
+
+            return false;
         }
 
         private void m_RockOne()
