@@ -15,7 +15,7 @@ namespace Asteroids
     {
         public bool m_Hit = false;
         public float m_Rotation = 0;
-        public float m_RotationAmount = 0;
+        public float m_RotationVelocity = 0;
         public float m_Radius = 0;
         public Random m_Random;
         public Vector3 m_Position = Vector3.Zero;
@@ -30,7 +30,7 @@ namespace Asteroids
 
             m_Velocity += m_Acceleration;
             m_Position += m_Velocity * elapsed;
-            m_Rotation += m_RotationAmount * elapsed;
+            m_Rotation += m_RotationVelocity * elapsed;
 
             if (m_Rotation < 0)
                 m_Rotation = MathUtil.TwoPi;
@@ -64,21 +64,25 @@ namespace Asteroids
             if (m_Position.X > m_Edge.X)
             {
                 m_Position.X = -m_Edge.X;
+                UpdatePR();
             }
 
             if (m_Position.X < -m_Edge.X)
             {
                 m_Position.X = m_Edge.X;
+                UpdatePR();
             }
 
             if (m_Position.Y > m_Edge.Y)
             {
                 m_Position.Y = -m_Edge.Y;
+                UpdatePR();
             }
 
             if (m_Position.Y < -m_Edge.Y)
             {
                 m_Position.Y = m_Edge.Y;
+                UpdatePR();
             }
         }
 

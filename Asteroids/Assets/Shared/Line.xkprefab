@@ -1,0 +1,21 @@
+!PrefabAsset
+Id: 9c49cbeb-fce2-423e-afd8-781de78c8a2b
+SerializedVersion: {Xenko: 1.7.0-beta04}
+Tags: []
+Hierarchy:
+    ~Id: 46384ac5-6858-4c09-bbba-21aaeab36ca9
+    RootPartIds:
+        - 1cc04ff0-bf30-4da8-a106-e93731a916f5
+    Parts:
+        -   Entity:
+                Id: 1cc04ff0-bf30-4da8-a106-e93731a916f5
+                Name: Line
+                Components:
+                    - !TransformComponent
+                        ~Id: e1d401e8-f120-4d5f-a6f2-a8f7d4da2e6c
+                        Children: []
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                    - !Asteroids.Line,Asteroids.Game
+                        ~Id: 8af55ff2-11d5-4533-8664-0444b45f776e

@@ -21,7 +21,7 @@ namespace Asteroids
         WordData[] Letters = new WordData[26];
         Vector3[] m_LetterLineStart = new Vector3[16];
         Vector3[] m_LetterLineEnd = new Vector3[16];
-        List<Entity> m_Words;
+        public List<Entity> m_Words;
 
         public override void Start()
         {
@@ -41,27 +41,30 @@ namespace Asteroids
 
         public void ProcessWords(string words, Vector3 locationStart, float size)
         {
-            DeleteWords();
-            int textSize = words.Length;
-            float charsize = 3.15f;
-            float space = ((-size * charsize) * (textSize - 1)) / 2;
-
-            foreach (char letter in words)
+            if (m_Words != null)
             {
-                if ((int)letter > 64 && (int)letter < 91)
+                DeleteWords();
+                int textSize = words.Length;
+                float charsize = 3.15f;
+                float space = ((-size * charsize) * (textSize - 1)) / 2;
+
+                foreach (char letter in words)
                 {
-                    int letval = (int)letter - 65;
-
-                    if (letval > -1 && letval < 26)
+                    if ((int)letter > 64 && (int)letter < 91)
                     {
-                        MakeLetterMesh(space, letval, size);
-                    }
-                }
-             
-                space -= size * charsize;
-            }
+                        int letval = (int)letter - 65;
 
-            this.Entity.Transform.Position = locationStart;
+                        if (letval > -1 && letval < 26)
+                        {
+                            MakeLetterMesh(space, letval, size);
+                        }
+                    }
+
+                    space -= size * charsize;
+                }
+
+                this.Entity.Transform.Position = locationStart;
+            }
         }
 
         void MakeLetterMesh(float location, int letter, float size)

@@ -25,8 +25,8 @@ namespace Asteroids
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
             var vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
-                 new VertexPositionNormalTexture(new Vector3(0.025f, 0.025f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Top Left.
-                 new VertexPositionNormalTexture(new Vector3(-0.025f, -0.025f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Bottom right.
+                 new VertexPositionNormalTexture(new Vector3(0.015f, 0.015f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Top Left.
+                 new VertexPositionNormalTexture(new Vector3(-0.015f, -0.015f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)) //Bottom right.
             });
 
             MeshDraw meshDraw = new MeshDraw
@@ -54,7 +54,6 @@ namespace Asteroids
             if (m_DotMesh.Enabled)
             {
                 base.Update();
-                CheckForEdge();
 
                 if (m_Timer.TotalTime.Seconds > m_TimerAmount)
                 {
@@ -87,6 +86,5 @@ namespace Asteroids
             else
                 return false;
         }
-
     }
 }

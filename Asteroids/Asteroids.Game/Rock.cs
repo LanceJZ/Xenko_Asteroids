@@ -17,7 +17,6 @@ namespace Asteroids
         Entity m_Player;
         Entity m_UFO;
         Entity m_Rock;
-        Entity m_Score;
         ModelComponent m_RockMesh;
 
         int m_Points;
@@ -102,9 +101,9 @@ namespace Asteroids
             return false;
         }
 
-        public void Spawn(Vector3 position, float scale, float speed, int points, Random random, Entity player, Entity UFO, Entity score)
+        public void Spawn(Vector3 position, float scale, float speed, int points, Random random, Entity player, Entity UFO)
         {
-            Initialize(random, player, UFO, score);
+            Initialize(random, player, UFO);
             m_Speed = speed;
             Spawn(position);
             m_Rock.Transform.Scale = new Vector3(scale);
@@ -120,13 +119,12 @@ namespace Asteroids
             SetVelocity(m_Speed);
         }
 
-        public void Initialize(Random random, Entity player, Entity UFO, Entity score)
+        public void Initialize(Random random, Entity player, Entity UFO)
         {
             m_Radius = 2.9f;
             m_Random = random;
             m_Player = player;
             m_UFO = UFO;
-            m_Score = score;
             m_Points = 20;
 
             int m_RockType = m_Random.Next(0, 4);

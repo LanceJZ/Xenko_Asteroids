@@ -32,6 +32,9 @@ Hierarchy:
                         m_Shots: null
                         m_Spawn: false
                         m_GameOver: true
+                        m_Exploding: false
                         m_Score: null
                         m_HighScore: null
                         m_AtariDateEntity: null
+                        m_AtariEntity: null
+                        m_GameOverEntity: null

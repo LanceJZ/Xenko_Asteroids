@@ -17,18 +17,11 @@ namespace Asteroids
         Prefab m_PlayerPrefab;
         Prefab m_RockPrefab;
         Prefab m_UFOPrefab;
-        Prefab m_NumberPrefab;
-        Prefab m_WordPrefab;
         List<Entity> m_LargeRocks;
         List<Entity> m_MedRocks;
         List<Entity> m_SmallRocks;
         Entity m_Player;
         Entity m_UFO;
-        Entity m_Score;
-        Entity m_HighScore;
-        Entity m_AtariEntity;
-        Entity m_AtariDateEntity;
-        Entity m_GameOver;
         TimerTick m_UFOTimer = new TimerTick();
         int m_LargeRockCount = 4;
         int m_Wave = 0;
@@ -44,26 +37,9 @@ namespace Asteroids
             m_RockPrefab = Content.Load<Prefab>("Asteroid");
             m_PlayerPrefab = Content.Load<Prefab>("Player");
             m_UFOPrefab = Content.Load<Prefab>("UFO");
-            m_NumberPrefab = Content.Load<Prefab>("Number");
-            m_WordPrefab = Content.Load<Prefab>("Word");
 
-            m_Score = m_NumberPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_Score);
-            m_HighScore = m_NumberPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_HighScore);
-            m_AtariEntity = m_WordPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_AtariEntity);
-            m_AtariDateEntity = m_NumberPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_AtariDateEntity);
-            m_GameOver = m_WordPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_GameOver);
             m_Player = m_PlayerPrefab.Instantiate().First();
             m_Player.Components.Get<Player>().m_Random = m_Random;
-            m_Player.Components.Get<Player>().m_Score = m_Score;
-            m_Player.Components.Get<Player>().m_HighScore = m_HighScore;
-            m_Player.Components.Get<Player>().m_AtariEntity = m_AtariEntity;
-            m_Player.Components.Get<Player>().m_AtariDateEntity = m_AtariDateEntity;
-            m_Player.Components.Get<Player>().m_GameOverEntity = m_GameOver;
             SceneSystem.SceneInstance.Scene.Entities.Add(m_Player);
             m_UFO = m_UFOPrefab.Instantiate().First();
             m_UFO.Components.Get<UFO>().m_Random = m_Random;
@@ -286,7 +262,7 @@ namespace Asteroids
                     int rock = m_LargeRocks.Count;
                     m_LargeRocks.Add(m_RockPrefab.Instantiate().First());
                     SceneSystem.SceneInstance.Scene.Entities.Add(m_LargeRocks[rock]);
-                    m_LargeRocks[rock].Components.Get<Rock>().Initialize(m_Random, m_Player, m_UFO, m_Score);
+                    m_LargeRocks[rock].Components.Get<Rock>().Initialize(m_Random, m_Player, m_UFO);
                     m_LargeRocks[rock].Components.Get<Rock>().Large();
                 }
             }
@@ -313,7 +289,7 @@ namespace Asteroids
                     int rock = m_MedRocks.Count;
                     m_MedRocks.Add(m_RockPrefab.Instantiate().First());
                     SceneSystem.SceneInstance.Scene.Entities.Add(m_MedRocks[rock]);
-                    m_MedRocks[rock].Components.Get<Rock>().Spawn(position, 0.5f, 10, 50, m_Random, m_Player, m_UFO, m_Score);
+                    m_MedRocks[rock].Components.Get<Rock>().Spawn(position, 0.5f, 10, 50, m_Random, m_Player, m_UFO);
                 }
             }
         }
@@ -340,7 +316,7 @@ namespace Asteroids
                     int rock = m_SmallRocks.Count;
                     m_SmallRocks.Add(m_RockPrefab.Instantiate().First());
                     SceneSystem.SceneInstance.Scene.Entities.Add(m_SmallRocks[rock]);
-                    m_SmallRocks[rock].Components.Get<Rock>().Spawn(position, 0.25f, 20, 100, m_Random, m_Player, m_UFO, m_Score);
+                    m_SmallRocks[rock].Components.Get<Rock>().Spawn(position, 0.25f, 20, 100, m_Random, m_Player, m_UFO);
                 }
             }
         }

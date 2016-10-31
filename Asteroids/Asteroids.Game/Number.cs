@@ -21,11 +21,10 @@ namespace Asteroids
         NumberData[] Numbers = new NumberData[10];
         Vector3[] m_NumberLineStart = new Vector3[7];
         Vector3[] m_NumberLineEnd = new Vector3[7];
-        List<Entity> m_Numbers;
+        public List<Entity> m_Numbers;
 
         public override void Start()
         {
-
             for (int i = 0; i < 10; i++)
             {
                 Numbers[i].Lines = new bool[7];
@@ -42,27 +41,34 @@ namespace Asteroids
 
         public void ProcessNumber(int number, Vector3 locationStart, float size)
         {
+            if (m_Numbers != null)
+            {
+                DeleteNumbers();
+                int numberIn = number;
+                float space = 0;
+
+                do
+                {
+                    //Make digit the modulus of 10 from number.
+                    int digit = numberIn % 10;
+                    //This sends a digit to the draw function with the location and size.
+                    MakeNumberMesh(space, digit, size);
+                    // Dividing the int by 10, we discard the digit that was derived from the modulus operation.
+                    numberIn /= 10;
+                    // Move the location for the next digit location to the left. We start on the right hand side with the lowest digit.
+                    space += size * 2;
+                } while (numberIn > 0);
+
+                this.Entity.Transform.Position = locationStart;
+            }
+        }
+
+        public void DeleteNumbers()
+        {
             foreach (Entity num in m_Numbers)
             {
                 this.Entity.RemoveChild(num);
             }
-
-            int numberIn = number;
-            float space = 0;
-
-            do
-            {
-                //Make digit the modulus of 10 from number.
-                int digit = numberIn % 10;
-                //This sends a digit to the draw function with the location and size.
-                MakeNumberMesh(space, digit, size);
-                // Dividing the int by 10, we discard the digit that was derived from the modulus operation.
-                numberIn /= 10;
-                // Move the location for the next digit location to the left. We start on the right hand side with the lowest digit.
-                space += size * 2;
-            } while (numberIn > 0);
-
-            this.Entity.Transform.Position = locationStart;
         }
 
         void MakeNumberMesh(float location, int number, float size)

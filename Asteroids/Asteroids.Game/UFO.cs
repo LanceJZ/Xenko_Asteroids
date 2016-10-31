@@ -15,7 +15,7 @@ namespace Asteroids
     public class UFO : Explode
     {
         // Declared public member fields and properties will show in the game studio
-        public float m_ShotTimerAmount = 2;
+        public float m_ShotTimerAmount = 2.75f;
         public float m_VectorTimerAmount = 3;
         public float m_Speed = 5;
         public bool m_Done = false;
