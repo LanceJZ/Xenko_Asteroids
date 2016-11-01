@@ -7,6 +7,7 @@ using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Input;
 using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Games.Time;
+using SiliconStudio.Xenko.Audio;
 
 namespace Asteroids
 {
@@ -26,7 +27,11 @@ namespace Asteroids
         int m_LargeRockCount = 4;
         int m_Wave = 0;
         int m_UFOCount = 0;
-        float m_UFOTimerAmount = 10.15f;
+        int m_NumberOfRocksThisFrame;
+        int m_NumberOfRocksLastFrame;
+        readonly float m_UFOTimerAmount = 10.15f;
+        float m_UFOTimerSet = 10.15f;
+        SoundInstance m_Background;
 
         public override void Start()
         {
@@ -46,10 +51,15 @@ namespace Asteroids
             m_UFO.Components.Get<UFO>().m_Player = m_Player;
             SceneSystem.SceneInstance.Scene.Entities.Add(m_UFO);
             SpawnLargeRocks(m_LargeRockCount);
+
+            Sound background = Content.Load<Sound>("Background");
+            m_Background = background.CreateInstance();
+            m_Background.Volume = 0.50f;
         }
 
         public override void Update()
         {
+            m_NumberOfRocksLastFrame = m_NumberOfRocksThisFrame;
             int rockCount = 0;
             bool playerClear = true;
             // Do stuff every new frame
@@ -94,14 +104,25 @@ namespace Asteroids
                 }
             }
 
+            m_NumberOfRocksThisFrame = rockCount;
+
+            if (m_NumberOfRocksLastFrame != m_NumberOfRocksThisFrame)
+            {
+                float pitch = 1;
+                pitch = (float)MathUtil.Clamp(Math.Sqrt((MathUtil.Clamp(rockCount - m_LargeRockCount - m_Wave * 9, 0, 162)) * 0.15), 1, 4);
+
+                m_Background.Pitch = pitch;
+            }
+
             if (rockCount == 0)
             {
                 m_LargeRockCount++;
                 SpawnLargeRocks(m_LargeRockCount);
             }
 
-            if (m_UFOTimer.TotalTime.Seconds > m_UFOTimerAmount && !m_UFO.Components.Get<UFO>().Active())
+            if (m_UFOTimer.TotalTime.TotalSeconds > m_UFOTimerSet && !m_UFO.Components.Get<UFO>().Active())
             {
+                m_UFOTimerSet = (float)m_Random.NextDouble() * m_UFOTimerAmount + ((m_UFOTimerAmount - m_Wave) * 0.5f);
                 m_UFOTimer.Reset();
                 m_UFO.Components.Get<UFO>().Spawn(m_UFOCount, m_Wave);
                 m_UFOCount++;
@@ -190,6 +211,12 @@ namespace Asteroids
                 {
                     NewGame();
                 }
+
+                m_Background.Stop();
+            }
+            else
+            {
+                m_Background.Play();
             }
         }
 

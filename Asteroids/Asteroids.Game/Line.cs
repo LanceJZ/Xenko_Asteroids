@@ -53,7 +53,7 @@ namespace Asteroids
             {
                 base.Update();
 
-                if (m_Timer.TotalTime.Seconds > m_TimerAmount)
+                if (m_Timer.TotalTime.TotalSeconds > m_TimerAmount)
                 {
                     Destroy();
                 }

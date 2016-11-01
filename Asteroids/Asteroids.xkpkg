@@ -74,11 +74,21 @@ ExplicitFolders: []
 Bundles: []
 TemplateFolders: []
 RootAssets:
+    - 0539ddcc-b076-430b-8f02-8963bf4623d1:PlayerFire
+    - 0bf98763-cdca-4d5f-a8eb-b6659eea7fa7:Thrust
     - 37415258-a860-4d10-b78a-fed4d279e7f1:Shot
     - 48cda710-fa31-471d-953b-c350cf555818:Asteroid
+    - 51348a3a-9830-4887-baf2-3d56fc864138:Background
     - 55e49867-b0c3-49da-9c18-315f65a8d77c:Player
+    - 6388b117-3062-46e3-ad44-cd69e21618f4:BonusShip
+    - 968ed9de-f904-4a51-93a6-af3b78ba636e:UFOShot
     - 97639ad7-7b1e-4ca7-ae47-26c1cace76f5:UFO
     - 9c49cbeb-fce2-423e-afd8-781de78c8a2b:Line
+    - 9daff956-aff3-4c92-b30e-b715ece34094:PlayerExplosion
+    - b122fd30-1348-46a1-8b46-3f242b5c89ad:UFOExplosion
     - ba53d7b9-6971-4cb5-97ca-9c4895a8c304:Number
     - bf7c2a75-317c-4c7e-88ee-3c942bd040f8:Word
+    - c6a6836b-a07c-407c-9663-257e77e28736:UFOSmall
+    - df6308ae-9038-43c9-9289-eebe98dd0e40:UFOLarge
     - e60f550d-72b8-4262-8836-ddd10d052abf:Dot
+    - f3b3c943-b7c8-4d7b-aa29-b2ea19f9e5ad:RockExplosion

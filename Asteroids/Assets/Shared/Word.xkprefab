@@ -21,10 +21,11 @@ Hierarchy:
                         ~Id: db45b9d9-8209-4d2f-b579-d90c23dfc08a
                         m_Hit: false
                         m_Rotation: 0.0
-                        m_RotationAmount: 0.0
+                        m_RotationVelocity: 0.0
                         m_Radius: 0.0
                         m_Random: null
                         m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Velocity: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Acceleration: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Edge: {X: 44.0, Y: 32.0}
+                        m_Words: null

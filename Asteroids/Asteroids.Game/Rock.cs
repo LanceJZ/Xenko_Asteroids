@@ -8,6 +8,7 @@ using SiliconStudio.Xenko.Input;
 using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Graphics;
 using SiliconStudio.Xenko.Rendering;
+using SiliconStudio.Xenko.Audio;
 
 namespace Asteroids
 {
@@ -18,6 +19,7 @@ namespace Asteroids
         Entity m_UFO;
         Entity m_Rock;
         ModelComponent m_RockMesh;
+        SoundInstance m_SoundInstance;
 
         int m_Points;
         float m_Speed;
@@ -25,6 +27,10 @@ namespace Asteroids
         public override void Start()
         {
             base.Start();
+
+            Sound sound = Content.Load<Sound>("RockExplosion");
+            m_SoundInstance = sound.CreateInstance();
+            m_SoundInstance.Volume = 0.25f;
         }
 
         public override void Update()
@@ -35,6 +41,8 @@ namespace Asteroids
                 CheckForEdge();
                 if (m_Hit = CheckCollisions())
                 {
+                    m_SoundInstance.Stop();
+                    m_SoundInstance.Play();
                     SpawnExplosion();
                 }
             }
@@ -94,6 +102,7 @@ namespace Asteroids
                 if (CirclesIntersect(m_UFO.Components.Get<UFO>().m_Position, m_UFO.Components.Get<UFO>().m_Radius))
                 {                    
                     m_UFO.Components.Get<UFO>().m_Hit = true;
+                    m_UFO.Components.Get<UFO>().Explode();
                     return true;
                 }
             }

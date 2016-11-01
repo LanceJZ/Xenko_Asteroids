@@ -9,6 +9,7 @@ using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Graphics;
 using SiliconStudio.Xenko.Rendering;
 using SiliconStudio.Xenko.Games.Time;
+using SiliconStudio.Xenko.Audio;
 
 namespace Asteroids
 {
@@ -30,6 +31,11 @@ namespace Asteroids
         public Entity m_Shot;
         public Entity m_Player;
         int m_Points;
+
+        SoundInstance m_ExplodeSoundInstance;
+        SoundInstance m_LargeUFOSoundInstance;
+        SoundInstance m_SmallUFOSoundInstance;
+        SoundInstance m_FireSoundInstance;
 
         public override void Start()
         {
@@ -120,18 +126,39 @@ namespace Asteroids
             Prefab myShotPrefab = Content.Load<Prefab>("Shot");
             m_Shot = myShotPrefab.Instantiate().First();
             SceneSystem.SceneInstance.Scene.Entities.Add(m_Shot);
+
+            Sound expsound = Content.Load<Sound>("UFOExplosion");
+            m_ExplodeSoundInstance = expsound.CreateInstance();
+            m_ExplodeSoundInstance.Volume = 0.50f;
+
+            Sound shotsound = Content.Load<Sound>("UFOShot");
+            m_FireSoundInstance = shotsound.CreateInstance();
+            m_FireSoundInstance.Volume = 0.15f;
+
+            Sound largesound = Content.Load<Sound>("UFOLarge");
+            m_LargeUFOSoundInstance = largesound.CreateInstance();
+            m_LargeUFOSoundInstance.Volume = 0.15f;
+
+            Sound smallsound = Content.Load<Sound>("UFOSmall");
+            m_SmallUFOSoundInstance = smallsound.CreateInstance();
+            m_SmallUFOSoundInstance.Volume = 0.15f;
         }
 
         public override void Update()
         {
             if (m_Hit = CheckCollisions())
             {
-                SpawnExplosion();
+                Explode();
             }
 
             if (Active() && !m_Hit && !m_Done)
             {
                 base.Update();
+
+                if (m_Large)
+                    m_LargeUFOSoundInstance.Play();
+                else
+                    m_SmallUFOSoundInstance.Play();
 
                 if (m_Position.X > m_Edge.X || m_Position.X < -m_Edge.X)
                     m_Done = true;
@@ -140,6 +167,8 @@ namespace Asteroids
 
                 if (m_ShotTimer.TotalTime.Seconds > m_ShotTimerAmount)
                 {
+                    m_FireSoundInstance.Stop();
+                    m_FireSoundInstance.Play();
                     m_ShotTimer.Reset();
                     float speed = 30;
                     float rad = 0;
@@ -178,9 +207,11 @@ namespace Asteroids
             }
         }
 
-        void SetScore()
+        public void Explode()
         {
-            m_Player.Components.Get<Player>().SetScore(m_Points);
+            m_ExplodeSoundInstance.Stop();
+            m_ExplodeSoundInstance.Play();
+            SpawnExplosion();
         }
 
         public bool CheckPlayerClear()
@@ -189,6 +220,11 @@ namespace Asteroids
                 return false;
 
             return true;
+        }
+
+        void SetScore()
+        {
+            m_Player.Components.Get<Player>().SetScore(m_Points);
         }
 
         bool CheckCollisions()
@@ -284,6 +320,12 @@ namespace Asteroids
             m_UFOBIMesh.Enabled = false;
             m_Done = false;
             m_Hit = false;
+
+            if (m_LargeUFOSoundInstance != null)
+                m_LargeUFOSoundInstance.Stop();
+
+            if (m_SmallUFOSoundInstance != null)
+                m_SmallUFOSoundInstance.Stop();
         }
 
         public bool Active()

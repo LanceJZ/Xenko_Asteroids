@@ -22,7 +22,7 @@ Hierarchy:
                         ~Id: d1a05eea-3e61-42e1-9a63-31bad67c9558
                         m_Hit: false
                         m_Rotation: 0.0
-                        m_RotationAmount: 0.0
+                        m_RotationVelocity: 0.0
                         m_Radius: 0.0
                         m_Random: null
                         m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
@@ -33,8 +33,3 @@ Hierarchy:
                         m_Spawn: false
                         m_GameOver: true
                         m_Exploding: false
-                        m_Score: null
-                        m_HighScore: null
-                        m_AtariDateEntity: null
-                        m_AtariEntity: null
-                        m_GameOverEntity: null

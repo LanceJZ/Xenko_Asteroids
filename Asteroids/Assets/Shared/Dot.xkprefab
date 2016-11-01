@@ -21,7 +21,7 @@ Hierarchy:
                         ~Id: c0a21c5a-8b00-4038-9c24-43ecd70e6caf
                         m_Hit: false
                         m_Rotation: 0.0
-                        m_RotationAmount: 0.0
+                        m_RotationVelocity: 0.0
                         m_Radius: 0.0
                         m_Random: null
                         m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
