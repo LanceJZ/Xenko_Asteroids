@@ -13,7 +13,6 @@ namespace Asteroids
 {
     public class Asteroids : SyncScript
     {
-        // Declared public member fields and properties will show in the game studio
         private readonly Random m_Random = new Random(DateTime.Now.Millisecond);
         Prefab m_PlayerPrefab;
         Prefab m_RockPrefab;
@@ -61,8 +60,11 @@ namespace Asteroids
         {
             m_NumberOfRocksLastFrame = m_NumberOfRocksThisFrame;
             int rockCount = 0;
+            int smrockCount = 0;
+            int mdrockCount = 0;
+            int lgrockCount = 0;
             bool playerClear = true;
-            // Do stuff every new frame
+
             foreach (Entity rock in m_LargeRocks)
             {
                 if (rock.Components.Get<Rock>().m_Hit)
@@ -74,6 +76,7 @@ namespace Asteroids
                 if (rock.Components.Get<Rock>().Active())
                 {
                     rockCount++;
+                    lgrockCount++;
                 }
             }
 
@@ -88,6 +91,7 @@ namespace Asteroids
                 if (rock.Components.Get<Rock>().Active())
                 {
                     rockCount++;
+                    mdrockCount++;
                 }
             }
 
@@ -101,22 +105,54 @@ namespace Asteroids
                 if (rock.Components.Get<Rock>().Active())
                 {
                     rockCount++;
+                    smrockCount++;
                 }
             }
 
             m_NumberOfRocksThisFrame = rockCount;
 
-            if (m_NumberOfRocksLastFrame != m_NumberOfRocksThisFrame)
+            if (m_NumberOfRocksLastFrame != m_NumberOfRocksThisFrame) //If([size]rockCount  < 4) {pitch = 1.2f + (0.05f × ( 4 - mdrockCount))}
             {
                 float pitch = 1;
-                pitch = (float)MathUtil.Clamp(Math.Sqrt((MathUtil.Clamp(rockCount - m_LargeRockCount - m_Wave * 9, 0, 162)) * 0.15), 1, 4);
+
+                if (lgrockCount == 0)
+                {
+                    if (mdrockCount > 3)
+                        pitch = 1.2f;
+                    else if (mdrockCount == 3)
+                        pitch = 1.25f;
+                    else if (mdrockCount == 2)
+                        pitch = 1.3f;
+                    else if (mdrockCount == 1)
+                        pitch = 1.35f;
+
+                    if (mdrockCount == 0)
+                    {
+                        if (smrockCount > 3)
+                            pitch = 1.4f;
+                        else if (smrockCount == 3)
+                            pitch = 1.45f;
+                        else if (smrockCount == 2)
+                            pitch = 1.5f;
+                        else if (smrockCount == 1)
+                            pitch = 1.55f;
+                    }
+                }
+                else if (lgrockCount > 3)
+                    pitch = 1;
+                else if (lgrockCount == 3)
+                    pitch = 1.05f;
+                else if (lgrockCount == 2)
+                    pitch = 1.1f;
+                else if (lgrockCount == 1)
+                    pitch = 1.15f;
 
                 m_Background.Pitch = pitch;
             }
 
             if (rockCount == 0)
             {
-                m_LargeRockCount++;
+                m_LargeRockCount += 2;
                 SpawnLargeRocks(m_LargeRockCount);
             }
 
@@ -207,16 +243,117 @@ namespace Asteroids
 
             if (m_Player.Components.Get<Player>().m_GameOver)
             {
-                if (Input.IsKeyPressed(Keys.N))
+                if (Input.IsKeyPressed(Keys.N) || Input.IsKeyPressed(Keys.S) || Input.IsKeyPressed(Keys.Return))
                 {
                     NewGame();
                 }
 
-                m_Background.Stop();
+                if (!m_UFO.Components.Get<UFO>().m_GameOver)
+                {
+                    m_Background.Stop();
+
+                    foreach (Entity rock in m_LargeRocks)
+                    {
+                        rock.Components.Get<Rock>().m_GameOver = true;
+                    }
+
+                    foreach (Entity rock in m_MedRocks)
+                    {
+                        rock.Components.Get<Rock>().m_GameOver = true;
+                    }
+
+                    foreach (Entity rock in m_SmallRocks)
+                    {
+                        rock.Components.Get<Rock>().m_GameOver = true;
+                    }
+
+                    m_UFO.Components.Get<UFO>().m_GameOver = true;
+                }
             }
             else
             {
-                m_Background.Play();
+                if (m_UFO.Components.Get<UFO>().m_GameOver)
+                {                 
+                    foreach (Entity rock in m_LargeRocks)
+                    {
+                        rock.Components.Get<Rock>().m_GameOver = false;
+                    }
+
+                    foreach (Entity rock in m_MedRocks)
+                    {
+                        rock.Components.Get<Rock>().m_GameOver = false;
+                    }
+
+                    foreach (Entity rock in m_SmallRocks)
+                    {
+                        rock.Components.Get<Rock>().m_GameOver = false;
+                    }
+
+                    m_UFO.Components.Get<UFO>().m_GameOver = false;
+                }
+
+                if (m_Player.Components.Get<Player>().m_Pause)
+                {
+                    if (Input.IsKeyPressed(Keys.P))
+                    {
+                        m_Background.Play();
+
+                        foreach (Entity rock in m_LargeRocks)
+                        {
+                            rock.Components.Get<Rock>().Pause(false);
+                        }
+
+                        foreach (Entity rock in m_MedRocks)
+                        {
+                            rock.Components.Get<Rock>().Pause(false);
+                        }
+
+                        foreach (Entity rock in m_SmallRocks)
+                        {
+                            rock.Components.Get<Rock>().Pause(false);
+                        }
+
+                        m_UFO.Components.Get<UFO>().Pause(false);
+                        m_Player.Components.Get<Player>().Pause(false);
+
+                        foreach (Entity shot in m_Player.Components.Get<Player>().m_Shots)
+                        {
+                            shot.Components.Get<Shot>().Pause(false);
+                        }
+                    }
+                }
+                else
+                {
+                    m_Background.Play();
+
+                    if (Input.IsKeyPressed(Keys.P))
+                    {
+                        m_Background.Stop();
+
+                        foreach (Entity rock in m_LargeRocks)
+                        {
+                            rock.Components.Get<Rock>().Pause(true);
+                        }
+
+                        foreach (Entity rock in m_MedRocks)
+                        {
+                            rock.Components.Get<Rock>().Pause(true);
+                        }
+
+                        foreach (Entity rock in m_SmallRocks)
+                        {
+                            rock.Components.Get<Rock>().Pause(true);
+                        }
+
+                        m_UFO.Components.Get<UFO>().Pause(true);
+                        m_Player.Components.Get<Player>().Pause(true);
+
+                        foreach (Entity shot in m_Player.Components.Get<Player>().m_Shots)
+                        {
+                            shot.Components.Get<Shot>().Pause(true);
+                        }
+                    }
+                }
             }
         }
 

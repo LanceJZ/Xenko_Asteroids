@@ -49,7 +49,7 @@ namespace Asteroids
 
         public override void Update()
         {
-            if (m_LineMesh.Enabled)
+            if (m_LineMesh.Enabled && !m_Pause)
             {
                 base.Update();
 
@@ -76,6 +76,20 @@ namespace Asteroids
         void Destroy()
         {
             m_LineMesh.Enabled = false;
+        }
+
+        public void Pause(bool pause)
+        {
+            m_Pause = pause;
+
+            if (m_Pause)
+            {
+                m_Timer.Pause();
+            }
+            else
+            {
+                m_Timer.Resume();
+            }
         }
 
         public bool Active()

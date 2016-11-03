@@ -51,7 +51,7 @@ namespace Asteroids
 
         public override void Update()
         {
-            if (m_DotMesh.Enabled)
+            if (m_DotMesh.Enabled && !m_Pause)
             {
                 base.Update();
 
@@ -77,6 +77,20 @@ namespace Asteroids
         void Destroy()
         {
             m_DotMesh.Enabled = false;
+        }
+
+        public void Pause(bool pause)
+        {
+            m_Pause = pause;
+
+            if (m_Pause)
+            {
+                m_Timer.Pause();
+            }
+            else
+            {
+                m_Timer.Resume();
+            }
         }
 
         public bool Active()

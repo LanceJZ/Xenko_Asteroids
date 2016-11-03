@@ -14,6 +14,8 @@ namespace Asteroids
     public class Actor : SyncScript
     {
         public bool m_Hit = false;
+        public bool m_Pause = false;
+        public bool m_GameOver = true;
         public float m_Rotation = 0;
         public float m_RotationVelocity = 0;
         public float m_Radius = 0;
@@ -21,7 +23,7 @@ namespace Asteroids
         public Vector3 m_Position = Vector3.Zero;
         public Vector3 m_Velocity = Vector3.Zero;
         public Vector3 m_Acceleration = Vector3.Zero;
-        public Vector2 m_Edge = new Vector2(44, 32);
+        public Vector2 m_Edge = new Vector2(44, 32);        
 
         public override void Update()
         {

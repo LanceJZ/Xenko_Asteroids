@@ -21,6 +21,8 @@ namespace Asteroids
         public float m_Speed = 5;
         public bool m_Done = false;
         public bool m_Large = true;
+        public Entity m_Shot;
+        public Entity m_Player;
 
         Entity m_UFO;
         ModelComponent m_UFOMesh;
@@ -28,14 +30,12 @@ namespace Asteroids
         ModelComponent m_UFOBIMesh;
         TimerTick m_ShotTimer = new TimerTick();
         TimerTick m_VectorTimer = new TimerTick();
-        public Entity m_Shot;
-        public Entity m_Player;
-        int m_Points;
-
         SoundInstance m_ExplodeSoundInstance;
         SoundInstance m_LargeUFOSoundInstance;
         SoundInstance m_SmallUFOSoundInstance;
         SoundInstance m_FireSoundInstance;
+
+        int m_Points;
 
         public override void Start()
         {
@@ -146,77 +146,91 @@ namespace Asteroids
 
         public override void Update()
         {
-            if (m_Hit = CheckCollisions())
+            if (!m_Pause)
             {
-                Explode();
-            }
-
-            if (Active() && !m_Hit && !m_Done)
-            {
-                base.Update();
-
-                if (m_Large)
-                    m_LargeUFOSoundInstance.Play();
-                else
-                    m_SmallUFOSoundInstance.Play();
-
-                if (m_Position.X > m_Edge.X || m_Position.X < -m_Edge.X)
-                    m_Done = true;
-
-                CheckForEdge();
-
-                if (m_ShotTimer.TotalTime.Seconds > m_ShotTimerAmount)
+                if (m_Hit = CheckCollisions())
                 {
-                    m_FireSoundInstance.Stop();
-                    m_FireSoundInstance.Play();
-                    m_ShotTimer.Reset();
-                    float speed = 30;
-                    float rad = 0;
-
-                    if (m_Large)
-                        rad = RandomRadian();
-                    else
-                    {
-                        rad = (float)Math.Atan2(m_Player.Components.Get<Player>().m_Position.Y - m_Position.Y,
-                            m_Player.Components.Get<Player>().m_Position.X - m_Position.X);
-                    }
-                    
-                    Vector3 dir = new Vector3((float)Math.Cos(rad) * speed, (float)Math.Sin(rad) * speed, 0);
-                    Vector3 offset = new Vector3((float)Math.Cos(rad) * m_Radius, (float)Math.Sin(rad) * m_Radius, 0);
-                    m_Shot.Components.Get<Shot>().Spawn(m_Position + offset, dir + m_Velocity * 0.25f, 0.95f);
+                    Explode();
                 }
 
-                if (m_VectorTimer.TotalTime.Seconds > m_VectorTimerAmount)
+                if (Active() && !m_Hit && !m_Done)
                 {
-                    m_VectorTimer.Reset();
-                    float vChange = (float)m_Random.NextDouble() * 10;
+                    base.Update();
 
-                    if (vChange < 5)
+                    if (!m_GameOver)
                     {
-                        if ((int)m_Velocity.Y == 0 && vChange < 2.5)
-                            m_Velocity.Y = m_Speed;
-                        else if ((int)m_Velocity.Y == 0)
-                            m_Velocity.Y = -m_Speed;
+                        if (m_Large)
+                            m_LargeUFOSoundInstance.Play();
                         else
-                            m_Velocity.Y = 0;
+                            m_SmallUFOSoundInstance.Play();
                     }
-                }
 
-                m_ShotTimer.Tick();
-                m_VectorTimer.Tick();
+                    if (m_Position.X > m_Edge.X || m_Position.X < -m_Edge.X)
+                        m_Done = true;
+
+                    CheckForEdge();
+
+                    if (m_ShotTimer.TotalTime.Seconds > m_ShotTimerAmount)
+                    {
+                        m_FireSoundInstance.Stop();
+
+                        if (!m_GameOver)
+                            m_FireSoundInstance.Play();
+
+                        m_ShotTimer.Reset();
+                        float speed = 30;
+                        float rad = 0;
+
+                        if (m_Large)
+                            rad = RandomRadian();
+                        else
+                        {
+                            rad = (float)Math.Atan2(m_Player.Components.Get<Player>().m_Position.Y - m_Position.Y,
+                                m_Player.Components.Get<Player>().m_Position.X - m_Position.X);
+
+                            rad += (float)m_Random.NextDouble() * 0.1f - 0.1f;
+                        }
+
+                        Vector3 dir = new Vector3((float)Math.Cos(rad) * speed, (float)Math.Sin(rad) * speed, 0);
+                        Vector3 offset = new Vector3((float)Math.Cos(rad) * m_Radius, (float)Math.Sin(rad) * m_Radius, 0);
+                        m_Shot.Components.Get<Shot>().Spawn(m_Position + offset, dir + m_Velocity * 0.25f, 1.05f);
+                    }
+
+                    if (m_VectorTimer.TotalTime.Seconds > m_VectorTimerAmount)
+                    {
+                        m_VectorTimer.Reset();
+                        float vChange = (float)m_Random.NextDouble() * 10;
+
+                        if (vChange < 5)
+                        {
+                            if ((int)m_Velocity.Y == 0 && vChange < 2.5)
+                                m_Velocity.Y = m_Speed;
+                            else if ((int)m_Velocity.Y == 0)
+                                m_Velocity.Y = -m_Speed;
+                            else
+                                m_Velocity.Y = 0;
+                        }
+                    }
+
+                    m_ShotTimer.Tick();
+                    m_VectorTimer.Tick();
+                }
             }
         }
 
         public void Explode()
         {
             m_ExplodeSoundInstance.Stop();
-            m_ExplodeSoundInstance.Play();
+
+            if (!m_GameOver)
+                m_ExplodeSoundInstance.Play();
+
             SpawnExplosion();
         }
 
         public bool CheckPlayerClear()
         {
-            if (CirclesIntersect(Vector3.Zero, 20))
+            if (CirclesIntersect(Vector3.Zero, 25))
                 return false;
 
             return true;
@@ -326,6 +340,23 @@ namespace Asteroids
 
             if (m_SmallUFOSoundInstance != null)
                 m_SmallUFOSoundInstance.Stop();
+        }
+
+        public override void Pause(bool pause)
+        {
+            base.Pause(pause);
+            m_Shot.Components.Get<Shot>().Pause(m_Pause);
+
+            if (m_Pause)
+            {
+                m_ShotTimer.Pause();
+                m_VectorTimer.Pause();
+            }
+            else
+            {
+                m_ShotTimer.Resume();
+                m_VectorTimer.Resume();
+            }
         }
 
         public bool Active()

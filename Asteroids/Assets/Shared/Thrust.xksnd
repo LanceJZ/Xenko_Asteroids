@@ -1,7 +1,7 @@
 !Sound
-Id: 0bf98763-cdca-4d5f-a8eb-b6659eea7fa7
+Id: 1848d1c9-bab1-466d-9124-591fc718d1de
 Tags: []
-Source: ../../../../../../Visual Studio 2015/Projects/VS2015C++/PolyCode/audio/Thrust.ogg
+Source: ../../../../../../Sounds/Thrust.ogg
 CompressionRatio: 15
 StreamFromDisk: false
 Spatialized: false

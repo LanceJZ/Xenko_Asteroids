@@ -56,7 +56,7 @@ namespace Asteroids
 
         public override void Update()
         {
-            if (m_ShotMesh.Enabled)
+            if (m_ShotMesh.Enabled && !m_Pause)
             {
                 base.Update();
                 CheckForEdge();
@@ -72,7 +72,7 @@ namespace Asteroids
 
         public bool CheckPlayerClear()
         {
-            if (CirclesIntersect(Vector3.Zero, 20))
+            if (CirclesIntersect(Vector3.Zero, 25))
                 return false;
 
             return true;
@@ -86,6 +86,20 @@ namespace Asteroids
             m_TimerAmount = timer;
             m_ShotMesh.Enabled = true;
             UpdatePR();
+        }
+
+        public void Pause(bool pause)
+        {
+            m_Pause = pause;
+
+            if (m_Pause)
+            {
+                m_Timer.Pause();
+            }
+            else
+            {
+                m_Timer.Resume();
+            }
         }
 
         public void Destroy()

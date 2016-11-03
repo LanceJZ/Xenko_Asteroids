@@ -17,7 +17,6 @@ namespace Asteroids
     {
         public List<Entity> m_Shots;
         public bool m_Spawn = false;
-        public bool m_GameOver = true;
         public bool m_Exploding = false;
         Entity m_Score;
         Entity m_HighScore;
@@ -75,34 +74,37 @@ namespace Asteroids
                 FirstTime();
             }
 
-            if (!m_Hit && !m_GameOver)
+            if (!m_Pause)
             {
-                base.Update();
-                GetInput();
-                CheckForEdge();
-            }
-            else if (m_Hit && !m_GameOver)
-            {
-                if (m_Spawn && !m_Exploding)
+                if (!m_Hit && !m_GameOver)
                 {
-                    Reset();
+                    base.Update();
+                    GetInput();
+                    CheckForEdge();
                 }
-
-                if (m_Exploding)
+                else if (m_Hit && !m_GameOver)
                 {
-                    bool active = false;
-
-                    foreach (Entity line in m_Explosion)
+                    if (m_Spawn && !m_Exploding)
                     {
-                        if (line.Components.Get<Line>().Active())
-                        {
-                            active = true;
-                            break;
-                        }
+                        Reset();
                     }
 
-                    if (!active)
-                        m_Exploding = false;
+                    if (m_Exploding)
+                    {
+                        bool active = false;
+
+                        foreach (Entity line in m_Explosion)
+                        {
+                            if (line.Components.Get<Line>().Active())
+                            {
+                                active = true;
+                                break;
+                            }
+                        }
+
+                        if (!active)
+                            m_Exploding = false;
+                    }
                 }
             }
             else if (m_GameOver)
@@ -151,6 +153,26 @@ namespace Asteroids
                 return false;
 
             return m_ShipMesh.Enabled;
+        }
+
+        public void Pause(bool pause)
+        {
+            m_Pause = pause;
+
+            if (m_Pause)
+            {
+                foreach (Entity line in m_Explosion)
+                {
+                    line.Components.Get<Line>().Pause(true);
+                }
+            }
+            else
+            {
+                foreach (Entity line in m_Explosion)
+                {
+                    line.Components.Get<Line>().Pause(false);
+                }
+            }
         }
 
         public void BunusLife()
@@ -203,11 +225,11 @@ namespace Asteroids
         {
             if (Input.IsKeyDown(Keys.Left))
             {
-                m_RotationVelocity = -3;
+                m_RotationVelocity = -3.5f;
             }
             else if (Input.IsKeyDown(Keys.Right))
             {
-                m_RotationVelocity = 3;
+                m_RotationVelocity = 3.5f;
             }
             else
                 m_RotationVelocity = 0;
@@ -272,24 +294,23 @@ namespace Asteroids
                 }
                 else
                 {
-                    m_Acceleration.X = -m_Velocity.X * 0.001f;
-                    m_Acceleration.Y = -m_Velocity.Y * 0.001f;
+                    m_Acceleration.X = -m_Velocity.X * 0.0001f;
+                    m_Acceleration.Y = -m_Velocity.Y * 0.0001f;
                 }
             }
             else
             {
-                m_ThurstSoundInstance.Stop();
                 m_FlameMesh.Enabled = false;
                 m_Acceleration = Vector3.Zero;
 
                 if (m_Velocity.X > 0 || m_Velocity.X < 0)
                 {
-                    m_Acceleration.X = -m_Velocity.X * 0.002f;
+                    m_Acceleration.X = -m_Velocity.X * 0.001f;
                 }
 
                 if (m_Velocity.Y > 0 || m_Velocity.Y < 0)
                 {
-                    m_Acceleration.Y = -m_Velocity.Y * 0.002f;
+                    m_Acceleration.Y = -m_Velocity.Y * 0.001f;
                 }
             }
         }
@@ -450,16 +471,20 @@ namespace Asteroids
             Sound bonussound = Content.Load<Sound>("BonusShip");
 
             m_FireSoundInstance = firesound.CreateInstance();
-            m_FireSoundInstance.Volume = 0.50f;
+            m_FireSoundInstance.Volume = 0.33f;
+            m_FireSoundInstance.Pitch = 1.75f;
 
             m_ThurstSoundInstance = thrustsound.CreateInstance();
-            m_ThurstSoundInstance.Volume = 0.40f;
+            m_ThurstSoundInstance.Volume = 1.75f;
+            m_ThurstSoundInstance.Pitch = 0.75f;
 
             m_ExplodeSoundInstance = explodesound.CreateInstance();
-            m_ExplodeSoundInstance.Volume = 0.75f;
+            m_ExplodeSoundInstance.Volume = 0.5f;
+            m_ExplodeSoundInstance.Pitch = 0.5f;
 
             m_BonusSoundInstance = bonussound.CreateInstance();
-            m_BonusSoundInstance.Volume = 0.15f;
+            m_BonusSoundInstance.Volume = 0.5f;
+            m_BonusSoundInstance.Pitch = 3;
         }
     }
 }

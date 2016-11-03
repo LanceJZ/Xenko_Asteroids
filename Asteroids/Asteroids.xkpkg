@@ -75,7 +75,7 @@ Bundles: []
 TemplateFolders: []
 RootAssets:
     - 0539ddcc-b076-430b-8f02-8963bf4623d1:PlayerFire
-    - 0bf98763-cdca-4d5f-a8eb-b6659eea7fa7:Thrust
+    - 1848d1c9-bab1-466d-9124-591fc718d1de:Thrust
     - 37415258-a860-4d10-b78a-fed4d279e7f1:Shot
     - 48cda710-fa31-471d-953b-c350cf555818:Asteroid
     - 51348a3a-9830-4887-baf2-3d56fc864138:Background

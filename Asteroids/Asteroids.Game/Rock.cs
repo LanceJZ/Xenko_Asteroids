@@ -30,19 +30,23 @@ namespace Asteroids
 
             Sound sound = Content.Load<Sound>("RockExplosion");
             m_SoundInstance = sound.CreateInstance();
-            m_SoundInstance.Volume = 0.25f;
+            m_SoundInstance.Volume = 0.15f;
         }
 
         public override void Update()
         {
-            if (m_RockMesh.Enabled && !m_Hit)
+            if (m_RockMesh.Enabled && !m_Hit && !m_Pause)
             {
                 base.Update();
                 CheckForEdge();
+
                 if (m_Hit = CheckCollisions())
                 {
                     m_SoundInstance.Stop();
-                    m_SoundInstance.Play();
+
+                    if (!m_GameOver)
+                        m_SoundInstance.Play();
+
                     SpawnExplosion();
                 }
             }
@@ -55,7 +59,7 @@ namespace Asteroids
 
         public bool CheckPlayerCLear()
         {
-            if (CirclesIntersect(Vector3.Zero, 10))
+            if (CirclesIntersect(Vector3.Zero, 15))
                 return false;
 
             return true;
@@ -126,6 +130,7 @@ namespace Asteroids
             UpdatePR();
             m_RockMesh.Enabled = true;
             SetVelocity(m_Speed);
+            m_GameOver = m_Player.Components.Get<Player>().m_GameOver;
         }
 
         public void Initialize(Random random, Entity player, Entity UFO)

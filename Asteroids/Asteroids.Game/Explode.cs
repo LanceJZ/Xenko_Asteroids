@@ -31,7 +31,7 @@ namespace Asteroids
 
         public override void Update()
         {
-            base.Update();
+            base.Update(); //Needed to update rock and UFO positions.
         }
 
         public void SpawnExplosion()
@@ -45,6 +45,32 @@ namespace Asteroids
                 float speed = (float)m_Random.NextDouble() * 5 + 3;
 
                 dot.Components.Get<Dot>().Spawn(dotPos, timer, speed);
+            }
+        }
+
+        public virtual void Pause(bool pause)
+        {
+            m_Pause = pause;
+
+            if (m_Pause)
+            {
+                if (m_Explosion != null)
+                {
+                    foreach (Entity dot in m_Explosion)
+                    {
+                        dot.Components.Get<Dot>().Pause(true);
+                    }
+                }
+            }
+            else
+            {
+                if (m_Explosion != null)
+                {
+                    foreach (Entity dot in m_Explosion)
+                    {
+                        dot.Components.Get<Dot>().Pause(false);
+                    }
+                }
             }
         }
     }
