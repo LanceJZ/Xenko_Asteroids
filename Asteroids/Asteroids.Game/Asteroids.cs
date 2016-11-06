@@ -8,6 +8,7 @@ using SiliconStudio.Xenko.Input;
 using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Games.Time;
 using SiliconStudio.Xenko.Audio;
+using System.Diagnostics;
 
 namespace Asteroids
 {
@@ -31,7 +32,8 @@ namespace Asteroids
         readonly float m_UFOTimerAmount = 10.15f;
         float m_UFOTimerSet = 10.15f;
         SoundInstance m_Background;
-
+        GameData m_Data = new GameData();
+        
         public override void Start()
         {
             m_LargeRocks = new List<Entity>();
@@ -54,6 +56,25 @@ namespace Asteroids
             Sound background = Content.Load<Sound>("Background");
             m_Background = background.CreateInstance();
             m_Background.Volume = 0.50f;
+
+            //m_Data.OpenForWrite();
+            //HishScoreData score = new HishScoreData();
+            //score.Name = "ZIM";
+            //score.Score = 666;
+            //m_Data.Write(score);
+
+            //score.Name = "LJZ";
+            //score.Score = 6666;
+            //m_Data.Write(score);
+
+            //m_Data.Close();
+
+            //m_Data.OpenForRead();
+            //string scoreData = m_Data.Read();
+            
+
+            //Debug.WriteLine(scoreData);
+            
         }
 
         public override void Update()

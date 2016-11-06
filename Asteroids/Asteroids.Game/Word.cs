@@ -18,20 +18,22 @@ namespace Asteroids
 
     public class Word : Actor
     {
-        WordData[] Letters = new WordData[26];
+        WordData[] Letters = new WordData[27];
         Vector3[] m_LetterLineStart = new Vector3[16];
         Vector3[] m_LetterLineEnd = new Vector3[16];
         public List<Entity> m_Words;
+        public List<ModelComponent> m_WordMeshs;
 
         public override void Start()
         {
-            for (int i = 0; i < 26; i++)
+            for (int i = 0; i < 27; i++)
             {
                 Letters[i].Lines = new bool[16];
             }
 
             InitializeWordLines();
             m_Words = new List<Entity>();
+            m_WordMeshs = new List<ModelComponent>();
         }
 
         public override void Update()
@@ -50,11 +52,14 @@ namespace Asteroids
 
                 foreach (char letter in words)
                 {
-                    if ((int)letter > 64 && (int)letter < 91)
+                    if ((int)letter > 64 && (int)letter < 91 || (int)letter == 95)
                     {
                         int letval = (int)letter - 65;
 
-                        if (letval > -1 && letval < 26)
+                        if ((int)letter == 95)
+                            letval = 26;
+
+                        if (letval > -1 && letval < 27)
                         {
                             MakeLetterMesh(space, letval, size);
                         }
@@ -102,9 +107,9 @@ namespace Asteroids
 
                     Model model = new Model();
                     model.Add(mesh);
-                    ModelComponent m_NumberMesh = new ModelComponent(model);
+                    m_WordMeshs.Add(new ModelComponent(model));
                     m_Words.Add(new Entity());
-                    m_Words[m_Words.Count - 1].Add(m_NumberMesh);
+                    m_Words[m_Words.Count - 1].Add(m_WordMeshs[m_WordMeshs.Count - 1]);
                     this.Entity.AddChild(m_Words[m_Words.Count - 1]);
                 }
             }
@@ -114,7 +119,32 @@ namespace Asteroids
         {
             foreach (Entity word in m_Words)
             {
-                this.Entity.RemoveChild(word);
+                this.Entity.RemoveChild(word);                
+            }
+
+            m_Words.Clear();
+            m_WordMeshs.Clear();
+        }
+
+        public void HideWords()
+        {
+            if (m_WordMeshs != null)
+            {
+                foreach (ModelComponent word in m_WordMeshs)
+                {
+                    word.Enabled = false;
+                }
+            }
+        }
+
+        public void ShowWords()
+        {
+            if (m_WordMeshs != null)
+            {
+                foreach (ModelComponent word in m_WordMeshs)
+                {
+                    word.Enabled = true;
+                }
             }
         }
 
@@ -596,6 +626,23 @@ namespace Asteroids
             Letters[25].Lines[13] = false;
             Letters[25].Lines[14] = false;
             Letters[25].Lines[15] = false;
+            // _
+            Letters[26].Lines[0] = false;
+            Letters[26].Lines[1] = false;
+            Letters[26].Lines[2] = false;
+            Letters[26].Lines[3] = false;
+            Letters[26].Lines[4] = true;
+            Letters[26].Lines[5] = true;
+            Letters[26].Lines[6] = false;
+            Letters[26].Lines[7] = false;
+            Letters[26].Lines[8] = false;
+            Letters[26].Lines[9] = false;
+            Letters[26].Lines[10] = false;
+            Letters[26].Lines[11] = false;
+            Letters[26].Lines[12] = false;
+            Letters[26].Lines[13] = false;
+            Letters[26].Lines[14] = false;
+            Letters[26].Lines[15] = false;
         }
     }
 }

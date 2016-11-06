@@ -22,6 +22,7 @@ namespace Asteroids
         Vector3[] m_NumberLineStart = new Vector3[7];
         Vector3[] m_NumberLineEnd = new Vector3[7];
         public List<Entity> m_Numbers;
+        List<ModelComponent> m_NumberMeshs;
 
         public override void Start()
         {
@@ -32,6 +33,7 @@ namespace Asteroids
 
             InitializeNumberLines();
             m_Numbers = new List<Entity>();
+            m_NumberMeshs = new List<ModelComponent>();
         }
 
         public override void Update()
@@ -68,6 +70,31 @@ namespace Asteroids
             foreach (Entity num in m_Numbers)
             {
                 this.Entity.RemoveChild(num);
+            }
+
+            m_Numbers.Clear();
+            m_NumberMeshs.Clear();
+        }
+
+        public void HideNumbers()
+        {
+            if (m_NumberMeshs != null)
+            {
+                foreach (ModelComponent num in m_NumberMeshs)
+                {
+                    num.Enabled = false;
+                }
+            }
+        }
+
+        public void ShowNumbers()
+        {
+            if (m_NumberMeshs != null)
+            {
+                foreach (ModelComponent num in m_NumberMeshs)
+                {
+                    num.Enabled = true;
+                }
             }
         }
 
@@ -108,9 +135,9 @@ namespace Asteroids
 
                         Model model = new Model();
                         model.Add(mesh);
-                        ModelComponent m_NumberMesh = new ModelComponent(model);
+                        m_NumberMeshs.Add(new ModelComponent(model));
                         m_Numbers.Add(new Entity());
-                        m_Numbers[m_Numbers.Count - 1].Add(m_NumberMesh);
+                        m_Numbers[m_Numbers.Count - 1].Add(m_NumberMeshs[m_NumberMeshs.Count - 1]);
                         this.Entity.AddChild(m_Numbers[m_Numbers.Count - 1]);
                     }
                 }

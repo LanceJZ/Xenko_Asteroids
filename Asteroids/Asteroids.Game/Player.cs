@@ -10,9 +10,17 @@ using SiliconStudio.Xenko.Graphics;
 using SiliconStudio.Xenko.Rendering;
 using SiliconStudio.Xenko.Audio;
 using SiliconStudio.Xenko.Games.Time;
+using System.Diagnostics;
 
 namespace Asteroids
 {
+    public struct HighScoreListMesh
+    {
+        public Entity Rank;
+        public Entity Name;
+        public Entity Score;
+    }    
+
     public class Player : Actor
     {
         public List<Entity> m_Shots;
@@ -25,7 +33,10 @@ namespace Asteroids
         Entity m_GameOverEntity;
         Entity m_PushStartEntity;
         Entity m_CoinPlayEntity;
+        Entity m_HighScoreEntity;
+        Entity m_NewHighScoreLettersEntity;
         Entity[] m_CoinPlayNumbersEntity = new Entity[2];
+        Entity[] m_EnterYourInitialsEntitys = new Entity[4];
         Entity m_Ship;
         Entity m_ShipFlame;
         Model m_ShipModel;
@@ -34,27 +45,38 @@ namespace Asteroids
         ModelComponent m_FlameMesh;
         ModelComponent m_ShipMesh;
         bool m_FirstRun = true;
+        bool m_NewHighScore = false;
+        bool m_NoHighScore = true;
 
         int m_Lives = 0;
         int m_TotalScore = 0;
         int m_TotalHighScore = 0;
-        int m_PointsToNextFreeLife = 0;
-        int m_PointsForFreeLife = 5000;
+        int m_PointsToNextExtraShip = 0;
+        int m_PointsForExtraShip = 5000;
+        int m_HighScoreSelector = 0;
+        int m_NewHighScoreRank = 0;
 
         string m_GameOverText = "GAME OVER";
         string m_Ataritext = "ATARI INC";
         int m_AtariDate = 1979;
         string m_PushStartText = "PUSH START";
         string m_CoinPlayText = "COIN   PLAY";
+        string m_HighScoresText = "HIGH SCORES";
+        string[] m_EnterYourInitials = new string[4];
+        char[] m_HighScoreSelectedLetters = new char[3];
 
         SoundInstance m_FireSoundInstance;
         SoundInstance m_ThurstSoundInstance;
         SoundInstance m_ExplodeSoundInstance;
         SoundInstance m_BonusSoundInstance;
-        
+
+        HighScoreListMesh[] m_HighScoreListMesh = new HighScoreListMesh[10];
+        HighScoreData[] m_HighScoreList = new HighScoreData[10];
+        GameData m_Data = new GameData();
+
         public override void Start()
         {
-            m_PointsToNextFreeLife = m_PointsForFreeLife;
+            m_PointsToNextExtraShip = m_PointsForExtraShip;
             m_Radius = 1.15f;
             m_Shots = new List<Entity>();
             m_DisplayShips = new List<Entity>();
@@ -107,9 +129,14 @@ namespace Asteroids
                     }
                 }
             }
-            else if (m_GameOver)
-            {
 
+            if (m_GameOver)
+            {
+                if (m_NewHighScore)
+                {
+                    HideHighScoreList();                    
+                    NewHighScore();
+                }
             }
         }
 
@@ -117,19 +144,19 @@ namespace Asteroids
         {
             m_TotalScore += points;
 
-            if (m_TotalScore > m_PointsToNextFreeLife)
+            if (m_TotalScore > m_PointsToNextExtraShip)
             {
                 BunusLife();
-                m_PointsToNextFreeLife += m_PointsForFreeLife;
+                m_PointsToNextExtraShip += m_PointsForExtraShip;
             }
 
-            if (m_TotalScore > m_TotalHighScore || m_TotalHighScore == 0)
+            if (m_TotalScore > m_TotalHighScore)
             {
                 m_TotalHighScore = m_TotalScore;
-                m_HighScore.Components.Get<Number>().ProcessNumber(m_TotalHighScore, new Vector3(0.5f, m_Edge.Y - 0.5f, 0), 0.666f);
             }
 
             m_Score.Components.Get<Number>().ProcessNumber(m_TotalScore, new Vector3(m_Edge.X * 0.5f, m_Edge.Y + 0.15f, 0), 1);
+            m_HighScore.Components.Get<Number>().ProcessNumber(m_TotalHighScore, new Vector3(0.5f, m_Edge.Y - 0.5f, 0), 0.666f);
         }
 
         public void FirstTime()
@@ -138,12 +165,25 @@ namespace Asteroids
             {
                 m_AtariDateEntity.Components.Get<Number>().ProcessNumber(m_AtariDate, new Vector3(3.5f, -m_Edge.Y + 1, 0), 0.5f);
                 m_AtariEntity.Components.Get<Word>().ProcessWords(m_Ataritext, new Vector3(4.5f, -m_Edge.Y + 1, 0), 0.25f);
-                m_PushStartEntity.Components.Get<Word>().ProcessWords(m_PushStartText, new Vector3(30, m_Edge.Y - 10, 0), 1);
+                m_PushStartEntity.Components.Get<Word>().ProcessWords(m_PushStartText, new Vector3(30, m_Edge.Y - 7, 0), 1);
                 m_CoinPlayEntity.Components.Get<Word>().ProcessWords(m_CoinPlayText, new Vector3(33, -m_Edge.Y + 10, 0), 1);
                 m_CoinPlayNumbersEntity[0].Get<Number>().ProcessNumber(1, new Vector3(25, -m_Edge.Y + 10, 0), 2);
                 m_CoinPlayNumbersEntity[1].Get<Number>().ProcessNumber(1, new Vector3(3, -m_Edge.Y + 10, 0), 2);
+                m_GameOverEntity.Components.Get<Word>().ProcessWords(m_GameOverText, new Vector3(27, m_Edge.Y - 7, 0), 1);
+                m_GameOverEntity.Components.Get<Word>().HideWords();
+                m_HighScoreEntity.Components.Get<Word>().ProcessWords(m_HighScoresText, new Vector3(18, m_Edge.Y - 14, 0), 0.5f);
+                m_HighScoreEntity.Components.Get<Word>().HideWords();
+                SetupHighScoreList();
                 SetScore(0);
                 m_FirstRun = false;
+
+                for (int line = 0; line < 4; line++)
+                {
+                    m_EnterYourInitialsEntitys[line].Components.Get<Word>().ProcessWords(m_EnterYourInitials[line], 
+                        new Vector3(m_EnterYourInitials[line].Length * 0.80f + 30, m_Edge.Y - 20 - line * 3, 0), 0.5f);
+
+                    m_EnterYourInitialsEntitys[line].Components.Get<Word>().HideWords();
+                }
             }
         }
 
@@ -188,14 +228,17 @@ namespace Asteroids
             m_Lives = 4;
             ShipLives();
             m_TotalScore = 0;
-            m_PointsToNextFreeLife = m_PointsForFreeLife;
+            m_PointsToNextExtraShip = m_PointsForExtraShip;
             SetScore(0);
             m_GameOver = false;
-            m_GameOverEntity.Components.Get<Word>().DeleteWords();
-            m_PushStartEntity.Components.Get<Word>().DeleteWords();
-            m_CoinPlayEntity.Components.Get<Word>().DeleteWords();
-            m_CoinPlayNumbersEntity[0].Get<Number>().DeleteNumbers();
-            m_CoinPlayNumbersEntity[1].Get<Number>().DeleteNumbers();
+            HideHighScoreList();
+            m_HighScoreSelectedLetters = "___".ToCharArray();
+            m_GameOverEntity.Components.Get<Word>().HideWords();
+            m_HighScoreEntity.Components.Get<Word>().HideWords();
+            m_PushStartEntity.Components.Get<Word>().HideWords();
+            m_CoinPlayEntity.Components.Get<Word>().HideWords();
+            m_CoinPlayNumbersEntity[0].Get<Number>().HideNumbers();
+            m_CoinPlayNumbersEntity[1].Get<Number>().HideNumbers();
         }
 
         public void Hit()
@@ -214,9 +257,219 @@ namespace Asteroids
 
                 if (m_Lives < 1)
                 {
-                    m_GameOver = true;
-                    m_GameOverEntity.Components.Get<Word>().ProcessWords(m_GameOverText, new Vector3(25, 10, 0), 1);
-                    m_Hit = false;
+                    GameOver();
+                }
+            }
+        }
+
+        void GameOver()
+        {
+            m_GameOver = true;
+            m_Hit = false;
+
+            for (int rank = 0; rank < 10; rank++)
+            {
+                if (m_TotalScore > m_HighScoreList[rank].Score)
+                {
+                    if (rank < 9)
+                    {
+                        // Move High Score at rank list to make room for new High Score.
+                        HighScoreData[] oldScores = new HighScoreData[10];
+
+                        for (int oldranks = rank; oldranks < 10; oldranks++)
+                        {
+                            oldScores[oldranks].Score = m_HighScoreList[oldranks].Score;
+                            oldScores[oldranks].Name = m_HighScoreList[oldranks].Name;
+                        }
+
+                        for (int oldranks = rank; oldranks < 9; oldranks++)
+                        {
+                            m_HighScoreList[oldranks + 1].Score = oldScores[oldranks].Score;
+                            m_HighScoreList[oldranks + 1].Name = oldScores[oldranks].Name;
+                        }
+                    }
+
+                    m_HighScoreList[rank].Score = m_TotalScore;
+                    SaveNewHighScoreList();
+                    m_NewHighScoreRank = rank;
+                    m_NewHighScore = true;
+                    m_NewHighScoreLettersEntity.Components.Get<Word>().ShowWords();
+
+                    for (int line = 0; line < 4; line++)
+                    {
+                        m_EnterYourInitialsEntitys[line].Components.Get<Word>().ShowWords();
+                    }
+
+                    break;
+                }
+            }
+
+            if (!m_NewHighScore)
+            {
+                DisplayHighScoreList();
+                m_GameOverEntity.Components.Get<Word>().ShowWords();
+            }
+        }
+
+        void NewHighScore()
+        {
+            string name = "";
+
+            for (int i = 0; i < 3; i++)
+            {
+                name += m_HighScoreSelectedLetters[i];
+            }
+
+            m_NewHighScoreLettersEntity.Components.Get<Word>().ProcessWords(name, new Vector3(8, -m_Edge.Y + 8, 0), 1);
+
+            if (Input.IsKeyPressed(Keys.Right))
+            {
+                m_HighScoreSelectedLetters[m_HighScoreSelector]++;
+
+                if (m_HighScoreSelectedLetters[m_HighScoreSelector] > 90)
+                    m_HighScoreSelectedLetters[m_HighScoreSelector] = (char)65;
+            }
+
+            if (Input.IsKeyPressed(Keys.Left))
+            {
+                m_HighScoreSelectedLetters[m_HighScoreSelector]--;
+
+                if (m_HighScoreSelectedLetters[m_HighScoreSelector] < 65)
+                    m_HighScoreSelectedLetters[m_HighScoreSelector] = (char)90;
+            }
+
+            if (Input.IsKeyPressed(Keys.Down))
+            {
+                m_HighScoreSelector++;
+
+                if (m_HighScoreSelector > 2)
+                {
+                    m_NewHighScore = false;
+                    m_HighScoreList[m_NewHighScoreRank].Name = name;
+                    SaveNewHighScoreList();
+                    UpdateHighScoreList();
+                    m_NewHighScoreLettersEntity.Components.Get<Word>().HideWords();
+
+                    for (int line = 0; line < 4; line++)
+                    {
+                        m_EnterYourInitialsEntitys[line].Components.Get<Word>().HideWords();
+                    }
+                }
+            }
+        }
+
+        void SetupHighScoreList()
+        {
+            if (m_Data.DoesFileExist())
+            {
+                m_Data.OpenForRead();
+                string scoreData = m_Data.Read();
+
+                int score = 0;
+                int letter = 0;
+                bool isLetter = true;
+                string fromNumber = "";
+
+                foreach (char ch in scoreData)
+                {
+                    if (ch.ToString() == "*")
+                        break;
+
+                    if (isLetter)
+                    {
+                        letter++;
+                        m_HighScoreList[score].Name += ch;
+
+                        if (letter == 3)
+                            isLetter = false;
+                    }
+                    else
+                    {
+                        if (ch.ToString() == ":")
+                        {
+                            m_HighScoreList[score].Score = int.Parse(fromNumber);
+
+                            score++;
+                            letter = 0;
+                            fromNumber = "";
+                            isLetter = true;                            
+                        }
+                        else
+                        {
+                            fromNumber += ch.ToString();
+                        }
+                    }
+                }
+
+                UpdateHighScoreList();
+                m_NoHighScore = false;
+            }
+        }
+
+        void SaveNewHighScoreList()
+        {
+            m_Data.OpenForWrite();
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (m_HighScoreList[i].Score > 0 && m_HighScoreList[i].Name != "")
+                    m_Data.Write(m_HighScoreList[i]);
+            }
+
+            m_Data.Close();
+        }
+
+        void UpdateHighScoreList()
+        {
+            Vector3 loc = new Vector3(2, m_Edge.Y - 18, 0);
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (m_HighScoreList[i].Score > 0)
+                {
+                    //Debug.WriteLine(m_HighScoreList[i].Name + " " + m_HighScoreList[i].Score);
+
+                    m_HighScoreListMesh[i].Rank.Components.Get<Number>().ProcessNumber(i + 1, new Vector3(loc.X + 12, loc.Y - i * 2.5f, 0), 1);
+                    m_HighScoreListMesh[i].Score.Components.Get<Number>().ProcessNumber(m_HighScoreList[i].Score, new Vector3(loc.X - 4, loc.Y - i * 2.5f, 0), 1);
+                    m_HighScoreListMesh[i].Name.Components.Get<Word>().ProcessWords(m_HighScoreList[i].Name, new Vector3(loc.X - 6, loc.Y - i * 2.5f, 0), 0.5f);
+
+                    if (m_HighScoreList[i].Score > m_TotalHighScore)
+                        m_TotalHighScore = m_HighScoreList[i].Score;
+
+                }
+            }
+
+            
+        }
+
+        void DisplayHighScoreList()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if (m_HighScoreList[i].Score > 0)
+                {
+                    m_HighScoreListMesh[i].Rank.Components.Get<Number>().ShowNumbers();
+                    m_HighScoreListMesh[i].Score.Components.Get<Number>().ShowNumbers();
+                    m_HighScoreListMesh[i].Name.Components.Get<Word>().ShowWords();
+                    m_CoinPlayEntity.Components.Get<Word>().ShowWords();
+                    m_CoinPlayNumbersEntity[0].Get<Number>().ShowNumbers();
+                    m_CoinPlayNumbersEntity[1].Get<Number>().ShowNumbers();
+
+                    if (!m_NoHighScore)
+                        m_HighScoreEntity.Components.Get<Word>().ShowWords();
+                }
+            }
+        }
+
+        void HideHighScoreList()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if (m_HighScoreList[i].Score > 0)
+                {
+                    m_HighScoreListMesh[i].Rank.Components.Get<Number>().HideNumbers();
+                    m_HighScoreListMesh[i].Score.Components.Get<Number>().HideNumbers();
+                    m_HighScoreListMesh[i].Name.Components.Get<Word>().HideWords();
                 }
             }
         }
@@ -259,7 +512,7 @@ namespace Asteroids
                         float speed = 35;
                         Vector3 dir = new Vector3((float)Math.Cos(m_Rotation) * speed, (float)Math.Sin(m_Rotation) * speed, 0);
                         Vector3 offset = new Vector3((float)Math.Cos(m_Rotation) * m_Radius, (float)Math.Sin(m_Rotation) * m_Radius, 0);
-                        m_Shots[shot].Components.Get<Shot>().Spawn(m_Position + offset, dir + m_Velocity * 0.5f, 1.55f);
+                        m_Shots[shot].Components.Get<Shot>().Spawn(m_Position + offset, dir + m_Velocity * 0.75f, 1.55f);
                         break;
                     }
                 }
@@ -294,8 +547,8 @@ namespace Asteroids
                 }
                 else
                 {
-                    m_Acceleration.X = -m_Velocity.X * 0.0001f;
-                    m_Acceleration.Y = -m_Velocity.Y * 0.0001f;
+                    m_Acceleration.X = -m_Velocity.X * 0.001f;
+                    m_Acceleration.Y = -m_Velocity.Y * 0.001f;
                 }
             }
             else
@@ -369,11 +622,18 @@ namespace Asteroids
 
         void Initilize() //Initialize class
         {
+            m_EnterYourInitials[0] = "YOUR SCORE IS ONE OF THE TEN BEST";
+            m_EnterYourInitials[1] = "PLEASE ENTER YOUR INITIALS";
+            m_EnterYourInitials[2] = "PUSH ROTATE TO SELECT LETTER";
+            m_EnterYourInitials[3] = "PUSH HYPERSPECE WHEN LETTER IS CURRECT";
+
             Prefab myShotPrefab = Content.Load<Prefab>("Shot");
             Prefab myLinePrefab = Content.Load<Prefab>("Line");
             Prefab myNumberPrefab = Content.Load<Prefab>("Number");
             Prefab myWordPrefab = Content.Load<Prefab>("Word");
 
+            m_HighScoreEntity = myWordPrefab.Instantiate().First();
+            SceneSystem.SceneInstance.Scene.Entities.Add(m_HighScoreEntity);
             m_Score = myNumberPrefab.Instantiate().First();
             SceneSystem.SceneInstance.Scene.Entities.Add(m_Score);
             m_HighScore = myNumberPrefab.Instantiate().First();
@@ -388,6 +648,26 @@ namespace Asteroids
             SceneSystem.SceneInstance.Scene.Entities.Add(m_PushStartEntity);
             m_CoinPlayEntity = myWordPrefab.Instantiate().First();
             SceneSystem.SceneInstance.Scene.Entities.Add(m_CoinPlayEntity);
+            m_NewHighScoreLettersEntity = myWordPrefab.Instantiate().First();
+            SceneSystem.SceneInstance.Scene.Entities.Add(m_NewHighScoreLettersEntity);
+
+            for (int line = 0; line < 4; line++)
+            {
+                m_EnterYourInitialsEntitys[line] = myWordPrefab.Instantiate().First();
+                SceneSystem.SceneInstance.Scene.Entities.Add(m_EnterYourInitialsEntitys[line]);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                m_HighScoreListMesh[i].Name = myWordPrefab.Instantiate().First();
+                SceneSystem.SceneInstance.Scene.Entities.Add(m_HighScoreListMesh[i].Name);
+                m_HighScoreListMesh[i].Score = myNumberPrefab.Instantiate().First();
+                SceneSystem.SceneInstance.Scene.Entities.Add(m_HighScoreListMesh[i].Score);
+                m_HighScoreListMesh[i].Rank = myNumberPrefab.Instantiate().First();
+                SceneSystem.SceneInstance.Scene.Entities.Add(m_HighScoreListMesh[i].Rank);
+
+                m_HighScoreList[i].Name = "";
+            }
 
             for (int i = 0; i < 2; i++)
             {
