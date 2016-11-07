@@ -14,8 +14,7 @@ namespace Asteroids
 {
     public class Dot : Actor
     {
-        public float m_TimerAmount = 0;
-
+        float m_TimerAmount = 0;
         Entity m_Dot;
         ModelComponent m_DotMesh;
         TimerTick m_Timer = new TimerTick();
@@ -62,6 +61,11 @@ namespace Asteroids
 
                 m_Timer.Tick();
             }
+        }
+
+        public void Initialize(Random random)
+        {
+            m_Random = random;
         }
 
         public void Spawn(Vector3 position, float timer, float speed)

@@ -1,29 +1,78 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SiliconStudio.Core.Mathematics;
-using SiliconStudio.Xenko.Input;
 using SiliconStudio.Xenko.Engine;
-using SiliconStudio.Xenko.Graphics;
-using SiliconStudio.Xenko.Rendering;
 
 namespace Asteroids
 {
     public class Actor : SyncScript
     {
-        public bool m_Hit = false;
-        public bool m_Pause = false;
-        public bool m_GameOver = true;
-        public float m_Rotation = 0;
-        public float m_RotationVelocity = 0;
-        public float m_Radius = 0;
-        public Random m_Random;
+        bool b_Hit = false;
+
+        public bool m_Hit
+        {
+            get
+            {
+                return b_Hit;
+            }
+
+            protected set
+            {
+                b_Hit = value;
+            }
+        }
+
+        bool b_Pause = false;
+
+        public bool m_Pause
+        {
+            get
+            {
+                return b_Pause;
+            }
+
+            set
+            {
+                b_Pause = value;
+            }
+        }
+        
+        bool b_GameOver = true;
+
+        public bool m_GameOver
+        {
+            get
+            {
+                return b_GameOver;
+            }
+
+            set
+            {
+                b_GameOver = value;
+            }
+        }
+
+        float f_Radius = 0;
+
+        public float m_Radius
+        {
+            get
+            {
+                return f_Radius;
+            }
+
+            protected set
+            {
+                f_Radius = value;
+            }
+        }
+
         public Vector3 m_Position = Vector3.Zero;
         public Vector3 m_Velocity = Vector3.Zero;
         public Vector3 m_Acceleration = Vector3.Zero;
-        public Vector2 m_Edge = new Vector2(44, 32);        
+        public Vector2 m_Edge = new Vector2(44, 32);
+        protected Random m_Random;
+        protected float m_Rotation = 0;
+        protected float m_RotationVelocity = 0;
 
         public override void Update()
         {

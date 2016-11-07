@@ -11,21 +11,22 @@ namespace Asteroids
 {
     public class Explode : Actor
     {
-        protected List<Entity> m_Explosion;
+        protected List<Dot> m_Explosion;
 
         public override void Start()
         {
             base.Start();
 
-            m_Explosion = new List<Entity>();
+            m_Explosion = new List<Dot>();
             Prefab dotPrefab;
             dotPrefab = Content.Load<Prefab>("Dot");
 
             for (int dot = 0; dot < 12; dot++)
             {
-                m_Explosion.Add(dotPrefab.Instantiate().First());
-                m_Explosion[dot].Components.Get<Dot>().m_Random = m_Random;
-                SceneSystem.SceneInstance.Scene.Entities.Add(m_Explosion[dot]);
+                Entity dotE = dotPrefab.Instantiate().First();
+                SceneSystem.SceneInstance.Scene.Entities.Add(dotE);
+                m_Explosion.Add(dotE.Components.Get<Dot>());
+                m_Explosion[dot].Initialize(m_Random);
             }
         }
 
@@ -36,7 +37,7 @@ namespace Asteroids
 
         public void SpawnExplosion()
         {
-            foreach (Entity dot in m_Explosion)
+            foreach (Dot dot in m_Explosion)
             {
                 Vector3 dotPos = m_Position;
                 dotPos.X += (float)m_Random.NextDouble() * 2 - 1;
@@ -44,7 +45,7 @@ namespace Asteroids
                 float timer = (float)m_Random.NextDouble() * 2 + 0.1f;
                 float speed = (float)m_Random.NextDouble() * 5 + 3;
 
-                dot.Components.Get<Dot>().Spawn(dotPos, timer, speed);
+                dot.Spawn(dotPos, timer, speed);
             }
         }
 
@@ -56,9 +57,9 @@ namespace Asteroids
             {
                 if (m_Explosion != null)
                 {
-                    foreach (Entity dot in m_Explosion)
+                    foreach (Dot dot in m_Explosion)
                     {
-                        dot.Components.Get<Dot>().Pause(true);
+                        dot.Pause(true);
                     }
                 }
             }
@@ -66,9 +67,9 @@ namespace Asteroids
             {
                 if (m_Explosion != null)
                 {
-                    foreach (Entity dot in m_Explosion)
+                    foreach (Dot dot in m_Explosion)
                     {
-                        dot.Components.Get<Dot>().Pause(false);
+                        dot.Pause(false);
                     }
                 }
             }

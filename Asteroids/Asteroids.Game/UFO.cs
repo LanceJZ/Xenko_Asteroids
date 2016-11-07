@@ -15,16 +15,33 @@ namespace Asteroids
 {
     public class UFO : Explode
     {
-        // Declared public member fields and properties will show in the game studio
-        public float m_ShotTimerAmount = 2.75f;
-        public float m_VectorTimerAmount = 3;
-        public float m_Speed = 5;
-        public bool m_Done = false;
-        public bool m_Large = true;
-        public Entity m_Shot;
-        public Entity m_Player;
+        Shot s_Shot;
+
+        public Shot m_Shot
+        {
+            get
+            {
+                return s_Shot;
+            }
+
+            set
+            {
+                s_Shot = value;
+            }
+        }
+
+        bool b_Done = false;
+
+        public bool m_Done
+        {
+            get
+            {
+                return b_Done;
+            }
+        }
 
         Entity m_UFO;
+        Player m_Player;
         ModelComponent m_UFOMesh;
         ModelComponent m_UFOTIMesh;
         ModelComponent m_UFOBIMesh;
@@ -35,13 +52,18 @@ namespace Asteroids
         SoundInstance m_SmallUFOSoundInstance;
         SoundInstance m_FireSoundInstance;
 
+        bool m_Large = true;
         int m_Points;
+        float m_ShotTimerAmount = 2.75f;
+        float m_VectorTimerAmount = 3;
+        float m_Speed = 5;
 
         public override void Start()
         {
             base.Start();
-            // Initialization of the script.
+            
             m_Radius = 1.9f;
+
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
             var vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
@@ -124,8 +146,9 @@ namespace Asteroids
             Destroy();
 
             Prefab myShotPrefab = Content.Load<Prefab>("Shot");
-            m_Shot = myShotPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_Shot);
+            Entity shot = myShotPrefab.Instantiate().First();
+            SceneSystem.SceneInstance.Scene.Entities.Add(shot);
+            m_Shot = shot.Components.Get<Shot>();
 
             Sound expsound = Content.Load<Sound>("UFOExplosion");
             m_ExplodeSoundInstance = expsound.CreateInstance();
@@ -153,7 +176,7 @@ namespace Asteroids
                     Explode();
                 }
 
-                if (Active() && !m_Hit && !m_Done)
+                if (Active() && !m_Hit && !b_Done)
                 {
                     base.Update();
 
@@ -166,7 +189,7 @@ namespace Asteroids
                     }
 
                     if (m_Position.X > m_Edge.X || m_Position.X < -m_Edge.X)
-                        m_Done = true;
+                        b_Done = true;
 
                     CheckForEdge();
 
@@ -185,15 +208,15 @@ namespace Asteroids
                             rad = RandomRadian();
                         else
                         {
-                            rad = (float)Math.Atan2(m_Player.Components.Get<Player>().m_Position.Y - m_Position.Y,
-                                m_Player.Components.Get<Player>().m_Position.X - m_Position.X);
+                            rad = (float)Math.Atan2(m_Player.m_Position.Y - m_Position.Y,
+                                m_Player.m_Position.X - m_Position.X);
 
                             rad += (float)m_Random.NextDouble() * 0.1f - 0.1f;
                         }
 
                         Vector3 dir = new Vector3((float)Math.Cos(rad) * speed, (float)Math.Sin(rad) * speed, 0);
                         Vector3 offset = new Vector3((float)Math.Cos(rad) * m_Radius, (float)Math.Sin(rad) * m_Radius, 0);
-                        m_Shot.Components.Get<Shot>().Spawn(m_Position + offset, dir + m_Velocity * 0.25f, 1.05f);
+                        m_Shot.Spawn(m_Position + offset, dir + m_Velocity * 0.25f, 1.05f);
                     }
 
                     if (m_VectorTimer.TotalTime.Seconds > m_VectorTimerAmount)
@@ -238,7 +261,7 @@ namespace Asteroids
 
         void SetScore()
         {
-            m_Player.Components.Get<Player>().SetScore(m_Points);
+            m_Player.SetScore(m_Points);
         }
 
         bool CheckCollisions()
@@ -247,43 +270,48 @@ namespace Asteroids
             {
                 for (int shot = 0; shot < 4; shot++)
                 {
-                    if (m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Active())
+                    if (m_Player.m_Shots[shot].Active())
                     {
-                        if (CirclesIntersect(m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Position,
-                            m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Radius))
+                        if (CirclesIntersect(m_Player.m_Shots[shot].m_Position,
+                            m_Player.m_Shots[shot].m_Radius))
                         {
                             SetScore();
-                            m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Destroy();
+                            m_Player.m_Shots[shot].Destroy();
                             return true;
                         }
                     }
                 }
 
-                if (m_Player.Components.Get<Player>().Active())
+                if (m_Player.Active())
                 {
-                    if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
+                    if (CirclesIntersect(m_Player.m_Position, m_Player.m_Radius))
                     {
                         SetScore();
-                        m_Player.Components.Get<Player>().Hit();
+                        m_Player.Hit();
                         return true;
                     }
                 }
             }
 
-            if (m_Shot.Components.Get<Shot>().Active())
+            if (m_Shot.Active())
             {
-                if (m_Player.Components.Get<Player>().Active())
+                if (m_Player.Active())
                 {
-                    if (m_Shot.Components.Get<Shot>().CirclesIntersect(m_Player.Components.Get<Player>().m_Position,
-                        m_Player.Components.Get<Player>().m_Radius))
+                    if (m_Shot.CirclesIntersect(m_Player.m_Position, m_Player.m_Radius))
                     {
-                        m_Player.Components.Get<Player>().Hit();
-                        m_Shot.Components.Get<Shot>().Destroy();
+                        m_Player.Hit();
+                        m_Shot.Destroy();
                     }
                 }
             }
 
             return false;
+        }
+
+        public void Initialize(Player player, Random random)
+        {
+            m_Player = player;
+            m_Random = random;
         }
 
         public void Spawn(int SpawnCount, int Wave)
@@ -306,25 +334,28 @@ namespace Asteroids
 
             if (m_Random.Next (0, 10) > 5)
             {
-                m_Position.X = -m_Edge.X;
+                m_Position = new Vector3(-m_Edge.X, m_Position.Y, 0);
                 m_Velocity.X = m_Speed;
             }
             else
             {
-                m_Position.X = m_Edge.X;
+                m_Position= new Vector3(m_Edge.X, m_Position.Y, 0);
                 m_Velocity.X = -m_Speed;
             }
 
-            m_Position.Y = RandomHieght();
-
-            UpdatePR();
+            RandomHieght();
             m_ShotTimer.Reset();
             m_VectorTimer.Reset();
             m_UFOMesh.Enabled = true;
             m_UFOBIMesh.Enabled = true;
             m_UFOTIMesh.Enabled = true;
-            m_Done = false;
+            b_Done = false;
             m_Hit = false;
+        }
+
+        public void Hit()
+        {
+            m_Hit = true;
         }
 
         public void Destroy()
@@ -332,7 +363,7 @@ namespace Asteroids
             m_UFOMesh.Enabled = false;
             m_UFOTIMesh.Enabled = false;
             m_UFOBIMesh.Enabled = false;
-            m_Done = false;
+            b_Done = false;
             m_Hit = false;
 
             if (m_LargeUFOSoundInstance != null)
@@ -345,7 +376,7 @@ namespace Asteroids
         public override void Pause(bool pause)
         {
             base.Pause(pause);
-            m_Shot.Components.Get<Shot>().Pause(m_Pause);
+            m_Shot.Pause(m_Pause);
 
             if (m_Pause)
             {

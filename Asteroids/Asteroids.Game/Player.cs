@@ -16,16 +16,92 @@ namespace Asteroids
 {
     public struct HighScoreListMesh
     {
-        public Entity Rank;
-        public Entity Name;
-        public Entity Score;
-    }    
+        Number nRank;
+        Number nScore;
+        Word wName;
+
+        public Number Rank
+        {
+            get
+            {
+                return nRank;
+            }
+
+            set
+            {
+                nRank = value;
+            }
+        }
+
+        public Number Score
+        {
+            get
+            {
+                return nScore;
+            }
+
+            set
+            {
+                nScore = value;
+            }
+        }
+
+        public Word Name
+        {
+            get
+            {
+                return wName;
+            }
+
+            set
+            {
+                wName = value;
+            }
+        }
+    }
 
     public class Player : Actor
     {
-        public List<Entity> m_Shots;
-        public bool m_Spawn = false;
-        public bool m_Exploding = false;
+        List<Shot> l_Shots;
+
+        public List<Shot> m_Shots
+        {
+            get
+            {
+                return l_Shots;
+            }
+
+            set
+            {
+                l_Shots = value;
+            }
+        }
+
+        bool b_Spawn = false;
+
+        public bool m_Spawn
+        {
+            get
+            {
+                return b_Spawn;
+            }
+
+            set
+            {
+                b_Spawn = value;
+            }
+        }
+
+        bool b_Exploding = false;
+
+        public bool m_Exploding
+        {
+            get
+            {
+                return b_Exploding;
+            }
+        }
+
         Entity m_Score;
         Entity m_HighScore;
         Entity m_AtariDateEntity;
@@ -41,7 +117,7 @@ namespace Asteroids
         Entity m_ShipFlame;
         Model m_ShipModel;
         List<Entity> m_DisplayShips;
-        List<Entity> m_Explosion;
+        List<Line> m_Explosion;
         ModelComponent m_FlameMesh;
         ModelComponent m_ShipMesh;
         bool m_FirstRun = true;
@@ -74,13 +150,16 @@ namespace Asteroids
         HighScoreData[] m_HighScoreList = new HighScoreData[10];
         GameData m_Data = new GameData();
 
+        TimerTick m_FlameTimer;
+
         public override void Start()
         {
             m_PointsToNextExtraShip = m_PointsForExtraShip;
             m_Radius = 1.15f;
-            m_Shots = new List<Entity>();
+            m_FlameTimer = new TimerTick();
+            m_Shots = new List<Shot>();
             m_DisplayShips = new List<Entity>();
-            m_Explosion = new List<Entity>();
+            m_Explosion = new List<Line>();
 
             Initilize();
             InitializeAudio();
@@ -98,6 +177,8 @@ namespace Asteroids
 
             if (!m_Pause)
             {
+                m_FlameTimer.Tick();
+
                 if (!m_Hit && !m_GameOver)
                 {
                     base.Update();
@@ -106,18 +187,18 @@ namespace Asteroids
                 }
                 else if (m_Hit && !m_GameOver)
                 {
-                    if (m_Spawn && !m_Exploding)
+                    if (m_Spawn && !b_Exploding)
                     {
                         Reset();
                     }
 
-                    if (m_Exploding)
+                    if (b_Exploding)
                     {
                         bool active = false;
 
-                        foreach (Entity line in m_Explosion)
+                        foreach (Line line in m_Explosion)
                         {
-                            if (line.Components.Get<Line>().Active())
+                            if (line.Active())
                             {
                                 active = true;
                                 break;
@@ -125,7 +206,7 @@ namespace Asteroids
                         }
 
                         if (!active)
-                            m_Exploding = false;
+                            b_Exploding = false;
                     }
                 }
             }
@@ -187,6 +268,11 @@ namespace Asteroids
             }
         }
 
+        public void Initilize(Random random)
+        {
+            m_Random = random;
+        }
+
         public bool Active()
         {
             if (m_ShipMesh == null)
@@ -201,16 +287,16 @@ namespace Asteroids
 
             if (m_Pause)
             {
-                foreach (Entity line in m_Explosion)
+                foreach (Line line in m_Explosion)
                 {
-                    line.Components.Get<Line>().Pause(true);
+                    line.Pause(true);
                 }
             }
             else
             {
-                foreach (Entity line in m_Explosion)
+                foreach (Line line in m_Explosion)
                 {
-                    line.Components.Get<Line>().Pause(false);
+                    line.Pause(false);
                 }
             }
         }
@@ -429,9 +515,9 @@ namespace Asteroids
                 {
                     //Debug.WriteLine(m_HighScoreList[i].Name + " " + m_HighScoreList[i].Score);
 
-                    m_HighScoreListMesh[i].Rank.Components.Get<Number>().ProcessNumber(i + 1, new Vector3(loc.X + 12, loc.Y - i * 2.5f, 0), 1);
-                    m_HighScoreListMesh[i].Score.Components.Get<Number>().ProcessNumber(m_HighScoreList[i].Score, new Vector3(loc.X - 4, loc.Y - i * 2.5f, 0), 1);
-                    m_HighScoreListMesh[i].Name.Components.Get<Word>().ProcessWords(m_HighScoreList[i].Name, new Vector3(loc.X - 6, loc.Y - i * 2.5f, 0), 0.5f);
+                    m_HighScoreListMesh[i].Rank.ProcessNumber(i + 1, new Vector3(loc.X + 12, loc.Y - i * 2.5f, 0), 1);
+                    m_HighScoreListMesh[i].Score.ProcessNumber(m_HighScoreList[i].Score, new Vector3(loc.X - 4, loc.Y - i * 2.5f, 0), 1);
+                    m_HighScoreListMesh[i].Name.ProcessWords(m_HighScoreList[i].Name, new Vector3(loc.X - 6, loc.Y - i * 2.5f, 0), 0.5f);
 
                     if (m_HighScoreList[i].Score > m_TotalHighScore)
                         m_TotalHighScore = m_HighScoreList[i].Score;
@@ -448,9 +534,9 @@ namespace Asteroids
             {
                 if (m_HighScoreList[i].Score > 0)
                 {
-                    m_HighScoreListMesh[i].Rank.Components.Get<Number>().ShowNumbers();
-                    m_HighScoreListMesh[i].Score.Components.Get<Number>().ShowNumbers();
-                    m_HighScoreListMesh[i].Name.Components.Get<Word>().ShowWords();
+                    m_HighScoreListMesh[i].Rank.ShowNumbers();
+                    m_HighScoreListMesh[i].Score.ShowNumbers();
+                    m_HighScoreListMesh[i].Name.ShowWords();
                     m_CoinPlayEntity.Components.Get<Word>().ShowWords();
                     m_CoinPlayNumbersEntity[0].Get<Number>().ShowNumbers();
                     m_CoinPlayNumbersEntity[1].Get<Number>().ShowNumbers();
@@ -467,9 +553,9 @@ namespace Asteroids
             {
                 if (m_HighScoreList[i].Score > 0)
                 {
-                    m_HighScoreListMesh[i].Rank.Components.Get<Number>().HideNumbers();
-                    m_HighScoreListMesh[i].Score.Components.Get<Number>().HideNumbers();
-                    m_HighScoreListMesh[i].Name.Components.Get<Word>().HideWords();
+                    m_HighScoreListMesh[i].Rank.HideNumbers();
+                    m_HighScoreListMesh[i].Score.HideNumbers();
+                    m_HighScoreListMesh[i].Name.HideWords();
                 }
             }
         }
@@ -505,14 +591,14 @@ namespace Asteroids
             {
                 for (int shot = 0; shot < 4; shot++)
                 {
-                    if (!m_Shots[shot].Components.Get<Shot>().Active())
+                    if (!m_Shots[shot].Active())
                     {
                         m_FireSoundInstance.Stop();
                         m_FireSoundInstance.Play();
                         float speed = 35;
                         Vector3 dir = new Vector3((float)Math.Cos(m_Rotation) * speed, (float)Math.Sin(m_Rotation) * speed, 0);
                         Vector3 offset = new Vector3((float)Math.Cos(m_Rotation) * m_Radius, (float)Math.Sin(m_Rotation) * m_Radius, 0);
-                        m_Shots[shot].Components.Get<Shot>().Spawn(m_Position + offset, dir + m_Velocity * 0.75f, 1.55f);
+                        m_Shots[shot].Spawn(m_Position + offset, dir + m_Velocity * 0.75f, 1.55f);
                         break;
                     }
                 }
@@ -543,7 +629,16 @@ namespace Asteroids
                 if (testX + testY < max)
                 {
                     m_Acceleration = new Vector3((float)Math.Cos(m_Rotation) * thrustAmount, (float)Math.Sin(m_Rotation) * thrustAmount, 0);
-                    m_FlameMesh.Enabled = true;
+
+                    if (m_FlameTimer.TotalTime.Milliseconds > 18)
+                    {
+                        m_FlameTimer.Reset();
+
+                        if (m_FlameMesh.Enabled)
+                            m_FlameMesh.Enabled = false;
+                        else
+                            m_FlameMesh.Enabled = true;
+                    }
                 }
                 else
                 {
@@ -572,9 +667,9 @@ namespace Asteroids
         {
             m_ExplodeSoundInstance.Stop();
             m_ExplodeSoundInstance.Play();
-            m_Exploding = true;
+            b_Exploding = true;
 
-            foreach (Entity line in m_Explosion)
+            foreach (Line line in m_Explosion)
             {
                 Vector3 linePos = m_Position;
                 linePos.X += (float)m_Random.NextDouble() * 2 - 1;
@@ -583,7 +678,7 @@ namespace Asteroids
                 float speed = (float)m_Random.NextDouble() * 4 + 1;
                 float rotspeed = (float)m_Random.NextDouble() * 2 + 0.25f;
 
-                line.Components.Get<Line>().Spawn(linePos, RandomRadian(), timer, speed, rotspeed);
+                line.Spawn(linePos, RandomRadian(), timer, speed, rotspeed);
             }
         }
 
@@ -659,13 +754,15 @@ namespace Asteroids
 
             for (int i = 0; i < 10; i++)
             {
-                m_HighScoreListMesh[i].Name = myWordPrefab.Instantiate().First();
-                SceneSystem.SceneInstance.Scene.Entities.Add(m_HighScoreListMesh[i].Name);
-                m_HighScoreListMesh[i].Score = myNumberPrefab.Instantiate().First();
-                SceneSystem.SceneInstance.Scene.Entities.Add(m_HighScoreListMesh[i].Score);
-                m_HighScoreListMesh[i].Rank = myNumberPrefab.Instantiate().First();
-                SceneSystem.SceneInstance.Scene.Entities.Add(m_HighScoreListMesh[i].Rank);
-
+                Entity rank = myNumberPrefab.Instantiate().First();
+                SceneSystem.SceneInstance.Scene.Entities.Add(rank);
+                m_HighScoreListMesh[i].Rank = rank.Components.Get<Number>();
+                Entity score = myNumberPrefab.Instantiate().First();
+                SceneSystem.SceneInstance.Scene.Entities.Add(score);
+                m_HighScoreListMesh[i].Score = score.Components.Get<Number>();
+                Entity name = myWordPrefab.Instantiate().First();
+                SceneSystem.SceneInstance.Scene.Entities.Add(name);
+                m_HighScoreListMesh[i].Name = name.Components.Get<Word>();
                 m_HighScoreList[i].Name = "";
             }
 
@@ -677,15 +774,18 @@ namespace Asteroids
 
             for (int i = 0; i < 4; i++)
             {
-                m_Shots.Add(myShotPrefab.Instantiate().First());
-                SceneSystem.SceneInstance.Scene.Entities.Add(m_Shots[i]);
+                Entity shot;
+                shot = (myShotPrefab.Instantiate().First());
+                SceneSystem.SceneInstance.Scene.Entities.Add(shot);
+                m_Shots.Add(shot.Components.Get<Shot>());
             }
 
             for (int i = 0; i < 6; i++)
             {
-                m_Explosion.Add(myLinePrefab.Instantiate().First());
-                SceneSystem.SceneInstance.Scene.Entities.Add(m_Explosion[i]);
-                m_Explosion[i].Components.Get<Line>().m_Random = m_Random;
+                Entity line = myLinePrefab.Instantiate().First();
+                SceneSystem.SceneInstance.Scene.Entities.Add(line);
+                m_Explosion.Add(line.Components.Get<Line>());
+                m_Explosion[i].Initialize(m_Random);
             }
 
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders

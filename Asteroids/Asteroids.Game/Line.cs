@@ -14,9 +14,9 @@ namespace Asteroids
 {
     public class Line : Actor
     {
-        public Entity m_Line;
+        Entity m_Line;
         ModelComponent m_LineMesh;
-        public float m_TimerAmount = 0;
+        float m_TimerAmount = 0;
         TimerTick m_Timer = new TimerTick();
 
         public override void Start()
@@ -61,6 +61,12 @@ namespace Asteroids
                 m_Timer.Tick();
             }
         }
+
+        public void Initialize(Random random)
+        {
+            m_Random = random;
+        }
+
         public void Spawn(Vector3 position, float rotation, float timer, float speed, float rotationSpeed)
         {
             m_Position = position;

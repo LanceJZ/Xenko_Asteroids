@@ -15,8 +15,8 @@ namespace Asteroids
     public class Rock : Explode
     {
         // Declared public member fields and properties will show in the game studio
-        Entity m_Player;
-        Entity m_UFO;
+        Player m_Player;
+        UFO m_UFO;
         Entity m_Rock;
         ModelComponent m_RockMesh;
         SoundInstance m_SoundInstance;
@@ -54,7 +54,7 @@ namespace Asteroids
 
         void SetScore()
         {
-            m_Player.Components.Get<Player>().SetScore(m_Points);
+            m_Player.SetScore(m_Points);
         }
 
         public bool CheckPlayerCLear()
@@ -67,46 +67,46 @@ namespace Asteroids
 
         bool CheckCollisions()
         {
-            if (m_Player.Components.Get<Player>().Active())
+            if (m_Player.Active())
             {
-                if (CirclesIntersect(m_Player.Components.Get<Player>().m_Position, m_Player.Components.Get<Player>().m_Radius))
+                if (CirclesIntersect(m_Player.m_Position, m_Player.m_Radius))
                 {
                     SetScore();
-                    m_Player.Components.Get<Player>().Hit();
+                    m_Player.Hit();
                     return true;
                 }
             }
 
             for (int shot = 0; shot < 4; shot++)
             {
-                if (m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Active())
+                if (m_Player.m_Shots[shot].Active())
                 {
-                    if (CirclesIntersect(m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Position,
-                        m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().m_Radius))
+                    if (CirclesIntersect(m_Player.m_Shots[shot].m_Position,
+                        m_Player.m_Shots[shot].m_Radius))
                     {
-                        m_Player.Components.Get<Player>().m_Shots[shot].Components.Get<Shot>().Destroy();
+                        m_Player.m_Shots[shot].Destroy();
                         SetScore();
                         return true;
                     }
                 }
             }
 
-            if (m_UFO.Components.Get<UFO>().m_Shot.Components.Get<Shot>().Active())
+            if (m_UFO.m_Shot.Active())
             {
-                if (CirclesIntersect(m_UFO.Components.Get<UFO>().m_Shot.Components.Get<Shot>().m_Position,
-                    m_UFO.Components.Get<UFO>().m_Shot.Components.Get<Shot>().m_Radius))
+                if (CirclesIntersect(m_UFO.m_Shot.m_Position,
+                    m_UFO.m_Shot.m_Radius))
                 {
-                    m_UFO.Components.Get<UFO>().m_Shot.Components.Get<Shot>().Destroy();
+                    m_UFO.m_Shot.Destroy();
                     return true;
                 }
             }
 
-            if (m_UFO.Components.Get<UFO>().Active())
+            if (m_UFO.Active())
             {
-                if (CirclesIntersect(m_UFO.Components.Get<UFO>().m_Position, m_UFO.Components.Get<UFO>().m_Radius))
+                if (CirclesIntersect(m_UFO.m_Position, m_UFO.m_Radius))
                 {                    
-                    m_UFO.Components.Get<UFO>().m_Hit = true;
-                    m_UFO.Components.Get<UFO>().Explode();
+                    m_UFO.Hit();
+                    m_UFO.Explode();
                     return true;
                 }
             }
@@ -114,7 +114,7 @@ namespace Asteroids
             return false;
         }
 
-        public void Spawn(Vector3 position, float scale, float speed, int points, Random random, Entity player, Entity UFO)
+        public void Spawn(Vector3 position, float scale, float speed, int points, Random random, Player player, UFO UFO)
         {
             Initialize(random, player, UFO);
             m_Speed = speed;
@@ -130,18 +130,36 @@ namespace Asteroids
             UpdatePR();
             m_RockMesh.Enabled = true;
             SetVelocity(m_Speed);
-            m_GameOver = m_Player.Components.Get<Player>().m_GameOver;
+            m_GameOver = m_Player.m_GameOver;
         }
 
-        public void Initialize(Random random, Entity player, Entity UFO)
+        public void Large()
+        {
+            SetVelocity(5);
+            m_RockMesh.Enabled = true;
+            RandomHieght();
+
+            if (m_Velocity.X < 0)
+            {
+                m_Position = new Vector3(m_Edge.X, m_Position.Y, 0);
+            }
+            else
+            {
+                m_Position = new Vector3(-m_Edge.X, m_Position.Y, 0);
+            }
+
+            UpdatePR();
+        }
+
+        public void Initialize(Random random, Player player, UFO UFO)
         {
             m_Radius = 2.9f;
-            m_Random = random;
             m_Player = player;
             m_UFO = UFO;
             m_Points = 20;
+            m_Random = random;
 
-            int m_RockType = m_Random.Next(0, 4);
+            int m_RockType = random.Next(0, 4);
 
             if (m_RockType == 1)
                 m_RockOne();
@@ -155,25 +173,6 @@ namespace Asteroids
             m_Rock = new Entity();
             m_Rock.Add(m_RockMesh);
             this.Entity.AddChild(m_Rock);
-        }
-
-        public void Large()
-        {
-            SetVelocity(5);
-            m_RockMesh.Enabled = true;
-
-            if (m_Velocity.X < 0)
-            {
-                m_Position.X = m_Edge.X;
-            }
-            else
-            {
-                m_Position.X = -m_Edge.X;
-            }
-
-            m_Position.Y = RandomHieght();
-
-            UpdatePR();
         }
 
         public void Destroy()
@@ -192,9 +191,9 @@ namespace Asteroids
 
         public bool ExplosionActive()
         {
-            foreach (Entity dot in m_Explosion)
+            foreach (Dot dot in m_Explosion)
             {
-                if (dot.Components.Get<Dot>().Active())
+                if (dot.Active())
                     return true;
             }
 
