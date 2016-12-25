@@ -1,7 +1,6 @@
 !Package
 Id: ca233602-1c70-4908-bdda-31ce61227666
-SerializedVersion: {Assets: 0.0.2}
-Tags: []
+SerializedVersion: {Assets: 0.0.4}
 Meta:
     Name: Asteroids
     Version: 1.0.0.0
@@ -10,7 +9,7 @@ Meta:
     RootNamespace: Asteroids
     Dependencies:
         -   Name: Xenko
-            Version: 1.8.2-beta
+            Version: 1.9.0-beta
             RootAssets: []
 LocalDependencies: []
 Profiles:
@@ -21,7 +20,6 @@ Profiles:
             -   Path: Assets/Shared
             -   Path: Asteroids.Game/Effects
         OutputGroupDirectories: {}
-        Properties: {}
         ProjectReferences:
             -   Id: dcb48a83-b04a-48c9-ba2b-51f6d845cef0
                 Location: Asteroids.Game/Asteroids.Game.csproj
@@ -32,18 +30,16 @@ Profiles:
         AssetFolders:
             -   Path: Assets/Windows
         OutputGroupDirectories: {}
-        Properties: {}
         ProjectReferences:
             -   Id: 8e00aca0-b122-4112-b09c-0ef71cb0e1f0
                 Location: Asteroids.Windows/Asteroids.Windows.csproj
                 Type: Executable
     -   Name: Windows10
-        Platform: Windows10
+        Platform: UWP
         InheritProfiles: []
         AssetFolders:
             -   Path: Assets/Windows10
         OutputGroupDirectories: {}
-        Properties: {}
         ProjectReferences:
             -   Id: 55a6937e-1d16-4465-ad9d-6050cc4b2c40
                 Location: Asteroids.Windows10/Asteroids.Windows10.csproj
@@ -54,7 +50,6 @@ Profiles:
         AssetFolders:
             -   Path: Assets/Linux
         OutputGroupDirectories: {}
-        Properties: {}
         ProjectReferences:
             -   Id: 3d60a3d4-c1dc-4f2d-8ec1-8388fe41d525
                 Location: Asteroids.Linux/Asteroids.Linux.csproj
@@ -65,7 +60,6 @@ Profiles:
         AssetFolders:
             -   Path: Assets/Android
         OutputGroupDirectories: {}
-        Properties: {}
         ProjectReferences:
             -   Id: 8bcd3c57-8ddf-4547-9da9-019cf02cc834
                 Location: Asteroids.Android/Asteroids.Android.csproj

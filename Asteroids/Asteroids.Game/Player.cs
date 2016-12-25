@@ -318,7 +318,7 @@ namespace Asteroids
             SetScore(0);
             m_GameOver = false;
             HideHighScoreList();
-            m_HighScoreSelectedLetters = "___".ToCharArray();
+            m_HighScoreSelectedLetters = "___".ToCharArray();            
             m_GameOverEntity.Components.Get<Word>().HideWords();
             m_HighScoreEntity.Components.Get<Word>().HideWords();
             m_PushStartEntity.Components.Get<Word>().HideWords();
@@ -430,6 +430,7 @@ namespace Asteroids
 
                 if (m_HighScoreSelector > 2)
                 {
+                    m_HighScoreSelector = 0;
                     m_NewHighScore = false;
                     m_HighScoreList[m_NewHighScoreRank].Name = name;
                     SaveNewHighScoreList();
@@ -868,3 +869,4 @@ namespace Asteroids
         }
     }
 }
+

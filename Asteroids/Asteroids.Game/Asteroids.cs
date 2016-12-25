@@ -276,25 +276,7 @@ namespace Asteroids
             }
             else
             {
-                if (m_UFO.m_GameOver)
-                {                 
-                    foreach (Rock rock in m_LargeRocks)
-                    {
-                        rock.m_GameOver = false;
-                    }
-
-                    foreach (Rock rock in m_MedRocks)
-                    {
-                        rock.m_GameOver = false;
-                    }
-
-                    foreach (Rock rock in m_SmallRocks)
-                    {
-                        rock.m_GameOver = false;
-                    }
-
-                    m_UFO.m_GameOver = false;
-                }
+                m_UFO.m_GameOver = false;
 
                 if (m_Player.m_Pause)
                 {
@@ -401,7 +383,6 @@ namespace Asteroids
             }
 
             m_UFOTimer.Reset();
-
             m_Player.NewGame();
 
             SpawnLargeRocks(m_LargeRockCount);
@@ -421,6 +402,7 @@ namespace Asteroids
                     {
                         spawnNewRock = false;
                         rock.Large();
+                        rock.m_GameOver = m_Player.m_GameOver;
                         break;
                     }
                 }
@@ -433,6 +415,7 @@ namespace Asteroids
                     m_LargeRocks.Add(rockE.Components.Get<Rock>());
                     m_LargeRocks[rock].Initialize(m_Random, m_Player, m_UFO);
                     m_LargeRocks[rock].Large();
+                    m_LargeRocks[rock].m_GameOver = m_Player.m_GameOver;
                 }
             }
         }
@@ -449,6 +432,7 @@ namespace Asteroids
                     {
                         spawnNewRock = false;
                         rock.Spawn(position);
+                        rock.m_GameOver = m_Player.m_GameOver;
                         break;
                     }
                 }
@@ -460,6 +444,7 @@ namespace Asteroids
                     SceneSystem.SceneInstance.Scene.Entities.Add(rockE);
                     m_MedRocks.Add(rockE.Components.Get<Rock>());
                     m_MedRocks[rock].Spawn(position, 0.5f, 10, 50, m_Random, m_Player, m_UFO);
+                    m_MedRocks[rock].m_GameOver = m_Player.m_GameOver;
                 }
             }
         }
@@ -477,6 +462,7 @@ namespace Asteroids
                     {
                         spawnNewRock = false;
                         rock.Spawn(position);
+                        rock.m_GameOver = m_Player.m_GameOver;
                         break;
                     }
                 }
@@ -488,6 +474,7 @@ namespace Asteroids
                     SceneSystem.SceneInstance.Scene.Entities.Add(rockE);
                     m_SmallRocks.Add(rockE.Components.Get<Rock>());
                     m_SmallRocks[rock].Spawn(position, 0.25f, 20, 100, m_Random, m_Player, m_UFO);
+                    m_SmallRocks[rock].m_GameOver = m_Player.m_GameOver;
                 }
             }
         }
