@@ -247,9 +247,12 @@ namespace Asteroids
 
             if (m_Player.m_GameOver)
             {
-                if (Input.IsKeyPressed(Keys.N) || Input.IsKeyPressed(Keys.S) || Input.IsKeyPressed(Keys.Return))
+                if (!m_Player.m_NewHighScore)
                 {
-                    NewGame();
+                    if (Input.IsKeyPressed(Keys.N) || Input.IsKeyPressed(Keys.S) || Input.IsKeyPressed(Keys.Return))
+                    {
+                        NewGame();
+                    }
                 }
 
                 if (!m_UFO.m_GameOver)

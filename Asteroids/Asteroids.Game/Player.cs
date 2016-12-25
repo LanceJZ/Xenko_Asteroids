@@ -121,7 +121,7 @@ namespace Asteroids
         ModelComponent m_FlameMesh;
         ModelComponent m_ShipMesh;
         bool m_FirstRun = true;
-        bool m_NewHighScore = false;
+        public bool m_NewHighScore = false;
         bool m_NoHighScore = true;
 
         int m_Lives = 0;
@@ -185,7 +185,8 @@ namespace Asteroids
                     GetInput();
                     CheckForEdge();
                 }
-                else if (m_Hit && !m_GameOver)
+
+                if (m_Hit)
                 {
                     if (m_Spawn && !b_Exploding)
                     {
@@ -211,8 +212,11 @@ namespace Asteroids
                 }
             }
 
-            if (m_GameOver)
+            if (m_GameOver && !b_Exploding)
             {
+                m_Hit = false;
+                GameOver();
+
                 if (m_NewHighScore)
                 {
                     HideHighScoreList();                    
@@ -246,11 +250,11 @@ namespace Asteroids
             {
                 m_AtariDateEntity.Components.Get<Number>().ProcessNumber(m_AtariDate, new Vector3(3.5f, -m_Edge.Y + 1, 0), 0.5f);
                 m_AtariEntity.Components.Get<Word>().ProcessWords(m_Ataritext, new Vector3(4.5f, -m_Edge.Y + 1, 0), 0.25f);
-                m_PushStartEntity.Components.Get<Word>().ProcessWords(m_PushStartText, new Vector3(30, m_Edge.Y - 7, 0), 1);
+                m_PushStartEntity.Components.Get<Word>().ProcessWords(m_PushStartText, new Vector3(30, m_Edge.Y - 9, 0), 1);
                 m_CoinPlayEntity.Components.Get<Word>().ProcessWords(m_CoinPlayText, new Vector3(33, -m_Edge.Y + 10, 0), 1);
                 m_CoinPlayNumbersEntity[0].Get<Number>().ProcessNumber(1, new Vector3(25, -m_Edge.Y + 10, 0), 2);
                 m_CoinPlayNumbersEntity[1].Get<Number>().ProcessNumber(1, new Vector3(3, -m_Edge.Y + 10, 0), 2);
-                m_GameOverEntity.Components.Get<Word>().ProcessWords(m_GameOverText, new Vector3(27, m_Edge.Y - 7, 0), 1);
+                m_GameOverEntity.Components.Get<Word>().ProcessWords(m_GameOverText, new Vector3(27, m_Edge.Y - 4, 0), 1);
                 m_GameOverEntity.Components.Get<Word>().HideWords();
                 m_HighScoreEntity.Components.Get<Word>().ProcessWords(m_HighScoresText, new Vector3(18, m_Edge.Y - 14, 0), 0.5f);
                 m_HighScoreEntity.Components.Get<Word>().HideWords();
@@ -343,16 +347,13 @@ namespace Asteroids
 
                 if (m_Lives < 1)
                 {
-                    GameOver();
+                    m_GameOver = true;
                 }
             }
         }
 
         void GameOver()
         {
-            m_GameOver = true;
-            m_Hit = false;
-
             for (int rank = 0; rank < 10; rank++)
             {
                 if (m_TotalScore > m_HighScoreList[rank].Score)
@@ -399,6 +400,7 @@ namespace Asteroids
 
         void NewHighScore()
         {
+            m_NewHighScore = true;
             string name = "";
 
             for (int i = 0; i < 3; i++)
