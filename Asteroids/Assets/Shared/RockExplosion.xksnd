@@ -1,7 +1,8 @@
 !Sound
 Id: f3b3c943-b7c8-4d7b-aa29-b2ea19f9e5ad
+SerializedVersion: {Xenko: 2.0.0.0}
 Tags: []
-Source: ../../../../../../Sounds/RockExplosion.ogg
+Source: ../../Resources/Sounds/RockExplosion.ogg
 CompressionRatio: 15
 StreamFromDisk: false
 Spatialized: false

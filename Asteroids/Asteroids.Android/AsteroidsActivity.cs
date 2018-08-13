@@ -2,8 +2,8 @@ using Android.App;
 using Android.OS;
 using Android.Content.PM;
 
-using SiliconStudio.Xenko.Engine;
-using SiliconStudio.Xenko.Starter;
+using Xenko.Engine;
+using Xenko.Starter;
 
 namespace Asteroids
 {

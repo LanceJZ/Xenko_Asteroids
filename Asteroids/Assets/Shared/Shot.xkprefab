@@ -1,31 +1,27 @@
 !PrefabAsset
 Id: 37415258-a860-4d10-b78a-fed4d279e7f1
-SerializedVersion: {Xenko: 1.7.0-beta04}
+SerializedVersion: {Xenko: 2.1.0.1}
 Tags: []
 Hierarchy:
-    ~Id: 9962f007-fa64-468a-9051-638e7cb5f719
-    RootPartIds:
-        - 6439f390-371a-42d3-a8bb-0693ee9ca994
+    RootParts:
+        - ref!! 6439f390-371a-42d3-a8bb-0693ee9ca994
     Parts:
         -   Entity:
                 Id: 6439f390-371a-42d3-a8bb-0693ee9ca994
                 Name: Shot
                 Components:
-                    - !TransformComponent
-                        ~Id: 1f4daa07-e9b5-41a3-b9fc-944d20884433
-                        Children: []
+                    07aa4d1fb5e9a341b9fc944d20884433: !TransformComponent
+                        Id: 1f4daa07-e9b5-41a3-b9fc-944d20884433
                         Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
-                    - !Asteroids.Shot,Asteroids.Game
-                        ~Id: dbdd65df-c6ff-4881-89a1-4453b42eda8e
-                        m_Hit: false
-                        m_Rotation: 0.0
-                        m_RotationVelocity: 0.0
-                        m_Radius: 0.0
-                        m_Random: null
+                        Children: {}
+                    df65dddbffc6814889a14453b42eda8e: !Asteroids.Shot,Asteroids.Game
+                        Id: dbdd65df-c6ff-4881-89a1-4453b42eda8e
                         m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Velocity: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Acceleration: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Edge: {X: 44.0, Y: 33.0}
+                        m_Pause: false
+                        m_GameOver: true
                         m_TimerAmount: 0.0

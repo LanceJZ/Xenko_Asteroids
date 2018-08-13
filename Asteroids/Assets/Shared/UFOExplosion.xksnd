@@ -1,7 +1,8 @@
 !Sound
 Id: b122fd30-1348-46a1-8b46-3f242b5c89ad
+SerializedVersion: {Xenko: 2.0.0.0}
 Tags: []
-Source: ../../../../../../Sounds/UFOExplosion.ogg
+Source: ../../Resources/Sounds/UFOExplosion.ogg
 CompressionRatio: 15
 StreamFromDisk: false
 Spatialized: false

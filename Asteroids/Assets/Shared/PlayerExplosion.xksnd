@@ -1,7 +1,8 @@
 !Sound
 Id: 9daff956-aff3-4c92-b30e-b715ece34094
+SerializedVersion: {Xenko: 2.0.0.0}
 Tags: []
-Source: ../../../../../../Sounds/PlayerExplosion.ogg
+Source: ../../Resources/Sounds/PlayerExplosion.ogg
 CompressionRatio: 15
 StreamFromDisk: false
 Spatialized: false

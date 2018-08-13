@@ -1,35 +1,29 @@
 !PrefabAsset
 Id: 55e49867-b0c3-49da-9c18-315f65a8d77c
-SerializedVersion: {Xenko: 1.7.0-beta04}
+SerializedVersion: {Xenko: 2.1.0.1}
 Tags: []
 Hierarchy:
-    ~Id: cac06188-dfdc-4b73-8eaf-93903962c32b
-    RootPartIds:
-        - 9bf7d3d2-db30-4484-b44d-73c714cebfd2
+    RootParts:
+        - ref!! 9bf7d3d2-db30-4484-b44d-73c714cebfd2
     Parts:
         -   Entity:
                 Id: 9bf7d3d2-db30-4484-b44d-73c714cebfd2
                 Name: Player
-                Group: Group1
                 Components:
-                    - !TransformComponent
-                        ~Id: 51f2a59c-3f33-40f0-95f4-c0317f717762
-                        Children: []
+                    9ca5f251333ff04095f4c0317f717762: !TransformComponent
+                        Id: 51f2a59c-3f33-40f0-95f4-c0317f717762
                         Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
-                    - !Asteroids.Player,Asteroids.Game
-                        ~Id: d1a05eea-3e61-42e1-9a63-31bad67c9558
-                        m_Hit: false
-                        m_Rotation: 0.0
-                        m_RotationVelocity: 0.0
-                        m_Radius: 0.0
-                        m_Random: null
+                        Children: {}
+                    ea5ea0d1613ee1429a6331bad67c9558: !Asteroids.Player,Asteroids.Game
+                        Id: d1a05eea-3e61-42e1-9a63-31bad67c9558
                         m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Velocity: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Acceleration: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Edge: {X: 44.0, Y: 32.0}
+                        m_Pause: false
+                        m_GameOver: true
+                        m_NewHighScore: false
                         m_Shots: null
                         m_Spawn: false
-                        m_GameOver: true
-                        m_Exploding: false

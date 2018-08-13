@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SiliconStudio.Core.Mathematics;
-using SiliconStudio.Xenko.Input;
-using SiliconStudio.Xenko.Engine;
-using SiliconStudio.Xenko.Graphics;
-using SiliconStudio.Xenko.Rendering;
-using SiliconStudio.Xenko.Games.Time;
+using Xenko.Core.Mathematics;
+using Xenko.Input;
+using Xenko.Engine;
+using Xenko.Games.Time;
+using Xenko.Graphics;
+using Xenko.Rendering;
+using Xenko.Audio;
 
 namespace Asteroids
 {
@@ -22,7 +23,7 @@ namespace Asteroids
         public override void Start()
         {
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
-            var vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
+            var vBuffer = Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
                  new VertexPositionNormalTexture(new Vector3(0.015f, 0.015f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Top Left.
                  new VertexPositionNormalTexture(new Vector3(-0.015f, -0.015f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)) //Bottom right.

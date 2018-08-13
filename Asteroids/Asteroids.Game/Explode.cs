@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SiliconStudio.Core.Mathematics;
-using SiliconStudio.Xenko.Input;
-using SiliconStudio.Xenko.Engine;
+using Xenko.Core.Mathematics;
+using Xenko.Input;
+using Xenko.Engine;
+using Xenko.Games.Time;
+using Xenko.Graphics;
+using Xenko.Rendering;
+using Xenko.Audio;
 
 namespace Asteroids
 {
@@ -24,7 +28,7 @@ namespace Asteroids
             for (int dot = 0; dot < 12; dot++)
             {
                 Entity dotE = dotPrefab.Instantiate().First();
-                SceneSystem.SceneInstance.Scene.Entities.Add(dotE);
+                SceneSystem.SceneInstance.RootScene.Entities.Add(dotE);
                 m_Explosion.Add(dotE.Components.Get<Dot>());
                 m_Explosion[dot].Initialize(m_Random);
             }

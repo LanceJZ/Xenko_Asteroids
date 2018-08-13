@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SiliconStudio.Core.Mathematics;
-using SiliconStudio.Xenko.Input;
-using SiliconStudio.Xenko.Engine;
-using SiliconStudio.Xenko.Graphics;
-using SiliconStudio.Xenko.Rendering;
-using SiliconStudio.Xenko.Games.Time;
-using SiliconStudio.Xenko.Audio;
+using Xenko.Core.Mathematics;
+using Xenko.Input;
+using Xenko.Engine;
+using Xenko.Games.Time;
+using Xenko.Graphics;
+using Xenko.Rendering;
+using Xenko.Audio;
 
 namespace Asteroids
 {
@@ -61,11 +61,11 @@ namespace Asteroids
         public override void Start()
         {
             base.Start();
-            
+
             m_Radius = 1.9f;
 
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
-            var vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
+            var vBuffer = Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
                  new VertexPositionNormalTexture(new Vector3(1.9f, -0.4f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), // Far left edge Bottom line
                  new VertexPositionNormalTexture(new Vector3(0.7f, 0.4f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), // Top line left edge
@@ -96,7 +96,7 @@ namespace Asteroids
             m_UFO.Add(m_UFOMesh);
             this.Entity.AddChild(m_UFO);
             // Top inside lines for UFO
-            var vBufferti = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
+            var vBufferti = Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
                  new VertexPositionNormalTexture(new Vector3(0.7f, 0.4f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), // Top inside line left
                  new VertexPositionNormalTexture(new Vector3(-0.7f, 0.4f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), // Top inside line right
@@ -120,7 +120,7 @@ namespace Asteroids
             m_UFO.AddChild(UFOti);
 
             // Bottom inside lines for UFO
-            var vBufferbi = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
+            var vBufferbi = Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
                  new VertexPositionNormalTexture(new Vector3(1.9f, -0.4f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), // Bottom inside line left
                  new VertexPositionNormalTexture(new Vector3(-1.9f, -0.4f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)) // Bottom inside line right
@@ -147,23 +147,19 @@ namespace Asteroids
 
             Prefab myShotPrefab = Content.Load<Prefab>("Shot");
             Entity shot = myShotPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(shot);
+            SceneSystem.SceneInstance.RootScene.Entities.Add(shot);
             m_Shot = shot.Components.Get<Shot>();
 
-            Sound expsound = Content.Load<Sound>("UFOExplosion");
-            m_ExplodeSoundInstance = expsound.CreateInstance();
+            m_ExplodeSoundInstance = Content.Load<Sound>("UFOExplosion").CreateInstance();
             m_ExplodeSoundInstance.Volume = 0.50f;
 
-            Sound shotsound = Content.Load<Sound>("UFOShot");
-            m_FireSoundInstance = shotsound.CreateInstance();
+            m_FireSoundInstance = Content.Load<Sound>("UFOShot").CreateInstance();
             m_FireSoundInstance.Volume = 0.15f;
 
-            Sound largesound = Content.Load<Sound>("UFOLarge");
-            m_LargeUFOSoundInstance = largesound.CreateInstance();
+            m_LargeUFOSoundInstance = Content.Load<Sound>("UFOLarge").CreateInstance();
             m_LargeUFOSoundInstance.Volume = 0.15f;
 
-            Sound smallsound = Content.Load<Sound>("UFOSmall");
-            m_SmallUFOSoundInstance = smallsound.CreateInstance();
+            m_SmallUFOSoundInstance = Content.Load<Sound>("UFOSmall").CreateInstance();
             m_SmallUFOSoundInstance.Volume = 0.15f;
         }
 
@@ -190,8 +186,8 @@ namespace Asteroids
 
                     if (m_Position.X > m_Edge.X || m_Position.X < -m_Edge.X)
                         b_Done = true;
-
-                    CheckForEdge();
+                    else
+                        CheckForEdge();
 
                     if (m_ShotTimer.TotalTime.Seconds > m_ShotTimerAmount)
                     {

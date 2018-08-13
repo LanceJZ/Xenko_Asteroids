@@ -1,37 +1,27 @@
 !PrefabAsset
 Id: 97639ad7-7b1e-4ca7-ae47-26c1cace76f5
-SerializedVersion: {Xenko: 1.7.0-beta04}
+SerializedVersion: {Xenko: 2.1.0.1}
 Tags: []
 Hierarchy:
-    ~Id: dc99c51a-26c8-4833-a6f1-d488cdaecea0
-    RootPartIds:
-        - d1190028-d266-42c7-85c5-b1f190dce736
+    RootParts:
+        - ref!! d1190028-d266-42c7-85c5-b1f190dce736
     Parts:
         -   Entity:
                 Id: d1190028-d266-42c7-85c5-b1f190dce736
                 Name: UFO
                 Components:
-                    - !TransformComponent
-                        ~Id: 00968fe7-b7cf-4b9c-9446-fef07e70b819
-                        Children: []
+                    e78f9600cfb79c4b9446fef07e70b819: !TransformComponent
+                        Id: 00968fe7-b7cf-4b9c-9446-fef07e70b819
                         Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
-                    - !Asteroids.UFO,Asteroids.Game
-                        ~Id: 222f6c53-96de-4fb8-98c6-10fe3b1d63e5
-                        m_Hit: false
-                        m_Rotation: 0.0
-                        m_RotationVelocity: 0.0
-                        m_Radius: 0.0
-                        m_Random: null
+                        Children: {}
+                    536c2f22de96b84f98c610fe3b1d63e5: !Asteroids.UFO,Asteroids.Game
+                        Id: 222f6c53-96de-4fb8-98c6-10fe3b1d63e5
                         m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Velocity: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Acceleration: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Edge: {X: 44.0, Y: 33.0}
-                        m_ShotTimerAmount: 2.0
-                        m_VectorTimerAmount: 3.0
-                        m_Speed: 5.0
-                        m_Done: false
-                        m_Large: true
+                        m_Pause: false
+                        m_GameOver: true
                         m_Shot: null
-                        m_Player: null

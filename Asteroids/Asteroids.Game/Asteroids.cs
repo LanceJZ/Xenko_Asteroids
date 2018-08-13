@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SiliconStudio.Core.Mathematics;
-using SiliconStudio.Xenko.Input;
-using SiliconStudio.Xenko.Engine;
-using SiliconStudio.Xenko.Games.Time;
-using SiliconStudio.Xenko.Audio;
-using System.Diagnostics;
+using Xenko.Core.Mathematics;
+using Xenko.Input;
+using Xenko.Engine;
+using Xenko.Games.Time;
+using Xenko.Graphics;
+using Xenko.Rendering;
+using Xenko.Audio;
 
 namespace Asteroids
 {
@@ -32,8 +31,8 @@ namespace Asteroids
         readonly float m_UFOTimerAmount = 10.15f;
         float m_UFOTimerSet = 10.15f;
         SoundInstance m_Background;
-        GameData m_Data = new GameData();
-        
+        //GameData m_Data = new GameData();
+
         public override void Start()
         {
             m_LargeRocks = new List<Rock>();
@@ -44,19 +43,18 @@ namespace Asteroids
             m_PlayerPrefab = Content.Load<Prefab>("Player");
             m_UFOPrefab = Content.Load<Prefab>("UFO");
 
-            Entity player;
-            player = m_PlayerPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(player);
+            Entity player = m_PlayerPrefab.Instantiate().First();
+
+            SceneSystem.SceneInstance.RootScene.Entities.Add(player);
             m_Player = player.Components.Get<Player>();
             m_Player.Initilize(m_Random);
             Entity ufo = m_UFOPrefab.Instantiate().First(); ;
-            SceneSystem.SceneInstance.Scene.Entities.Add(ufo);
+            SceneSystem.SceneInstance.RootScene.Entities.Add(ufo);
             m_UFO = ufo.Components.Get<UFO>();
             m_UFO.Initialize(m_Player, m_Random);
             SpawnLargeRocks(m_LargeRockCount);
 
-            Sound background = Content.Load<Sound>("Background");
-            m_Background = background.CreateInstance();
+            m_Background = Content.Load<Sound>("Background").CreateInstance();
             m_Background.Volume = 0.50f;
         }
 
@@ -414,7 +412,7 @@ namespace Asteroids
                 {
                     int rock = m_LargeRocks.Count;
                     Entity rockE = m_RockPrefab.Instantiate().First();
-                    SceneSystem.SceneInstance.Scene.Entities.Add(rockE);
+                    SceneSystem.SceneInstance.RootScene.Entities.Add(rockE);
                     m_LargeRocks.Add(rockE.Components.Get<Rock>());
                     m_LargeRocks[rock].Initialize(m_Random, m_Player, m_UFO);
                     m_LargeRocks[rock].Large();
@@ -444,7 +442,7 @@ namespace Asteroids
                 {
                     int rock = m_MedRocks.Count;
                     Entity rockE = m_RockPrefab.Instantiate().First();
-                    SceneSystem.SceneInstance.Scene.Entities.Add(rockE);
+                    SceneSystem.SceneInstance.RootScene.Entities.Add(rockE);
                     m_MedRocks.Add(rockE.Components.Get<Rock>());
                     m_MedRocks[rock].Spawn(position, 0.5f, 10, 50, m_Random, m_Player, m_UFO);
                     m_MedRocks[rock].m_GameOver = m_Player.m_GameOver;
@@ -474,7 +472,7 @@ namespace Asteroids
                 {
                     int rock = m_SmallRocks.Count;
                     Entity rockE = m_RockPrefab.Instantiate().First();
-                    SceneSystem.SceneInstance.Scene.Entities.Add(rockE);
+                    SceneSystem.SceneInstance.RootScene.Entities.Add(rockE);
                     m_SmallRocks.Add(rockE.Components.Get<Rock>());
                     m_SmallRocks[rock].Spawn(position, 0.25f, 20, 100, m_Random, m_Player, m_UFO);
                     m_SmallRocks[rock].m_GameOver = m_Player.m_GameOver;

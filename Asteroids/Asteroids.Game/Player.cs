@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SiliconStudio.Core.Mathematics;
-using SiliconStudio.Xenko.Input;
-using SiliconStudio.Xenko.Engine;
-using SiliconStudio.Xenko.Graphics;
-using SiliconStudio.Xenko.Rendering;
-using SiliconStudio.Xenko.Audio;
-using SiliconStudio.Xenko.Games.Time;
-using System.Diagnostics;
+using Xenko.Core.Mathematics;
+using Xenko.Input;
+using Xenko.Engine;
+using Xenko.Games.Time;
+using Xenko.Graphics;
+using Xenko.Rendering;
+using Xenko.Audio;
 
 namespace Asteroids
 {
@@ -102,14 +99,14 @@ namespace Asteroids
             }
         }
 
-        Entity m_Score;
-        Entity m_HighScore;
+        Entity m_ScoreEntity;
+        Entity m_HighScoreEntity;
         Entity m_AtariDateEntity;
         Entity m_AtariEntity;
         Entity m_GameOverEntity;
         Entity m_PushStartEntity;
         Entity m_CoinPlayEntity;
-        Entity m_HighScoreEntity;
+        Entity m_HighScoreNameEntity;
         Entity m_NewHighScoreLettersEntity;
         Entity[] m_CoinPlayNumbersEntity = new Entity[2];
         Entity[] m_EnterYourInitialsEntitys = new Entity[4];
@@ -219,7 +216,7 @@ namespace Asteroids
 
                 if (m_NewHighScore)
                 {
-                    HideHighScoreList();                    
+                    HideHighScoreList();
                     NewHighScore();
                 }
             }
@@ -240,13 +237,13 @@ namespace Asteroids
                 m_TotalHighScore = m_TotalScore;
             }
 
-            m_Score.Components.Get<Number>().ProcessNumber(m_TotalScore, new Vector3(m_Edge.X * 0.5f, m_Edge.Y + 0.15f, 0), 1);
-            m_HighScore.Components.Get<Number>().ProcessNumber(m_TotalHighScore, new Vector3(0.5f, m_Edge.Y - 0.5f, 0), 0.666f);
+            m_ScoreEntity.Components.Get<Number>().ProcessNumber(m_TotalScore, new Vector3(m_Edge.X * 0.5f, m_Edge.Y + 0.15f, 0), 1);
+            m_HighScoreEntity.Components.Get<Number>().ProcessNumber(m_TotalHighScore, new Vector3(0.5f, m_Edge.Y - 0.5f, 0), 0.666f);
         }
 
         public void FirstTime()
         {
-            if (m_Score.Components.Get<Number>().m_Numbers != null)
+            if (m_ScoreEntity.Components.Get<Number>().m_Numbers != null)
             {
                 m_AtariDateEntity.Components.Get<Number>().ProcessNumber(m_AtariDate, new Vector3(3.5f, -m_Edge.Y + 1, 0), 0.5f);
                 m_AtariEntity.Components.Get<Word>().ProcessWords(m_Ataritext, new Vector3(4.5f, -m_Edge.Y + 1, 0), 0.25f);
@@ -256,15 +253,15 @@ namespace Asteroids
                 m_CoinPlayNumbersEntity[1].Get<Number>().ProcessNumber(1, new Vector3(3, -m_Edge.Y + 10, 0), 2);
                 m_GameOverEntity.Components.Get<Word>().ProcessWords(m_GameOverText, new Vector3(27, m_Edge.Y - 4, 0), 1);
                 m_GameOverEntity.Components.Get<Word>().HideWords();
-                m_HighScoreEntity.Components.Get<Word>().ProcessWords(m_HighScoresText, new Vector3(18, m_Edge.Y - 14, 0), 0.5f);
-                m_HighScoreEntity.Components.Get<Word>().HideWords();
+                m_HighScoreNameEntity.Components.Get<Word>().ProcessWords(m_HighScoresText, new Vector3(18, m_Edge.Y - 14, 0), 0.5f);
+                m_HighScoreNameEntity.Components.Get<Word>().HideWords();
                 SetupHighScoreList();
                 SetScore(0);
                 m_FirstRun = false;
 
                 for (int line = 0; line < 4; line++)
                 {
-                    m_EnterYourInitialsEntitys[line].Components.Get<Word>().ProcessWords(m_EnterYourInitials[line], 
+                    m_EnterYourInitialsEntitys[line].Components.Get<Word>().ProcessWords(m_EnterYourInitials[line],
                         new Vector3(m_EnterYourInitials[line].Length * 0.80f + 30, m_Edge.Y - 20 - line * 3, 0), 0.5f);
 
                     m_EnterYourInitialsEntitys[line].Components.Get<Word>().HideWords();
@@ -322,9 +319,9 @@ namespace Asteroids
             SetScore(0);
             m_GameOver = false;
             HideHighScoreList();
-            m_HighScoreSelectedLetters = "___".ToCharArray();            
+            m_HighScoreSelectedLetters = "___".ToCharArray();
             m_GameOverEntity.Components.Get<Word>().HideWords();
-            m_HighScoreEntity.Components.Get<Word>().HideWords();
+            m_HighScoreNameEntity.Components.Get<Word>().HideWords();
             m_PushStartEntity.Components.Get<Word>().HideWords();
             m_CoinPlayEntity.Components.Get<Word>().HideWords();
             m_CoinPlayNumbersEntity[0].Get<Number>().HideNumbers();
@@ -481,7 +478,7 @@ namespace Asteroids
                             score++;
                             letter = 0;
                             fromNumber = "";
-                            isLetter = true;                            
+                            isLetter = true;
                         }
                         else
                         {
@@ -528,7 +525,7 @@ namespace Asteroids
                 }
             }
 
-            
+
         }
 
         void DisplayHighScoreList()
@@ -545,7 +542,7 @@ namespace Asteroids
                     m_CoinPlayNumbersEntity[1].Get<Number>().ShowNumbers();
 
                     if (!m_NoHighScore)
-                        m_HighScoreEntity.Components.Get<Word>().ShowWords();
+                        m_HighScoreNameEntity.Components.Get<Word>().ShowWords();
                 }
             }
         }
@@ -689,7 +686,7 @@ namespace Asteroids
         {
             foreach (Entity ship in m_DisplayShips)
             {
-                SceneSystem.SceneInstance.Scene.Entities.Remove(ship);
+                SceneSystem.SceneInstance.RootScene.Entities.Remove(ship);
             }
 
             m_DisplayShips.Clear();
@@ -702,7 +699,7 @@ namespace Asteroids
                 m_DisplayShips[ship].Transform.Position = new Vector3((m_Edge.X * 0.5f) + (ship * 2), m_Edge.Y - 5, 0);
                 m_DisplayShips[ship].Transform.Scale = new Vector3(0.75f);
                 m_DisplayShips[ship].Transform.RotationEulerXYZ = new Vector3(0, 0, MathUtil.PiOverTwo);
-                SceneSystem.SceneInstance.Scene.Entities.Add(m_DisplayShips[ship]);
+                SceneSystem.SceneInstance.RootScene.Entities.Add(m_DisplayShips[ship]);
             }
         }
 
@@ -730,41 +727,41 @@ namespace Asteroids
             Prefab myNumberPrefab = Content.Load<Prefab>("Number");
             Prefab myWordPrefab = Content.Load<Prefab>("Word");
 
-            m_HighScoreEntity = myWordPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_HighScoreEntity);
-            m_Score = myNumberPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_Score);
-            m_HighScore = myNumberPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_HighScore);
+            m_HighScoreNameEntity = myWordPrefab.Instantiate().First();
+            SceneSystem.SceneInstance.RootScene.Entities.Add(m_HighScoreNameEntity);
+            m_ScoreEntity = myNumberPrefab.Instantiate().First();
+            SceneSystem.SceneInstance.RootScene.Entities.Add(m_ScoreEntity);
+            m_HighScoreEntity = myNumberPrefab.Instantiate().First();
+            SceneSystem.SceneInstance.RootScene.Entities.Add(m_HighScoreEntity);
             m_AtariEntity = myWordPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_AtariEntity);
+            SceneSystem.SceneInstance.RootScene.Entities.Add(m_AtariEntity);
             m_AtariDateEntity = myNumberPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_AtariDateEntity);
+            SceneSystem.SceneInstance.RootScene.Entities.Add(m_AtariDateEntity);
             m_GameOverEntity = myWordPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_GameOverEntity);
+            SceneSystem.SceneInstance.RootScene.Entities.Add(m_GameOverEntity);
             m_PushStartEntity = myWordPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_PushStartEntity);
+            SceneSystem.SceneInstance.RootScene.Entities.Add(m_PushStartEntity);
             m_CoinPlayEntity = myWordPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_CoinPlayEntity);
+            SceneSystem.SceneInstance.RootScene.Entities.Add(m_CoinPlayEntity);
             m_NewHighScoreLettersEntity = myWordPrefab.Instantiate().First();
-            SceneSystem.SceneInstance.Scene.Entities.Add(m_NewHighScoreLettersEntity);
+            SceneSystem.SceneInstance.RootScene.Entities.Add(m_NewHighScoreLettersEntity);
 
             for (int line = 0; line < 4; line++)
             {
                 m_EnterYourInitialsEntitys[line] = myWordPrefab.Instantiate().First();
-                SceneSystem.SceneInstance.Scene.Entities.Add(m_EnterYourInitialsEntitys[line]);
+                SceneSystem.SceneInstance.RootScene.Entities.Add(m_EnterYourInitialsEntitys[line]);
             }
 
             for (int i = 0; i < 10; i++)
             {
                 Entity rank = myNumberPrefab.Instantiate().First();
-                SceneSystem.SceneInstance.Scene.Entities.Add(rank);
+                SceneSystem.SceneInstance.RootScene.Entities.Add(rank);
                 m_HighScoreListMesh[i].Rank = rank.Components.Get<Number>();
                 Entity score = myNumberPrefab.Instantiate().First();
-                SceneSystem.SceneInstance.Scene.Entities.Add(score);
+                SceneSystem.SceneInstance.RootScene.Entities.Add(score);
                 m_HighScoreListMesh[i].Score = score.Components.Get<Number>();
                 Entity name = myWordPrefab.Instantiate().First();
-                SceneSystem.SceneInstance.Scene.Entities.Add(name);
+                SceneSystem.SceneInstance.RootScene.Entities.Add(name);
                 m_HighScoreListMesh[i].Name = name.Components.Get<Word>();
                 m_HighScoreList[i].Name = "";
             }
@@ -772,27 +769,27 @@ namespace Asteroids
             for (int i = 0; i < 2; i++)
             {
                 m_CoinPlayNumbersEntity[i] = myNumberPrefab.Instantiate().First();
-                SceneSystem.SceneInstance.Scene.Entities.Add(m_CoinPlayNumbersEntity[i]);
+                SceneSystem.SceneInstance.RootScene.Entities.Add(m_CoinPlayNumbersEntity[i]);
             }
 
             for (int i = 0; i < 4; i++)
             {
                 Entity shot;
                 shot = (myShotPrefab.Instantiate().First());
-                SceneSystem.SceneInstance.Scene.Entities.Add(shot);
+                SceneSystem.SceneInstance.RootScene.Entities.Add(shot);
                 m_Shots.Add(shot.Components.Get<Shot>());
             }
 
             for (int i = 0; i < 6; i++)
             {
                 Entity line = myLinePrefab.Instantiate().First();
-                SceneSystem.SceneInstance.Scene.Entities.Add(line);
+                SceneSystem.SceneInstance.RootScene.Entities.Add(line);
                 m_Explosion.Add(line.Components.Get<Line>());
                 m_Explosion[i].Initialize(m_Random);
             }
 
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
-            var vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
+            var vBuffer = Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
                  new VertexPositionNormalTexture(new Vector3(-1.15f, 0.8f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Top back tip.
                  new VertexPositionNormalTexture(new Vector3(1.15f, 0, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Nose pointing to the left of screen.
@@ -818,7 +815,7 @@ namespace Asteroids
             m_Ship = new Entity();
             m_Ship.Add(m_ShipMesh);
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
-            vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
+            vBuffer = Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
                  new VertexPositionNormalTexture(new Vector3(-0.95f, -0.4f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Bottom inside back.
                  new VertexPositionNormalTexture(new Vector3(-1.75f, 0, 0), new Vector3(0, 1, 1), new Vector2(0, 0)), //Tip of flame.
@@ -848,24 +845,19 @@ namespace Asteroids
 
         void InitializeAudio()
         {
-            Sound firesound = Content.Load<Sound>("PlayerFire");
-            Sound thrustsound = Content.Load<Sound>("Thrust");
-            Sound explodesound = Content.Load<Sound>("PlayerExplosion");
-            Sound bonussound = Content.Load<Sound>("BonusShip");
-
-            m_FireSoundInstance = firesound.CreateInstance();
+            m_FireSoundInstance = Content.Load<Sound>("PlayerFire").CreateInstance();
             m_FireSoundInstance.Volume = 0.33f;
             m_FireSoundInstance.Pitch = 1.75f;
 
-            m_ThurstSoundInstance = thrustsound.CreateInstance();
+            m_ThurstSoundInstance = Content.Load<Sound>("Thrust").CreateInstance();
             m_ThurstSoundInstance.Volume = 1.75f;
             m_ThurstSoundInstance.Pitch = 0.75f;
 
-            m_ExplodeSoundInstance = explodesound.CreateInstance();
+            m_ExplodeSoundInstance = Content.Load<Sound>("PlayerExplosion").CreateInstance();
             m_ExplodeSoundInstance.Volume = 0.5f;
             m_ExplodeSoundInstance.Pitch = 0.5f;
 
-            m_BonusSoundInstance = bonussound.CreateInstance();
+            m_BonusSoundInstance = Content.Load<Sound>("BonusShip").CreateInstance();
             m_BonusSoundInstance.Volume = 0.5f;
             m_BonusSoundInstance.Pitch = 3;
         }

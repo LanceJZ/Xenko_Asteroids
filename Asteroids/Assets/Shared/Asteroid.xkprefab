@@ -1,31 +1,26 @@
 !PrefabAsset
 Id: 48cda710-fa31-471d-953b-c350cf555818
-SerializedVersion: {Xenko: 1.7.0-beta04}
+SerializedVersion: {Xenko: 2.1.0.1}
 Tags: []
 Hierarchy:
-    ~Id: 66cf6ff8-7958-47a9-be34-18edb7b80e83
-    RootPartIds:
-        - 152315f1-877b-4e8a-b709-329c6d195efa
+    RootParts:
+        - ref!! 152315f1-877b-4e8a-b709-329c6d195efa
     Parts:
         -   Entity:
                 Id: 152315f1-877b-4e8a-b709-329c6d195efa
                 Name: Rock
-                Group: Group1
                 Components:
-                    - !TransformComponent
-                        ~Id: 0436b4e9-2a63-4588-8127-2db85004b435
-                        Children: []
+                    e9b43604632a884581272db85004b435: !TransformComponent
+                        Id: 0436b4e9-2a63-4588-8127-2db85004b435
                         Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
-                    - !Asteroids.Rock,Asteroids.Game
-                        ~Id: ef9d1b64-7555-44e7-b9ff-3713907d2aed
-                        m_Hit: false
-                        m_Rotation: 0.0
-                        m_RotationVelocity: 0.0
-                        m_Radius: 0.0
-                        m_Random: null
+                        Children: {}
+                    641b9def5575e744b9ff3713907d2aed: !Asteroids.Rock,Asteroids.Game
+                        Id: ef9d1b64-7555-44e7-b9ff-3713907d2aed
                         m_Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Velocity: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Acceleration: {X: 0.0, Y: 0.0, Z: 0.0}
                         m_Edge: {X: 44.0, Y: 33.0}
+                        m_Pause: false
+                        m_GameOver: true

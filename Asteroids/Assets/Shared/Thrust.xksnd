@@ -1,7 +1,8 @@
 !Sound
 Id: 1848d1c9-bab1-466d-9124-591fc718d1de
+SerializedVersion: {Xenko: 2.0.0.0}
 Tags: []
-Source: ../../../../../../Sounds/Thrust.ogg
+Source: ../../Resources/Sounds/Thrust.ogg
 CompressionRatio: 15
 StreamFromDisk: false
 Spatialized: false

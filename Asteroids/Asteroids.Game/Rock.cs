@@ -1,20 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SiliconStudio.Core.Mathematics;
-using SiliconStudio.Xenko.Input;
-using SiliconStudio.Xenko.Engine;
-using SiliconStudio.Xenko.Graphics;
-using SiliconStudio.Xenko.Rendering;
-using SiliconStudio.Xenko.Audio;
+using Xenko.Core.Mathematics;
+using Xenko.Input;
+using Xenko.Engine;
+using Xenko.Games.Time;
+using Xenko.Graphics;
+using Xenko.Rendering;
+using Xenko.Audio;
 
 namespace Asteroids
 {
     public class Rock : Explode
     {
-        // Declared public member fields and properties will show in the game studio
         Player m_Player;
         UFO m_UFO;
         Entity m_Rock;
@@ -28,8 +24,7 @@ namespace Asteroids
         {
             base.Start();
 
-            Sound sound = Content.Load<Sound>("RockExplosion");
-            m_SoundInstance = sound.CreateInstance();
+            m_SoundInstance = Content.Load<Sound>("RockExplosion").CreateInstance();
             m_SoundInstance.Volume = 0.15f;
         }
 
@@ -81,8 +76,7 @@ namespace Asteroids
             {
                 if (m_Player.m_Shots[shot].Active())
                 {
-                    if (CirclesIntersect(m_Player.m_Shots[shot].m_Position,
-                        m_Player.m_Shots[shot].m_Radius))
+                    if (CirclesIntersect(m_Player.m_Shots[shot].m_Position, m_Player.m_Shots[shot].m_Radius))
                     {
                         m_Player.m_Shots[shot].Destroy();
                         SetScore();
@@ -104,7 +98,7 @@ namespace Asteroids
             if (m_UFO.Active())
             {
                 if (CirclesIntersect(m_UFO.m_Position, m_UFO.m_Radius))
-                {                    
+                {
                     m_UFO.Hit();
                     m_UFO.Explode();
                     return true;
@@ -203,7 +197,7 @@ namespace Asteroids
         private void m_RockOne()
         {
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
-            var vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
+            var vBuffer = Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
                  new VertexPositionNormalTexture(new Vector3(2.9f, 1.5f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)),
                  new VertexPositionNormalTexture(new Vector3(1.5f, 3.0f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)),
@@ -238,7 +232,7 @@ namespace Asteroids
         private void m_RockTwo()
         {
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
-            var vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
+            var vBuffer = Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
                  new VertexPositionNormalTexture(new Vector3(2.9f, 1.5f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)),
                  new VertexPositionNormalTexture(new Vector3(1.4f, 2.9f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)),
@@ -271,7 +265,7 @@ namespace Asteroids
         private void m_RockThree()
         {
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
-            var vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
+            var vBuffer = Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
                  new VertexPositionNormalTexture(new Vector3(2.9f, 1.5f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)),
                  new VertexPositionNormalTexture(new Vector3(0.7f, 1.5f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)),
@@ -306,7 +300,7 @@ namespace Asteroids
         private void m_RockFour()
         {
             // VertexPositionNormalTexture is the layout that the engine uses in the shaders
-            var vBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
+            var vBuffer = Xenko.Graphics.Buffer.Vertex.New(GraphicsDevice, new VertexPositionNormalTexture[]
             {
                  new VertexPositionNormalTexture(new Vector3(2.9f, 0.8f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)),
                  new VertexPositionNormalTexture(new Vector3(0.6f, 2.9f, 0), new Vector3(0, 1, 1), new Vector2(0, 0)),

@@ -1,7 +1,8 @@
 !Sound
 Id: 51348a3a-9830-4887-baf2-3d56fc864138
+SerializedVersion: {Xenko: 2.0.0.0}
 Tags: []
-Source: ../../../../../../Sounds/Background.ogg
+Source: ../../Resources/Sounds/Background.ogg
 CompressionRatio: 15
 StreamFromDisk: false
 Spatialized: false
