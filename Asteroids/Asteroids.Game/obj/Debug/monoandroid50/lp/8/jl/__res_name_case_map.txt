@@ -1,1 +1,0 @@
-Layout/Game.axml;layout/game.xml
